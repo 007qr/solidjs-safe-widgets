@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+* {
+  font-family: "Wix Madefor Display", sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
