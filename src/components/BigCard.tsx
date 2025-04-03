@@ -22,7 +22,7 @@ export default function BigCard(props: Props) {
 
       {/* Button */}
       <button class="absolute flex gap-[10px] items-center bg-black py-[32px] px-[96px] text-white rounded-[64px] bottom-[20px] left-1/2 -translate-x-1/2 z-10">
-        Start for free <ArrowForward />
+        Start for free <ArrowForward color="white" />
       </button>
     </div>
   );
