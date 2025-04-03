@@ -79,26 +79,29 @@ export default function ThreeStepCard(props: Props) {
 
 const AnimatedStep: Component<AnimatedStepProps> = (props) => {
   return (
-    <div class="w-[290px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300">
-        {props.step.icon}
-        <div class="flex flex-col gap-[8px]">
-          <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium">
-            {props.step.title}
-          </h3>
+    <Motion.div
+      transition={{ easing: "ease-in-out" }}
+      class="w-[290px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300"
+    >
+      {props.step.icon}
+      <div class="flex flex-col gap-[8px]">
+        <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium">
+          {props.step.title}
+        </h3>
         <Presence exitBeforeEnter>
           <Show when={props.activeStep === props.step.id}>
             <Motion.p
-              initial={{ opacity:0 }}
+              initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{duration: 0.5}}
+              transition={{ duration: 0.5 }}
               class="text-[15px] leading-[130%] tracking-[0%] font-normal"
             >
               {props.step.subTitle}
             </Motion.p>
           </Show>
-          </Presence>
-        </div>
+        </Presence>
       </div>
+    </Motion.div>
   );
 };

@@ -7,11 +7,28 @@ import ThreeStepCard from "./components/ThreeStepCard";
 import Connect from "./components/icons/Connect";
 import TestimonialCard from "./components/TestimonialCard";
 
+function StyledText() {
+  return (
+    <h1 class="text-[#A5A5A5] text-[40px] font-medium leading-[120%] tracking-[-2%]">
+      "...helped me <span class="text-[#1d1d1f]">recover $5K</span> worth of
+      Chargebacks"
+    </h1>
+  );
+}
+
 const App: Component = () => {
   return (
-    <div class="flex h-[300vh] flex-col gap-[60px] items-center justify-center bg-[#F5F5F5]">
+    <div class="flex h-[400vh] flex-col gap-[60px] items-center justify-center bg-[#F5F5F5]">
       {/* Testimonial Card */}
-      <TestimonialCard text="...helped me recover $5K worth of Chargebacks" gifSrc="" videoSrc="" personName="" companyName="" />
+
+      <TestimonialCard
+        text={<StyledText />}
+        gifSrc="/giphy.gif"
+        videoSrc="/templ-placeholder.webm"
+        personName="Devyn Green"
+        companyName="Adbuy.ai"
+      />
+
       {/* Big Card Example */}
       <BigCard title="We've won loads of Chargebacks. We'll win yours too." />
 
@@ -28,13 +45,23 @@ const App: Component = () => {
       <ThreeStepCard
         altText="Follow these steps"
         steps={[
-          { id: 1, title: "Connect", subTitle: "Simply connect your stripe, Shopify or other payment providers", icon: <Connect /> },
-          { id: 2, title: "Respond", subTitle: "We automatically respond to your customer", icon: "" },
+          {
+            id: 1,
+            title: "Connect",
+            subTitle:
+              "Simply connect your stripe, Shopify or other payment providers",
+            icon: <Connect />,
+          },
+          {
+            id: 2,
+            title: "Respond",
+            subTitle: "We automatically respond to your customer",
+            icon: "",
+          },
           { id: 3, title: "Win", subTitle: "You win", icon: "" },
         ]}
         nextButton={true}
       />
-
     </div>
   );
 };

@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Wix Madefor Display";
-  src: url("/Wix_Madefor_Display/WixMadeforDisplay-VariableFont_wght.ttf") format("truetype-variations");
-}
-
 * {
   font-family: "Wix Madefor Display", sans-serif;
   font-optical-sizing: auto;
