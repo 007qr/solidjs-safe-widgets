@@ -1,5 +1,12 @@
-import { createSignal, onCleanup, onMount, For } from "solid-js";
-import { Motion } from "solid-motionone";
+import {
+  createSignal,
+  onCleanup,
+  onMount,
+  For,
+  Show,
+  Component,
+} from "solid-js";
+import { Motion, Presence } from "solid-motionone";
 import { IoArrowForward } from "solid-icons/io";
 
 interface Step {
@@ -7,6 +14,11 @@ interface Step {
   title: string;
   subTitle: string;
   icon: any;
+}
+
+interface AnimatedStepProps {
+  step: Step;
+  activeStep: number;
 }
 
 interface Props {
@@ -31,7 +43,7 @@ export default function ThreeStepCard(props: Props) {
   });
 
   return (
-    <div class="overflow-hidden relative min-w-[382px] min-h-[473px] max-w-[740px] max-h-[632px] w-full h-full shadow-lg rounded-[48px] p-[40px]">
+    <div class="overflow-hidden bg-white relative min-w-[382px] min-h-[473px] max-w-[740px] max-h-[632px] w-full h-full rounded-[48px] p-[40px]">
       <div class="flex flex-col gap-[8px]">
         <h2 class="text-[33px] leading-[110%] tracking-[-2%] font-semibold text-[#1D1D1F99]">
           {props.altText}
@@ -43,29 +55,9 @@ export default function ThreeStepCard(props: Props) {
 
       <div class="flex justify-between mt-[40px]">
         <div class="flex flex-col gap-[20px]">
-          <For each={props.steps}>{(step) => (
-            <Motion.div
-              class="w-[290px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300"
-            >
-              {step.icon}
-              <div class="flex flex-col gap-[8px]">
-                <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium">
-                  {step.title}
-                </h3>
-                {activeStep() === step.id && (
-                  <Motion.p
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.5, easing: "ease-in-out" }}
-                    class="text-[15px] leading-[130%] tracking-[0%] font-normal"
-                  >
-                    {step.subTitle}
-                  </Motion.p>
-                )}
-              </div>
-            </Motion.div>
-          )}</For>
+          <For each={props.steps}>
+            {(step) => <AnimatedStep step={step} activeStep={activeStep()} />}
+          </For>
         </div>
         <div class="w-[316px] h-[322px]">
           <video autoplay muted loop class="w-full h-full">
@@ -84,3 +76,29 @@ export default function ThreeStepCard(props: Props) {
     </div>
   );
 }
+
+const AnimatedStep: Component<AnimatedStepProps> = (props) => {
+  return (
+    <div class="w-[290px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300">
+        {props.step.icon}
+        <div class="flex flex-col gap-[8px]">
+          <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium">
+            {props.step.title}
+          </h3>
+        <Presence exitBeforeEnter>
+          <Show when={props.activeStep === props.step.id}>
+            <Motion.p
+              initial={{ opacity:0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{duration: 0.5, ease: "ease-in-out"}}
+              class="text-[15px] leading-[130%] tracking-[0%] font-normal"
+            >
+              {props.step.subTitle}
+            </Motion.p>
+          </Show>
+          </Presence>
+        </div>
+      </div>
+  );
+};

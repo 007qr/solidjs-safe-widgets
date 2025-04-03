@@ -9,5 +9,10 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
+    minify: "esbuild",
+    sourcemap: false,
+    rollupOptions: {
+      treeshake: true
+    }
   },
 });

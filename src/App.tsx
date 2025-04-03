@@ -8,14 +8,14 @@ import Connect from "./components/icons/Connect";
 
 const App: Component = () => {
   return (
-    <div class="flex h-[300vh] flex-col gap-[60px] items-center justify-center">
+    <div class="flex h-[300vh] flex-col gap-[60px] items-center justify-center bg-[#F5F5F5]">
       {/* Big Card Example */}
       <BigCard title="We've won loads of Chargebacks. We'll win yours too." />
 
       {/* Card Example */}
       <Card
         backgroundType="img"
-        src="/bg.png"
+        src="/bg.webp"
         title="Win Your Chargebacks Automatically."
         subTitle="AI-powered automation that fights disputes for you. Stop losing revenue and save time"
         nextButton={true}

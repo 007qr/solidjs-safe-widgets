@@ -6,7 +6,7 @@ interface Props {
 
 export default function BigCard(props: Props) {
   return (
-    <div class="relative overflow-hidden min-w-[382px] min-h-[473px] max-w-[740px] max-h-[632px] w-full h-full shadow-lg rounded-[48px] flex items-center justify-center">
+    <div class="relative overflow-hidden min-w-[382px] min-h-[473px] max-w-[740px] max-h-[632px] w-full h-full rounded-[48px] flex items-center justify-center">
       <video
         autoplay
         muted
