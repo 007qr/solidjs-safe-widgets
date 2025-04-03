@@ -5,10 +5,13 @@ import BigCard from "./components/BigCard";
 import Card from "./components/Card";
 import ThreeStepCard from "./components/ThreeStepCard";
 import Connect from "./components/icons/Connect";
+import TestimonialCard from "./components/TestimonialCard";
 
 const App: Component = () => {
   return (
     <div class="flex h-[300vh] flex-col gap-[60px] items-center justify-center bg-[#F5F5F5]">
+      {/* Testimonial Card */}
+      <TestimonialCard text="...helped me recover $5K worth of Chargebacks" gifSrc="" videoSrc="" personName="" companyName="" />
       {/* Big Card Example */}
       <BigCard title="We've won loads of Chargebacks. We'll win yours too." />
 

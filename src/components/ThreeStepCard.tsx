@@ -7,7 +7,7 @@ import {
   Component,
 } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
-import { IoArrowForward } from "solid-icons/io";
+import ArrowForward from "./icons/ArrowForward";
 
 interface Step {
   id: number;
@@ -69,7 +69,7 @@ export default function ThreeStepCard(props: Props) {
       {props.nextButton && (
         <div class="absolute right-[40px] bottom-[20px] shadow-lg bg-white rounded-[64px]">
           <div class="p-[32px] flex items-center justify-center">
-            <IoArrowForward size={32} />
+            <ArrowForward />
           </div>
         </div>
       )}
@@ -91,7 +91,7 @@ const AnimatedStep: Component<AnimatedStepProps> = (props) => {
               initial={{ opacity:0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{duration: 0.5, ease: "ease-in-out"}}
+              transition={{duration: 0.5}}
               class="text-[15px] leading-[130%] tracking-[0%] font-normal"
             >
               {props.step.subTitle}

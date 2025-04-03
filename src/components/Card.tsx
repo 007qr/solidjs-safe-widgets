@@ -1,4 +1,4 @@
-import { IoArrowForward } from "solid-icons/io";
+import ArrowForward from "./icons/ArrowForward";
 
 type BackgroundType = "img" | "video" | "color";
 
@@ -53,7 +53,7 @@ export default function Card(props: Props) {
       {props.nextButton && (
         <div class="absolute right-[40px] bottom-[40px]">
           <div class="bg-white rounded-[64px] p-[32px] flex items-center justify-center">
-            <IoArrowForward size={32} />
+            <ArrowForward />
           </div>
         </div>
       )}
