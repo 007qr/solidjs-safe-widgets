@@ -57,21 +57,29 @@ const Carousel: Component<CarouselProps> = (props) => {
         const contWidth = containerRef.offsetWidth;
         setContainerWidth(contWidth);
         
-        // Calculate how many cards can be fully visible
+        // Calculate how many cards can be fully visible (including gap)
         const cardTotalWidth = cardWidth + cardGap;
         const visible = Math.max(1, Math.floor((contWidth + cardGap) / cardTotalWidth));
         setVisibleCards(visible);
         
-        // Calculate center offset to start the carousel centered
+        // Calculate center offset for the first card
         const centerOffset = Math.max(0, (contWidth - cardWidth) / 2);
         setInitialOffset(centerOffset);
         
-        // Calculate the maximum scrolling position
-        const totalContentWidth = totalItems() * (cardWidth + cardGap) - cardGap;
-        const maxScroll = Math.max(0, totalContentWidth - contWidth + centerOffset/2 + cardGap/2);
+        // Calculate the total content width (all cards + gaps between them)
+        const totalContentWidth = (totalItems() * cardWidth) + ((totalItems() - 1) * cardGap);
+        
+        // Calculate the maximum scroll amount
+        // This ensures the last card aligns with the right edge of the container
+        // The formula accounts for:
+        // 1. Total content width
+        // 2. Container width
+        // 3. Initial offset (centering of first card)
+        // 4. The need to align the last card's right edge with container's right edge
+        const maxScroll = Math.max(0, totalContentWidth - contWidth + 50);
         setMaxScrollPosition(maxScroll);
         
-        // Reset current position and set initial translation
+        // Reset position and set initial translation
         setCurrentPosition(0);
         setTranslateX(centerOffset);
     };
@@ -80,17 +88,15 @@ const Carousel: Component<CarouselProps> = (props) => {
     const scrollRight = () => {
         if (isTransitioning()) return;
         
+        // Don't proceed if we're at the end
+        if (currentPosition() >= totalItems() - visibleCards()) return;
+        
         const currentTranslate = translateX();
         const scrollAmount = cardWidth + cardGap;
         
-        // Calculate the next position, ensuring we don't go past the maximum
-        const nextTranslate = Math.max(
-            initialOffset() - maxScrollPosition(),
-            currentTranslate - scrollAmount
-        );
-        
-        // Only scroll if we're not at the end
-        if (nextTranslate === currentTranslate) return;
+        // Calculate the next position with boundary protection
+        const availableScroll = initialOffset() - maxScrollPosition();
+        const nextTranslate = Math.max(availableScroll, currentTranslate - scrollAmount);
         
         setTranslateX(nextTranslate);
         setCurrentPosition(currentPosition() + 1);
@@ -104,17 +110,14 @@ const Carousel: Component<CarouselProps> = (props) => {
     const scrollLeft = () => {
         if (isTransitioning()) return;
         
+        // Don't proceed if we're at the beginning
+        if (currentPosition() <= 0) return;
+        
         const currentTranslate = translateX();
         const scrollAmount = cardWidth + cardGap;
         
-        // Calculate the next position, ensuring we don't go past the initial offset
-        const nextTranslate = Math.min(
-            initialOffset(),
-            currentTranslate + scrollAmount
-        );
-        
-        // Only scroll if we're not at the beginning
-        if (nextTranslate === currentTranslate) return;
+        // Calculate the next position with boundary protection
+        const nextTranslate = Math.min(initialOffset(), currentTranslate + scrollAmount);
         
         setTranslateX(nextTranslate);
         setCurrentPosition(currentPosition() - 1);
@@ -124,45 +127,64 @@ const Carousel: Component<CarouselProps> = (props) => {
         setTimeout(() => setIsTransitioning(false), 300);
     };
 
-    // Function to handle navigation to a specific dot/indicator
+    // Function to go to a specific position (for indicators)
     const goToPosition = (position: number) => {
         if (isTransitioning()) return;
         
+        // Calculate the translate value for the target position
         const scrollAmount = (cardWidth + cardGap) * position;
-        const nextTranslate = initialOffset() - scrollAmount;
+        const maxTranslate = initialOffset() - maxScrollPosition();
+        const targetTranslate = Math.max(maxTranslate, initialOffset() - scrollAmount);
         
-        setTranslateX(nextTranslate);
+        setTranslateX(targetTranslate);
         setCurrentPosition(position);
         setIsTransitioning(true);
         
         setTimeout(() => setIsTransitioning(false), 300);
     };
 
-    // Setup auto play if enabled and calculate initial layout with a slight delay to ensure DOM is ready
+    // Check if we can scroll further right
+    const canScrollRight = () => {
+        return currentPosition() < (totalItems() - 1);
+    };
+
+    // Check if we can scroll further left
+    const canScrollLeft = () => {
+        return currentPosition() > 0;
+    };
+
+    // Setup auto play and calculate initial layout
     onMount(() => {
         // Use requestAnimationFrame to ensure the DOM is fully rendered
         requestAnimationFrame(() => {
             calculateLayout();
             
-            // Add debounced window resize listener for performance
-            let resizeTimer: number;
+            // Add debounced window resize listener
+            let resizeTimeout: number;
             const handleResize = () => {
-                clearTimeout(resizeTimer);
-                resizeTimer = window.setTimeout(() => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = window.setTimeout(() => {
                     calculateLayout();
-                }, 250);
+                }, 250); // 250ms debounce
             };
             
-            window.addEventListener('resize', handleResize);
+            window.addEventListener('resize', handleResize, { passive: true });
             
             if (props.autoPlay) {
-                timer = window.setInterval(scrollRight, autoPlayInterval);
+                timer = window.setInterval(() => {
+                    if (canScrollRight()) {
+                        scrollRight();
+                    } else {
+                        // Reset to beginning if at end
+                        goToPosition(0);
+                    }
+                }, autoPlayInterval);
             }
             
-            // Clean up event listeners and timers
+            // Clean up
             onCleanup(() => {
                 window.removeEventListener('resize', handleResize);
-                clearTimeout(resizeTimer);
+                clearTimeout(resizeTimeout);
                 if (timer) {
                     clearInterval(timer);
                 }
@@ -172,8 +194,11 @@ const Carousel: Component<CarouselProps> = (props) => {
 
     // Recalculate layout when children change
     createEffect(() => {
-        setTotalItems(props.children.length);
-        if (containerRef) calculateLayout();
+        const newTotalItems = props.children.length;
+        if (newTotalItems !== totalItems()) {
+            setTotalItems(newTotalItems);
+            if (containerRef) calculateLayout();
+        }
     });
 
     // Function to render each carousel item
@@ -184,13 +209,9 @@ const Carousel: Component<CarouselProps> = (props) => {
         return item;
     };
 
-    // Calculate if we should show the left/right buttons
-    const showLeftButton = () => translateX() < initialOffset();
-    const showRightButton = () => translateX() > initialOffset() - maxScrollPosition();
-
     return (
         <div class="relative overflow-hidden p-4" ref={carouselRef}>
-            <div class="max-w-7xl mx-auto" ref={containerRef}>
+            <div class="max-w-6xl mx-auto" ref={containerRef}>
                 {/* Carousel content */}
                 <div 
                     class="flex transition-transform duration-300 ease-in-out" 
@@ -201,6 +222,7 @@ const Carousel: Component<CarouselProps> = (props) => {
                         {(item, index) => (
                             <div 
                                 style={{
+                                    width: `${cardWidth}px`,
                                     "margin-right": index() < totalItems() - 1 ? `${cardGap}px` : "0"
                                 }}
                                 class="flex-shrink-0"
@@ -216,12 +238,12 @@ const Carousel: Component<CarouselProps> = (props) => {
             <button 
                 class="absolute left-4 top-1/2 p-2 rounded-full z-30 -translate-y-1/2 bg-white text-lg text-black shadow-md" 
                 style={{ 
-                    opacity: showLeftButton() ? "1" : "0",
-                    visibility: showLeftButton() ? "visible" : "hidden",
+                    opacity: canScrollLeft() ? "1" : "0",
+                    visibility: canScrollLeft() ? "visible" : "hidden",
                     transition: "opacity 0.3s, visibility 0.3s"
                 }}
                 onClick={scrollLeft}
-                disabled={!showLeftButton()}
+                disabled={!canScrollLeft()}
                 aria-label="Previous slide"
             >
                  ←
@@ -231,21 +253,21 @@ const Carousel: Component<CarouselProps> = (props) => {
             <button 
                 class="absolute right-4 top-1/2 p-2 rounded-full z-30 -translate-y-1/2 bg-white text-lg text-black shadow-md" 
                 style={{ 
-                    opacity: showRightButton() ? "1" : "0",
-                    visibility: showRightButton() ? "visible" : "hidden",
+                    opacity: canScrollRight() ? "1" : "0",
+                    visibility: canScrollRight() ? "visible" : "hidden",
                     transition: "opacity 0.3s, visibility 0.3s"
                 }}
                 onClick={scrollRight}
-                disabled={!showRightButton()}
+                disabled={!canScrollRight()}
                 aria-label="Next slide"
             >
                 →
             </button>
 
             {/* Indicators (optional) */}
-            {props.showIndicators && (
+            {props.showIndicators && totalItems() > visibleCards() && (
                 <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-                    <For each={Array(totalItems() - visibleCards() + 1).fill(0)}>
+                    <For each={Array(Math.max(1, totalItems() - visibleCards() + 1)).fill(0)}>
                         {(_, i) => (
                             <button
                                 class="w-2 h-2 rounded-full transition-colors duration-200"
