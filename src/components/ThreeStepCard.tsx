@@ -14,10 +14,13 @@ interface Props {
     steps: Step[];
     nextButton: boolean;
     nextButtonUrl?: string;
+    onNextClick?: () => void;
 }
 
 export default function ThreeStepCard(props: Props) {
-    const [activeStep, setActiveStep] = createSignal<number>(props.steps[0]?.id ?? 0);
+    const [activeStep, setActiveStep] = createSignal<number>(
+        props.steps[0]?.id ?? 0
+    );
     let animationFrameId: number | null = null;
     const intervalDuration = 3000;
     let lastTimestamp = 0;
@@ -51,7 +54,7 @@ export default function ThreeStepCard(props: Props) {
     });
 
     return (
-        <div class="overflow-hidden bg-white relative min-w-[382px] min-h-[473px] max-w-[740px] max-h-[632px] w-full h-full rounded-[48px] p-[40px]">
+        <div class="overflow-hidden bg-white relative min-w-[382px] min-h-[473px] max-w-[740px] h-[632px] w-full rounded-[48px] p-[40px]">
             <div class="flex flex-col gap-[8px]">
                 <h2 class="text-[33px] leading-[110%] tracking-[-2%] font-semibold text-[#1D1D1F99]">
                     {props.altText}
@@ -71,15 +74,23 @@ export default function ThreeStepCard(props: Props) {
                                     <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium">
                                         {step.title}
                                     </h3>
-                                    <div 
-                                        classList={{ "!max-h-[200px]": activeStep() === step.id }}
+                                    <div
+                                        classList={{
+                                            "!max-h-[200px]":
+                                                activeStep() === step.id,
+                                        }}
                                         class="transition-[max-height] duration-500 ease-in-out overflow-hidden max-h-0"
                                     >
-                                        <Presence>
+                                        <Presence exitBeforeEnter>
                                             {activeStep() === step.id && (
-                                                <Motion.p 
-                                                    animate={{ opacity: [0, 1] }}
-                                                    transition={{ duration: 0.5, easing: "ease-in-out" }}
+                                                <Motion.p
+                                                    animate={{
+                                                        opacity: [0, 1],
+                                                    }}
+                                                    transition={{
+                                                        duration: 0.5,
+                                                        easing: "ease-in-out",
+                                                    }}
                                                     exit={{ opacity: 0 }}
                                                     class="text-[15px] leading-[130%] tracking-[0%] font-normal pb-2"
                                                 >
@@ -101,14 +112,14 @@ export default function ThreeStepCard(props: Props) {
             </div>
 
             {props.nextButton && (
-                <a
-                    href={props.nextButtonUrl || "#"}
-                    class="absolute right-[40px] bottom-[20px] shadow-lg bg-white rounded-[64px] hover:scale-105 transition-transform duration-200"
+                <button
+                    on:click={props.onNextClick}
+                    class="absolute right-[40px] bottom-[20px] shadow-lg bg-white rounded-[64px]"
                 >
                     <div class="p-[32px] flex items-center justify-center">
                         <ArrowForward />
                     </div>
-                </a>
+                </button>
             )}
         </div>
     );
