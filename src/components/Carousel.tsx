@@ -76,7 +76,7 @@ const Carousel: Component<CarouselProps> = (props) => {
         // 2. Container width
         // 3. Initial offset (centering of first card)
         // 4. The need to align the last card's right edge with container's right edge
-        const maxScroll = Math.max(0, totalContentWidth - contWidth + 50);
+        const maxScroll = Math.max(0, totalContentWidth);
         setMaxScrollPosition(maxScroll);
         
         // Reset position and set initial translation
