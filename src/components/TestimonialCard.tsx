@@ -24,7 +24,7 @@ export default function TestimonialCard({
 
     return (
         <>
-            <div class="overflow-hidden bg-white relative min-w-[382px] min-h-[473px] max-w-[740px] h-[632px] w-full rounded-[48px] p-[32px]">
+            <div class="overflow-hidden bg-white relative min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[32px]">
                 {/* AuthorName and Company Name */}
                 <div class="absolute flex gap-[8px] items-center jusitfy-center">
                     <Show

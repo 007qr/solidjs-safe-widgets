@@ -1,217 +1,193 @@
-import { Component, createSignal, For, JSX, onCleanup, onMount, createEffect } from "solid-js";
+import {
+    Component,
+    createSignal,
+    For,
+    JSX,
+    onCleanup,
+    onMount,
+    createEffect,
+} from "solid-js";
 
 // Define types for carousel item props
 export type CarouselItemProps = {
-  onNext: () => void;
+    onNext: () => void;
 };
 
 // Define a type for carousel items that can be either direct JSX or render props
-export type CarouselItem = JSX.Element | ((props: CarouselItemProps) => JSX.Element);
+export type CarouselItem =
+    | JSX.Element
+    | ((props: CarouselItemProps) => JSX.Element);
 
 // Define types for the carousel props
 export type CarouselProps = {
-  children: CarouselItem[];
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
-  showIndicators?: boolean;
-  itemsPerView?: number; // How many items to show at once
-  scrollItems?: number; // How many items to scroll by (defaults to 1)
+    children: CarouselItem[];
+    autoPlay?: boolean;
+    autoPlayInterval?: number;
+    showIndicators?: boolean;
+    cardWidth?: number; // Individual card width in pixels
+    cardHeight?: number; // Individual card height in pixels
+    cardGap?: number; // Gap between cards in pixels
 };
 
 const Carousel: Component<CarouselProps> = (props) => {
-  const [scrollPosition, setScrollPosition] = createSignal(0);
-  const [isTransitioning, setIsTransitioning] = createSignal(false);
-  const [itemsPerView, setItemsPerView] = createSignal(props.itemsPerView || 3);
-  const [scrollItems, setScrollItems] = createSignal(props.scrollItems || 1);
-  const [totalItems, setTotalItems] = createSignal(props.children.length);
-  const [activeIndex, setActiveIndex] = createSignal(0);
-  const [itemWidth, setItemWidth] = createSignal(0);
-  const autoPlayInterval = props.autoPlayInterval || 5000;
-  
-  let carouselRef: HTMLDivElement | undefined;
-  let containerRef: HTMLDivElement | undefined;
-  let timer: number;
-  
-  // Calculate item width based on the container and items per view
-  const calculateItemWidth = () => {
-    if (!containerRef) return;
-    const containerWidth = containerRef.offsetWidth;
-    const gapSize = 16; // Gap between items (match your CSS gap value)
-    const calculatedWidth = (containerWidth - (gapSize * (itemsPerView() - 1))) / itemsPerView();
-    setItemWidth(calculatedWidth);
-  };
+    const [translateX, setTranslateX] = createSignal(0);
+    const [isTransitioning, setIsTransitioning] = createSignal(false);
+    const [totalItems, setTotalItems] = createSignal(props.children.length);
+    const [visibleCards, setVisibleCards] = createSignal(0);
+    const [currentPosition, setCurrentPosition] = createSignal(0);
+    const autoPlayInterval = props.autoPlayInterval || 5000;
+    
+    // Default card dimensions and gap
+    const cardWidth = props.cardWidth || 640;
+    const cardHeight = props.cardHeight || 632;
+    const cardGap = props.cardGap || 72;
 
-  // Function to scroll right
-  const scrollRight = () => {
-    if (isTransitioning()) return;
-    
-    const nextIndex = Math.min(activeIndex() + scrollItems(), totalItems() - itemsPerView());
-    if (nextIndex === activeIndex()) return;
-    
-    setIsTransitioning(true);
-    setActiveIndex(nextIndex);
-    
-    // Reset the transition state after animation completes
-    setTimeout(() => setIsTransitioning(false), 500);
-  };
+    let carouselRef: HTMLDivElement | undefined;
+    let containerRef: HTMLDivElement | undefined;
+    let contentRef: HTMLDivElement | undefined;
+    let timer: number;
 
-  // Function to scroll left
-  const scrollLeft = () => {
-    if (isTransitioning()) return;
-    
-    const nextIndex = Math.max(activeIndex() - scrollItems(), 0);
-    if (nextIndex === activeIndex()) return;
-    
-    setIsTransitioning(true);
-    setActiveIndex(nextIndex);
-    
-    // Reset the transition state after animation completes
-    setTimeout(() => setIsTransitioning(false), 500);
-  };
-
-  // Function to jump to a specific index
-  const scrollToIndex = (index: number) => {
-    if (isTransitioning() || index === activeIndex()) return;
-    
-    const boundedIndex = Math.max(0, Math.min(index, totalItems() - itemsPerView()));
-    
-    setIsTransitioning(true);
-    setActiveIndex(boundedIndex);
-    
-    // Reset the transition state after animation completes
-    setTimeout(() => setIsTransitioning(false), 500);
-  };
-
-  // Update scroll position based on active index
-  createEffect(() => {
-    if (itemWidth() === 0) return;
-    const gapSize = 16; // Match your CSS gap value
-    setScrollPosition(activeIndex() * (itemWidth() + gapSize));
-  });
-
-  // Set up auto play if enabled and initial item width calculation
-  onMount(() => {
-    calculateItemWidth();
-    
-    if (props.autoPlay) {
-      timer = window.setInterval(scrollRight, autoPlayInterval);
-    }
-    
-    // Add resize listener to recalculate items per view and width
-    const handleResize = () => {
-      if (containerRef) {
+    // Calculate how many cards are visible
+    const calculateVisibleCards = () => {
+        if (!containerRef) return;
         const containerWidth = containerRef.offsetWidth;
-        // Adjust items per view based on container width
-        if (containerWidth < 640) { // Small screen
-          setItemsPerView(1);
-        } else if (containerWidth < 3200) { // Medium screen
-          setItemsPerView(2);
-        } else { // Large screen
-          setItemsPerView(Math.min(3, props.itemsPerView || 3));
+        const cardTotalWidth = cardWidth + cardGap;
+        const visible = Math.floor(containerWidth / cardTotalWidth);
+        setVisibleCards(visible);
+    };
+
+    // Function to scroll right
+    const scrollRight = () => {
+        if (isTransitioning()) return;
+        
+        // Calculate how many positions we can move
+        const maxPosition = Math.max(0, totalItems() - visibleCards());
+        const nextPosition = Math.min(currentPosition() + 1, maxPosition);
+        
+        // Only scroll if we're not at the end
+        if (nextPosition === currentPosition()) return;
+        
+        setCurrentPosition(nextPosition);
+        setTranslateX(-(cardWidth + cardGap) * nextPosition);
+        setIsTransitioning(true);
+        
+        // Reset the transition state after animation completes
+        setTimeout(() => setIsTransitioning(false), 300);
+    };
+
+    // Function to scroll left
+    const scrollLeft = () => {
+        if (isTransitioning()) return;
+        
+        // Calculate next position (can't go below 0)
+        const nextPosition = Math.max(0, currentPosition() - 1);
+        
+        // Only scroll if we're not at the beginning
+        if (nextPosition === currentPosition()) return;
+        
+        setCurrentPosition(nextPosition);
+        setTranslateX(-(cardWidth + cardGap) * nextPosition);
+        setIsTransitioning(true);
+        
+        // Reset the transition state after animation completes
+        setTimeout(() => setIsTransitioning(false), 300);
+    };
+
+    // Set up auto play if enabled and calculate initial visible cards
+    onMount(() => {
+        calculateVisibleCards();
+        
+        // Add window resize listener
+        const handleResize = () => {
+            calculateVisibleCards();
+            
+            // When resizing, ensure we don't have invalid position
+            const maxPosition = Math.max(0, totalItems() - visibleCards());
+            if (currentPosition() > maxPosition) {
+                setCurrentPosition(maxPosition);
+                setTranslateX(-(cardWidth + cardGap) * maxPosition);
+            }
+        };
+        
+        window.addEventListener('resize', handleResize);
+        
+        if (props.autoPlay) {
+            timer = window.setInterval(scrollRight, autoPlayInterval);
         }
         
-        // Recalculate item width
-        calculateItemWidth();
-        
-        // Make sure activeIndex is still valid
-        if (activeIndex() > totalItems() - itemsPerView()) {
-          setActiveIndex(Math.max(0, totalItems() - itemsPerView()));
+        // Clean up event listeners and timers
+        onCleanup(() => {
+            window.removeEventListener('resize', handleResize);
+            if (timer) {
+                clearInterval(timer);
+            }
+        });
+    });
+
+    // Function to render each carousel item
+    const renderItem = (item: CarouselItem) => {
+        if (typeof item === "function") {
+            return item({ onNext: scrollRight });
         }
-      }
+        return item;
     };
-    
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial calculation
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  });
 
-  // Clean up the timer when component is unmounted
-  onCleanup(() => {
-    if (timer) {
-      clearInterval(timer);
-    }
-  });
+    // Calculate if we should show the left/right buttons
+    const showLeftButton = () => currentPosition() > 0;
+    const showRightButton = () => currentPosition() < (totalItems() - visibleCards());
 
-  // Function to render each carousel item
-  const renderItem = (item: CarouselItem) => {
-    if (typeof item === 'function') {
-      return item({ onNext: scrollRight });
-    }
-    return item;
-  };
+    return (
+        <div class="relative overflow-hidden p-4" ref={carouselRef}>
+            <div class="mx-auto max-w-6xl" ref={containerRef}>
+                {/* Carousel content */}
+                <div 
+                    class="flex transition-transform duration-300 ease-in-out" 
+                    style={{ transform: `translateX(${translateX()}px)` }}
+                    ref={contentRef}
+                >
+                    <For each={props.children}>
+                        {(item) => (
+                            <div 
+                                style={{
+                                    "margin-right": `${cardGap}px`
+                                }}
+                            >
+                                {renderItem(item)}
+                            </div>
+                        )}
+                    </For>
+                </div>
+            </div>
 
-  // Calculate the total number of page indicators
-  const totalIndicators = () => {
-    return Math.ceil((totalItems() - itemsPerView() + 1) / scrollItems());
-  };
-
-  // Calculate which indicator is active
-  const activeIndicator = () => {
-    return Math.floor(activeIndex() / scrollItems());
-  };
-
-  return (
-    <div class="relative w-full" ref={carouselRef}>
-      {/* Navigation Buttons */}
-      {totalItems() > itemsPerView() && (
-        <>
-          <button 
-            class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md"
-            onClick={scrollLeft}
-            disabled={activeIndex() === 0}
-            aria-label="Scroll left"
-            style={{ "opacity": activeIndex() === 0 ? "0.5" : "1" }}
-          >
-            ←
-          </button>
-          <button 
-            class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 p-2 rounded-full shadow-md"
-            onClick={scrollRight}
-            disabled={activeIndex() >= totalItems() - itemsPerView()}
-            aria-label="Scroll right"
-            style={{ "opacity": activeIndex() >= totalItems() - itemsPerView() ? "0.5" : "1" }}
-          >
-            →
-          </button>
-        </>
-      )}
-      
-      <div 
-        ref={containerRef}
-        class="overflow-hidden"
-      >
-        <div 
-          class="flex gap-4 transition-transform duration-500 ease-in-out"
-          style={{ "transform": `translateX(-${scrollPosition()}px)` }}
-        >
-          <For each={props.children}>
-            {(item) => (
-              <div 
-                class="flex-shrink-0" 
+            {/* Left button */}
+            <button 
+                class="absolute left-0 top-1/2 p-2 rounded-full z-30 -translate-y-1/2 bg-white text-lg text-black" 
                 style={{ 
-                  "width": `${itemWidth()}px`,
-                  "min-width": `${itemWidth()}px`, 
-                  "max-width": `${itemWidth()}px`  
+                    transform: `translateX(${showLeftButton() ? '0' : '-100%'}) translateZ(0px)` 
                 }}
-              >
-                {renderItem(item)}
-              </div>
-            )}
-          </For>
+                onClick={scrollLeft}
+                disabled={!showLeftButton()}
+                aria-label="Previous slide"
+            >
+                 ←
+            </button>
+            
+            {/* Right button */}
+            <button 
+                class="absolute right-0 top-1/2 p-2 rounded-full z-30 -translate-y-1/2 bg-white text-lg text-black" 
+                style={{ 
+                    transform: `translateX(${showRightButton() ? '0' : '100%'}) translateZ(0px)` 
+                }}
+                onClick={scrollRight}
+                disabled={!showRightButton()}
+                aria-label="Next slide"
+            >
+                →
+            </button>
+            
+
         </div>
-      </div>
-      
-      {/* Carousel Indicators */}
-      {props.showIndicators && totalIndicators() > 1 && (
-        <div class="absolute -bottom-8 left-0 right-0 flex justify-center gap-2">
-          
-        </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Carousel;

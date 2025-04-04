@@ -94,10 +94,8 @@ const App: Component = () => {
             id="container"
         >
             <Logo />
-            <div class="relative pt-4 pb-12">
-                {" "}
-                {/* Added padding for indicators */}
-                <Carousel showIndicators={true}>{cardItems}</Carousel>
+            <div class="relative pt-4 pb-12 overflow-hidden">
+                <Carousel>{cardItems}</Carousel>
             </div>
         </div>
     );

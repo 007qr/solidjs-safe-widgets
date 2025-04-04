@@ -15,7 +15,7 @@ interface Props {
 
 export default function Card(props: Props) {
     return (
-        <div class="min-w-[382px] min-h-[473px] max-w-[740px] h-[632px] w-full relative">
+        <div class="min-w-[740px] min-h-[473px] w-[740px] h-[632px] relative">
             {/* Background */}
             <div
                 class="rounded-[48px] absolute inset-0"
