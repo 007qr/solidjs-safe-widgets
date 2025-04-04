@@ -19,28 +19,6 @@ function StyledText() {
 const App: Component = () => {
   return (
     <div class="flex h-[400vh] flex-col gap-[60px] items-center justify-center bg-[#F5F5F5]">
-      {/* Testimonial Card */}
-
-      <TestimonialCard
-        text={<StyledText />}
-        gifSrc="/giphy.gif"
-        videoSrc="/templ-placeholder.webm"
-        personName="Devyn Green"
-        companyName="Adbuy.ai"
-      />
-
-      {/* Big Card Example */}
-      <BigCard title="We've won loads of Chargebacks. We'll win yours too." />
-
-      {/* Card Example */}
-      <Card
-        backgroundType="img"
-        src="/bg.webp"
-        title="Win Your Chargebacks Automatically."
-        subTitle="AI-powered automation that fights disputes for you. Stop losing revenue and save time"
-        nextButton={true}
-      />
-
       {/* ThreeStepCard Example */}
       <ThreeStepCard
         altText="Follow these steps"
@@ -60,6 +38,27 @@ const App: Component = () => {
           },
           { id: 3, title: "Win", subTitle: "You win", icon: "" },
         ]}
+        nextButton={true}
+      />
+      
+      {/* Testimonial Card */}
+      <TestimonialCard
+        text={<StyledText />}
+        gifSrc="/giphy.gif"
+        videoSrc="/templ-placeholder.webm"
+        personName="Devyn Green"
+        companyName="Adbuy.ai"
+      />
+
+      {/* Big Card Example */}
+      <BigCard title="We've won loads of Chargebacks. We'll win yours too." />
+
+      {/* Card Example */}
+      <Card
+        backgroundType="img"
+        src="/bg.webp"
+        title="Win Your Chargebacks Automatically."
+        subTitle="AI-powered automation that fights disputes for you. Stop losing revenue and save time"
         nextButton={true}
       />
     </div>
