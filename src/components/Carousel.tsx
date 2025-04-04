@@ -138,7 +138,7 @@ const Carousel: Component<CarouselProps> = (props) => {
 
     return (
         <div class="relative overflow-hidden p-4" ref={carouselRef}>
-            <div class="mx-auto max-w-6xl" ref={containerRef}>
+            <div class="max-w-6xl" ref={containerRef}>
                 {/* Carousel content */}
                 <div 
                     class="flex transition-transform duration-300 ease-in-out" 

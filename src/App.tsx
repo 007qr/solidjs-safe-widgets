@@ -90,11 +90,13 @@ const App: Component = () => {
 
     return (
         <div
-            class="flex flex-col gap-[60px] p-[50px] bg-[#F5F5F5] w-full"
+            class="flex flex-col gap-[60px] bg-[#F5F5F5] w-full"
             id="container"
         >
-            <Logo />
-            <div class="relative pt-4 pb-12 overflow-hidden">
+            <div class="p-[40px]">
+                <Logo />
+            </div>
+            <div class="relative pb-12 overflow-hidden">
                 <Carousel>{cardItems}</Carousel>
             </div>
         </div>
