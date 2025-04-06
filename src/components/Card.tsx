@@ -15,7 +15,7 @@ interface Props {
 
 export default function Card(props: Props) {
     return (
-        <div class="min-w-[740px] min-h-[473px] w-[740px] h-[632px] relative">
+        <div class="max-lg:min-w-[382px] max-lg:min-h-[473px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] relative">
             {/* Background */}
             <div
                 class="rounded-[48px] absolute inset-0"
@@ -42,10 +42,10 @@ export default function Card(props: Props) {
 
             {/* Text overlay */}
             <div class="absolute w-1/2 text-white left-[40px] top-[40px]">
-                <h1 class="font-[600] leading-[110%] tracking-[-2%] text-[64px]">
+                <h1 class="font-[600] leading-[110%] tracking-[-2%] text-[64px] max-lg:text-[40px]">
                     {props.title}
                 </h1>
-                <p class="text-[21px] leading-[130%] tracking-[0%] font-normal mt-[32px]">
+                <p class="text-[21px] leading-[130%] tracking-[0%] font-normal mt-[32px] max-lg:text-[17px]">
                     {props.subTitle}
                 </p>
             </div>
@@ -53,7 +53,7 @@ export default function Card(props: Props) {
             {/* Next button */}
             {props.nextButton && (
                 <div
-                    class="absolute right-[40px] bottom-[40px]"
+                    class="absolute right-[40px] bottom-[40px] max-lg:hidden"
                     on:click={props.onNextClick}
                 >
                     <div class="bg-white rounded-[64px] p-[32px] flex items-center justify-center">

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@solidjs/router':
+        specifier: ^0.15.3
+        version: 0.15.3(solid-js@1.9.5)
       '@tailwindcss/vite':
         specifier: ^4.1.1
         version: 4.1.1(vite@6.0.0(jiti@2.4.2)(lightningcss@1.29.2))
@@ -409,6 +412,11 @@ packages:
     resolution: {integrity: sha512-e7hTlJ1Ywh2+g/Qug+n4L1mpfxsikoIS4/sHE2EK9WatQt8UJqop/vE6bsLnXlU1xuhb/jo94Ah5Y27rd4wP7A==}
     peerDependencies:
       solid-js: ^1.6.12
+
+  '@solidjs/router@0.15.3':
+    resolution: {integrity: sha512-iEbW8UKok2Oio7o6Y4VTzLj+KFCmQPGEpm1fS3xixwFBdclFVBvaQVeibl1jys4cujfAK5Kn6+uG2uBm3lxOMw==}
+    peerDependencies:
+      solid-js: ^1.8.6
 
   '@tailwindcss/node@4.1.1':
     resolution: {integrity: sha512-xvlh4pvfG/bkv0fEtJDABAm1tjtSmSyi2QmS4zyj1EKNI1UiOYiUq1IphSwDsNJ5vJ9cWEGs4rJXpUdCN2kujQ==}
@@ -1137,6 +1145,10 @@ snapshots:
       solid-js: 1.9.5
 
   '@solid-primitives/utils@6.3.0(solid-js@1.9.5)':
+    dependencies:
+      solid-js: 1.9.5
+
+  '@solidjs/router@0.15.3(solid-js@1.9.5)':
     dependencies:
       solid-js: 1.9.5
 

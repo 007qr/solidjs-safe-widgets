@@ -54,24 +54,25 @@ export default function ThreeStepCard(props: Props) {
     });
 
     return (
-        <div class="overflow-hidden bg-white relative min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[40px]">
+        <div class="overflow-hidden bg-white relative max-lg:min-w-[382px] max-lg:min-h-[473px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[40px]">
             <div class="flex flex-col gap-[8px]">
-                <h2 class="text-[33px] leading-[110%] tracking-[-2%] font-semibold text-[#1D1D1F99]">
+                <h2 class="text-[33px] leading-[110%] tracking-[-2%] font-semibold text-[#1D1D1F99] max-lg:text-[21px]">
                     {props.altText}
                 </h2>
-                <h1 class="text-[#1D1D1F] text-[64px] leading-[110%] tracking-[-2%] font-semibold">
+                <h1 class="text-[#1D1D1F] text-[64px] leading-[110%] tracking-[-2%] font-semibold max-lg:text-[40px]">
                     3 steps.
                 </h1>
             </div>
 
-            <div class="flex justify-between mt-[40px]">
-                <div class="flex flex-col gap-[20px]">
+            <div class="flex max-lg:flex-col-reverse justify-between mt-[40px]">
+                {/* Desktop Version */}
+                <div class="flex flex-col gap-[20px] max-lg:hidden">
                     <For each={props.steps}>
                         {(step) => (
                             <div class="w-[290px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300 ease-in-out">
                                 {step.icon}
                                 <div class="flex flex-col gap-[8px]">
-                                    <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium">
+                                    <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium max-lg:text-[21px]">
                                         {step.title}
                                     </h3>
                                     <div
@@ -104,6 +105,24 @@ export default function ThreeStepCard(props: Props) {
                         )}
                     </For>
                 </div>
+                {/* Mobile Version */}
+                <div class="flex overflow-x-scroll gap-[16px] lg:hidden">
+                    <For each={props.steps}>
+                        {(step) => (
+                            <div class="flex-shrink-0 w-[207px] h-[177px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300 ease-in-out">
+                                {step.icon}
+                                <div class="flex flex-col gap-[8px]">
+                                    <h3 class="leading-[120%] tracking-[-2%] font-medium text-[21px]">
+                                        {step.title}
+                                    </h3>
+                                    <div class="leading-[130%] tracking-[0%] font-normal pb-2 text-[15px]">
+                                        {step.subTitle}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </For>
+                </div>
                 <div class="w-[316px] h-[322px]">
                     <video autoplay muted loop class="w-full h-full">
                         <source src="/disputer_cards1.mp4" type="video/mp4" />
@@ -114,7 +133,7 @@ export default function ThreeStepCard(props: Props) {
             {props.nextButton && (
                 <button
                     on:click={props.onNextClick}
-                    class="absolute right-[40px] bottom-[20px] shadow-lg bg-white rounded-[64px]"
+                    class="absolute right-[40px] bottom-[20px] shadow-lg bg-white rounded-[64px] max-lg:hidden"
                 >
                     <div class="p-[32px] flex items-center justify-center">
                         <ArrowForward />

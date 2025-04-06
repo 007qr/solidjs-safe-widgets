@@ -66,20 +66,12 @@ const Carousel: Component<CarouselProps> = (props) => {
         const centerOffset = Math.max(0, (contWidth - cardWidth) / 2);
         setInitialOffset(centerOffset);
         
-        // Calculate the total content width (all cards + gaps between them)
         const totalContentWidth = (totalItems() * cardWidth) + ((totalItems() - 1) * cardGap);
         
-        // Calculate the maximum scroll amount
-        // This ensures the last card aligns with the right edge of the container
-        // The formula accounts for:
-        // 1. Total content width
-        // 2. Container width
-        // 3. Initial offset (centering of first card)
-        // 4. The need to align the last card's right edge with container's right edge
+
         const maxScroll = Math.max(0, totalContentWidth);
         setMaxScrollPosition(maxScroll);
         
-        // Reset position and set initial translation
         setCurrentPosition(0);
         setTranslateX(centerOffset);
     };
