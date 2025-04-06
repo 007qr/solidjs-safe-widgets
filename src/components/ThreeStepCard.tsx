@@ -54,8 +54,8 @@ export default function ThreeStepCard(props: Props) {
     });
 
     return (
-        <div class="overflow-hidden bg-white relative max-lg:min-w-[382px] max-lg:min-h-[473px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[40px]">
-            <div class="flex flex-col gap-[8px]">
+        <div class="overflow-hidden bg-white relative max-lg:min-w-[382px] max-lg:min-h-[473px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] lg:p-[40px]">
+            <div class="flex flex-col gap-[8px] max-lg:px-[40px] max-lg:pt-[40px]">
                 <h2 class="text-[33px] leading-[110%] tracking-[-2%] font-semibold text-[#1D1D1F99] max-lg:text-[21px]">
                     {props.altText}
                 </h2>
@@ -106,10 +106,10 @@ export default function ThreeStepCard(props: Props) {
                     </For>
                 </div>
                 {/* Mobile Version */}
-                <div class="flex overflow-x-scroll gap-[16px] lg:hidden">
+                <div class="pl-[40px] mb-[40px] flex overflow-x-scroll lg:hidden">
                     <For each={props.steps}>
                         {(step) => (
-                            <div class="flex-shrink-0 w-[207px] h-[177px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300 ease-in-out">
+                            <div class="mr-[16px] flex-shrink-0 w-[207px] h-[177px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300 ease-in-out">
                                 {step.icon}
                                 <div class="flex flex-col gap-[8px]">
                                     <h3 class="leading-[120%] tracking-[-2%] font-medium text-[21px]">
@@ -123,7 +123,7 @@ export default function ThreeStepCard(props: Props) {
                         )}
                     </For>
                 </div>
-                <div class="w-[316px] h-[322px]">
+                <div class="w-[316px] h-[322px] mx-auto">
                     <video autoplay muted loop class="w-full h-full">
                         <source src="/disputer_cards1.mp4" type="video/mp4" />
                     </video>

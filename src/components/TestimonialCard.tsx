@@ -98,7 +98,7 @@ export default function TestimonialCard({
                     </Show>
                 </div>
 
-                <div class="absolute bottom-[46px] flex gap-[20px] flex-col">
+                <div class="absolute bottom-[46px] flex gap-[20px] flex-col z-20">
                     {text}
                     <button
                         class="w-max border py-[11px] px-[20px] gap-[10px] text-[17px] leading-[110%] tracking-[-2%] align-middle font-medium flex text-[#f5f5f5] border-[#f5f5f5] rounded-[64px] items-center"
@@ -108,6 +108,13 @@ export default function TestimonialCard({
                         Play Video
                     </button>
                 </div>
+
+
+                
+                <div class="absolute inset-0 lg:hidden w-full h-full z-9" style="background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 20%, rgba(29, 29, 31, 0.12) 62.5%)" />
+                <div class="absolute inset-0 lg:hidden w-full h-full z-9" style="background: linear-gradient(180deg, rgba(29, 29, 31, 0.12) 48.56%, rgba(0, 0, 0, 0.3) 78.37%);" />
+
+
 
                 <div
                     class="absolute right-[20px] bottom-[20px] shadow-lg bg-white rounded-[64px] max-lg:hidden"

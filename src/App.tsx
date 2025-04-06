@@ -16,7 +16,7 @@ type CarouselItemProps = {
 // Type for the StyledText component
 function StyledText() {
     return (
-        <h1 class="text-[#A5A5A5] text-[40px] font-medium leading-[120%] tracking-[-2%] max-lg:text-[33px] max-lg:w-[218px]">
+        <h1 class="text-[#A5A5A5] z-20 text-[40px] font-medium leading-[120%] tracking-[-2%] max-lg:text-[33px] max-lg:w-[218px]">
             "...helped me <span class="text-[#1d1d1f] max-lg:opacity-100 max-lg:text-[#f5f5f5]">recover $5K</span> worth
             of Chargebacks"
         </h1>
