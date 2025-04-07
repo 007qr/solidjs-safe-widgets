@@ -14,7 +14,7 @@ type CarouselItemProps = {
 };
 
 // Styled testimonial text component
-function StyledText() {
+const StyledText = () => {
   return (
     <h1 class="text-[#A5A5A5] text-[40px] font-medium leading-[120%] tracking-[-2%] max-lg:text-[33px] max-lg:w-[218px]">
       "...helped me <span class="text-[#1d1d1f] max-lg:opacity-100 max-lg:text-[#f5f5f5]">recover $5K</span> worth
@@ -70,7 +70,7 @@ const App: Component = () => {
     // Testimonial card
     ({ onNext }: CarouselItemProps) => (
       <TestimonialCard
-        text={<StyledText />}
+        text={StyledText}
         gifSrc="/giphy.gif"
         videoSrc="/templ-placeholder.webm"
         personName="Devyn Green"

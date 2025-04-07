@@ -4,7 +4,7 @@ import ArrowForward from "./icons/ArrowForward";
 interface TestimonialCardProps {
   videoSrc: string;
   gifSrc: string;
-  text: JSX.Element;
+  text: () => JSX.Element;
   personName: string;
   companyName: string;
   personProfileUrl?: string;
@@ -23,9 +23,6 @@ export default function TestimonialCard({
   const [videoOpen, setVideoOpen] = createSignal<boolean>(false);
   
   const toggleVideo = () => setVideoOpen(!videoOpen());
-  
-  // Create a function that returns a clone of the text element
-  const renderText = () => text;
 
   return (
     <div class="overflow-hidden bg-white relative max-lg:min-w-[382px] max-lg:min-h-[583px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[32px]">
@@ -56,7 +53,7 @@ export default function TestimonialCard({
       {/* Desktop Layout */}
       <div class="flex gap-[73px] max-lg:hidden">
         <div class="flex flex-col gap-[20px] mt-auto">
-          <div class="testimonial-content">{renderText()}</div>
+          <div class="testimonial-content">{text()}</div>
           <button
             class="w-max border py-[16px] px-[24px] gap-[10px] text-[17px] leading-[110%] tracking-[-2%] align-middle font-medium flex border-[#1d1d1f] rounded-[64px] items-center"
             onClick={toggleVideo}
@@ -105,7 +102,7 @@ export default function TestimonialCard({
 
       {/* Mobile Content Overlay */}
       <div class="absolute bottom-[46px] flex gap-[20px] flex-col z-20 lg:hidden">
-        <div class="testimonial-content">{renderText()}</div>
+        <div class="testimonial-content">{text()}</div>
         <button
           class="w-max border py-[11px] px-[20px] gap-[10px] text-[17px] leading-[110%] tracking-[-2%] align-middle font-medium flex text-[#f5f5f5] border-[#f5f5f5] rounded-[64px] items-center"
           onClick={toggleVideo}
