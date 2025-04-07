@@ -54,7 +54,7 @@ export default function ThreeStepCard(props: Props) {
     });
 
     return (
-        <div class="overflow-hidden bg-white relative max-lg:min-w-[382px] max-lg:min-h-[473px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] lg:p-[40px]">
+        <div class="overflow-hidden bg-white relative max-lg:min-w-[362px] max-lg:min-h-[473px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] lg:p-[40px]">
             <div class="flex flex-col gap-[8px] max-lg:px-[40px] max-lg:pt-[40px]">
                 <h2 class="text-[33px] leading-[110%] tracking-[-2%] font-semibold text-[#1D1D1F99] max-lg:text-[21px]">
                     {props.altText}

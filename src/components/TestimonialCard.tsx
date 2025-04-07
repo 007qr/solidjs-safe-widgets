@@ -25,7 +25,7 @@ export default function TestimonialCard({
   const toggleVideo = () => setVideoOpen(!videoOpen());
 
   return (
-    <div class="overflow-hidden bg-white relative max-lg:min-w-[382px] max-lg:min-h-[583px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[32px]">
+    <div class="overflow-hidden bg-white relative max-lg:min-w-[362px] max-lg:min-h-[583px] max-lg:w-full max-lg:h-full min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] p-[32px]">
       {/* Author and Company Information */}
       <div class="absolute flex gap-[8px] items-center z-10">
         <Show
