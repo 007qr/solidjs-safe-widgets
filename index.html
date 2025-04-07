@@ -1,20 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="description" content="description of the page" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <link rel="shortcut icon" type="image/ico" href="/src/assets/favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..800&display=swap" rel="stylesheet">
-    <title>Solidjs Widgets</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="description of the page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link
+            rel="shortcut icon"
+            type="image/ico"
+            href="/src/assets/favicon.ico"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Wix+Madefor+Display:wght@400..800&display=swap"
+            rel="stylesheet"
+        />
+        <title>Solidjs Widgets</title>
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
 
-    <script src="/src/index.tsx" type="module"></script>
-  </body>
+        <script src="/src/index.tsx" type="module"></script>
+
+        <script>
+            // Parse current URL parameters
+            function getAllUrlParams() {
+                const params = new URLSearchParams(window.location.search);
+                const result = new Map();
+
+                params.forEach((value, key) => {
+                    result.set(key, value);
+                });
+
+                return result;
+            }
+
+            // Usage
+            const urlParams = getAllUrlParams();
+            console.log("All URL Params:", urlParams);
+
+            // Send params to backend
+            async function trackParams() {
+                const params = getAllUrlParams();
+                const dict = Object.fromEntries(params);
+                if (Object.keys(dict).length > 0) {
+                  try {
+                      const response = await fetch("https://user-svc-worker.safeapp.workers.dev/api/add-pending-user", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                              ...dict,
+                              email: `test-ayush${Math.random()}@gmail.com`
+                          }),
+                      });
+                      console.log("API Response:", await response.json());
+                  } catch (error) {
+                      console.error("Tracking failed:", error);
+                  }
+                }
+            }
+
+            // Auto-run on page load
+            document.addEventListener("DOMContentLoaded", trackParams);
+        </script>
+    </body>
 </html>

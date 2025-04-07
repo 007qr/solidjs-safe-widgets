@@ -47,19 +47,19 @@ const App: Component = () => {
             id: 1,
             title: "Connect",
             subTitle: "Simply connect your stripe, Shopify or other payment providers",
-            icon: <Connect />,
+            icon: () => <Connect />,
           },
           {
             id: 2,
             title: "Respond",
             subTitle: "We automatically respond to your customer",
-            icon: "",
+            icon: () => "",
           },
           {
             id: 3,
             title: "Win",
             subTitle: "You win",
-            icon: "",
+            icon: () => "",
           },
         ]}
         nextButton={true}
@@ -110,6 +110,9 @@ const App: Component = () => {
         </div>
       </div>
       
+      {/* {"success":true,"code":201,"message":"Pending user added successfully.","data":{}} */}
+      {/* {"success":false,"code":500,"message":"Db query error Error from server: StreamResponseError { error: Error { message: \"SQLite error: UNIQUE constraint failed: pending_users.email\" } }","data":{}} */}
+
       {/* Mobile Version */}
       <div class="lg:hidden flex flex-col pt-[100px] bg-[#f5f5f5] pb-12">
         <div class="pb-[60px] mx-auto">

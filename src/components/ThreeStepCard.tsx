@@ -6,7 +6,7 @@ interface Step {
     id: number;
     title: string;
     subTitle: string;
-    icon: JSX.Element;
+    icon: () => JSX.Element;
 }
 
 interface Props {
