@@ -70,7 +70,7 @@ export default function ThreeStepCard(props: Props) {
                     <For each={props.steps}>
                         {(step) => (
                             <div class="w-[290px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300 ease-in-out">
-                                {step.icon}
+                                {step.icon()}
                                 <div class="flex flex-col gap-[8px]">
                                     <h3 class="text-[33px] leading-[120%] tracking-[-2%] font-medium max-lg:text-[21px]">
                                         {step.title}
@@ -110,7 +110,7 @@ export default function ThreeStepCard(props: Props) {
                     <For each={props.steps}>
                         {(step) => (
                             <div class="mr-[16px] flex-shrink-0 w-[207px] h-[177px] gap-[20px] flex flex-col p-[20px] bg-[#F5F5F5] rounded-[24px] transition-all duration-300 ease-in-out">
-                                {step.icon}
+                                {step.icon()}
                                 <div class="flex flex-col gap-[8px]">
                                     <h3 class="leading-[120%] tracking-[-2%] font-medium text-[21px]">
                                         {step.title}
