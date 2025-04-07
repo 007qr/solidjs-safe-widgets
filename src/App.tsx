@@ -8,6 +8,7 @@ import Connect from "./components/icons/Connect";
 import TestimonialCard from "./components/TestimonialCard";
 import Logo from "./components/icons/Logo";
 import Carousel, { CarouselItem } from "./components/Carousel";
+import { AdData } from "./utils/types";
 
 // Type for carousel item props
 type CarouselItemProps = {
@@ -15,7 +16,7 @@ type CarouselItemProps = {
 };
 
 const App: Component = () => {
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams<AdData>();
 
     // Helper function to render carousel items in mobile view
     const renderItem = (item: CarouselItem) => {
@@ -23,7 +24,7 @@ const App: Component = () => {
             return item({ onNext: () => {} });
         }
         return item;
-    };    
+    };
 
     // This function is for tracking user
     createEffect(async () => {
@@ -52,26 +53,17 @@ const App: Component = () => {
     return (
         <>
             {/* Desktop Version */}
-            <div
-                class="flex flex-col gap-[60px] bg-[#F5F5F5] w-full max-lg:hidden"
-                id="container"
-            >
-                <div class="p-[40px]">
+            <div class="flex flex-col max-lg:gap-[60px] bg-[#F5F5F5] w-full max-lg:pt-[100px] max-lg:pb-12" id="container">
+                <div class="max-lg:pb-[60px] max-lg:mx-auto lg:p-[40px]">
                     <Logo />
                 </div>
-                <div class="relative pb-12 overflow-hidden">
+
+                <div class="relative pb-12 overflow-hidden max-lg:hidden">
                     <Carousel>{cardItems}</Carousel>
                 </div>
-            </div>
 
-
-            {/* Mobile Version */}
-            <div class="lg:hidden flex flex-col pt-[100px] bg-[#f5f5f5] pb-12">
-                <div class="pb-[60px] mx-auto">
-                    <Logo />
-                </div>
-
-                <div class="flex flex-col px-[24px] gap-[48px] items-center">
+                {/* Mobile Version */}
+                <div class="flex flex-col px-[24px] gap-[48px] items-center lg:hidden">
                     <For each={cardItems}>
                         {(cardItem) => renderItem(cardItem)}
                     </For>
