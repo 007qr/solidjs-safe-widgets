@@ -25,4 +25,4 @@ export interface AdData extends SearchParams {
     subid3: string;
 }
 
-export type SignUpModalFlow = "email" | "otp" | "step3" | "joined";
+export type SignUpModalFlow = "step1" | "email" | "otp" | "step3" | "joined";

@@ -1,6 +1,6 @@
 export default function Joined() {
     return (
-        <div class="flex flex-col h-full w-full -mt-[16px]">
+        <div class="flex flex-col h-full w-full -mt-[16px] bg-white p-[70px]">
             <div class="h-full flex flex-col items-center justify-center">
                 <h3 class="text-[26px] font-semibold tracking-tighter leading-[150%]">
                     Thank you for signing up 🎉

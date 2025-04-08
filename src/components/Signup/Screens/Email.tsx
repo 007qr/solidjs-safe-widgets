@@ -1,45 +1,45 @@
 "use client";
 
-import { Accessor, createSignal } from "solid-js";
+import { Accessor, createMemo, createSignal } from "solid-js";
 import { Setter } from "solid-js";
 import { SignUpModalFlow } from "../../../utils/types";
+import useStytch from "../../../hooks/useStytch";
 
 
 function isValidEmail(email: string) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-
 export default function Email({
-    // eslint-ignore
+    setMethodId,
     email,
     setFlow,
     setEmail,
-    // eslint-ignore
-    setMethodId, 
+
 }: {
     email: Accessor<string>;
     setFlow: Setter<SignUpModalFlow>;
     setEmail: Setter<string>;
     setMethodId: Setter<string>;
 }) {
-    // const stytchClient = useStytch();
+    const stytchClient = useStytch();
 
-    // const sendPasscode = createMemo(() => {
-    //     return stytchClient.otps.email.loginOrCreate(email!, {
-    //         expiration_minutes: 5,
-    //     });
-    // }, [stytchClient, email]);
+    const sendPasscode = createMemo(() => {
+        return stytchClient.otps.email.loginOrCreate(email(), {
+            expiration_minutes: 5,
+        });
+    }, [stytchClient, email]);
 
     const [valid, setValid] = createSignal<boolean>(false);
+    
     const handleClick = () => {
         if (valid()) {
             setFlow("otp");
-            // sendPasscode().then((val) => setMethodId(val.method_id));
+            sendPasscode().then((val) => setMethodId(val.method_id));
         }
     };
     return (
-        <div class="flex flex-col h-full w-full mt-[16px]">
+        <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px]">
             <div class="">
                 <h3 class="text-[31px] font-semibold tracking-tighter leading-[150%]">
                     Enter your email
