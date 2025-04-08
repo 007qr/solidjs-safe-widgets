@@ -2,10 +2,7 @@ import {
     For,
     type Component,
     createEffect,
-    createContext,
     createSignal,
-    Setter,
-    Accessor,
 } from "solid-js";
 import { useSearchParams } from "@solidjs/router";
 

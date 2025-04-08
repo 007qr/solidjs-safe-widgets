@@ -51,11 +51,12 @@ export default function Email({
             <div class="bg-[#EBEBEB] text-black/90 p-[12px] rounded-[12px] mt-[12px]">
                 <input
                     type="text"
-                    onChange={(e) => {
-                        let isValid = isValidEmail(e.target.value);
+                    onkeydown={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        let isValid = isValidEmail(target.value);
                         setValid(isValid);
                         if (isValid) {
-                            setEmail(e.target.value);
+                            setEmail(target.value);
                         }
                     }}
                     class="w-full bg-transparent outline-none border-none"
@@ -65,7 +66,7 @@ export default function Email({
             <button
                 onClick={handleClick}
                 class="bg-black text-white leading-[20px] rounded-[16px] py-[16px] mt-[12px] disabled:opacity-80"
-                disabled={!valid}
+                disabled={!valid()}
             >
                 Continue
             </button>
