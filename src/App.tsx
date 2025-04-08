@@ -132,7 +132,7 @@ const cardItems: CarouselItem[] = [
   ({ onNext }: CarouselItemProps) => (
       <TestimonialCard
           text={StyledText}
-          gifSrc="/giphy.gif"
+          imgSrc="/temp-placeholder.webp"
           videoSrc="/templ-placeholder.webm"
           personName="Devyn Green"
           companyName="Adbuy.ai"

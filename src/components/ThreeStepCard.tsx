@@ -125,7 +125,7 @@ export default function ThreeStepCard(props: Props) {
                 </div>
                 <div class="w-[316px] h-[322px] mx-auto">
                     <video autoplay muted loop class="w-full h-full">
-                        <source src="/disputer_cards1.mp4" type="video/mp4" />
+                        <source src="/disputer_cards1.webm" type="video/webm" />
                     </video>
                 </div>
             </div>

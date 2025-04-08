@@ -3,7 +3,7 @@ import ArrowForward from "./icons/ArrowForward";
 
 interface TestimonialCardProps {
   videoSrc: string;
-  gifSrc: string;
+  imgSrc: string;
   text: () => JSX.Element;
   personName: string;
   companyName: string;
@@ -13,7 +13,7 @@ interface TestimonialCardProps {
 
 export default function TestimonialCard({
   videoSrc,
-  gifSrc,
+  imgSrc,
   text,
   companyName,
   personName,
@@ -76,7 +76,7 @@ export default function TestimonialCard({
         >
           <img
             class="flex-shrink-0 w-[327px] h-[472px] rounded-[184px] object-cover"
-            src={gifSrc}
+            src={imgSrc}
             alt="Testimonial preview"
           />
         </Show>
@@ -94,7 +94,7 @@ export default function TestimonialCard({
         >
           <img
             class="w-full h-full object-cover"
-            src={gifSrc}
+            src={imgSrc}
             alt="Testimonial preview"
           />
         </Show>
