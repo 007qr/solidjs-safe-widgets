@@ -1,10 +1,13 @@
+import { useContext } from "solid-js";
 import ArrowForward from "./icons/ArrowForward";
+import { ModalContext } from "../App";
 
 interface Props {
     title: string;
 }
 
 export default function BigCard(props: Props) {
+    const modalContext = useContext(ModalContext);
     return (
         <div class="max-lg:min-w-[362px] max-lg:min-h-[582px] max-lg:w-full max-lg:h-full relative overflow-hidden min-w-[740px] min-h-[473px] w-[740px] h-[632px] rounded-[48px] flex items-center justify-center">
             <video
@@ -21,7 +24,11 @@ export default function BigCard(props: Props) {
             </h1>
 
             {/* Button */}
-            <button class="text-[17px] leading-[110%] tracking-[-2%] absolute flex gap-[10px] items-center bg-black py-[32px] px-[96px] max-lg:px-[72px] max-lg:py-[28px] w-max text-white rounded-[64px] bottom-[20px] left-1/2 -translate-x-1/2 z-10 ">
+            <button on:click={() => {
+                console.log("clicked");
+                console.log(modalContext?.isModalOpen());
+                modalContext?.setIsModalOpen(value => !value)
+            }} class="text-[17px] leading-[110%] tracking-[-2%] absolute flex gap-[10px] items-center bg-black py-[32px] px-[96px] max-lg:px-[72px] max-lg:py-[28px] w-max text-white rounded-[64px] bottom-[20px] left-1/2 -translate-x-1/2 z-10 ">
                 Start for free <ArrowForward color="white" />
             </button>
         </div>

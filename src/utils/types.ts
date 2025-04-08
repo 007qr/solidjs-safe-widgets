@@ -12,10 +12,10 @@ export interface AdData extends SearchParams {
     campaign_name: string;
     form_id: string;
     form_name: string;
-    is_organic: string; 
+    is_organic: string;
     platform: string;
     utm_medium: string;
-    link_click_time: string; 
+    link_click_time: string;
     app_install_time: string;
     lp_id: string;
     lp_name: string;
@@ -23,5 +23,6 @@ export interface AdData extends SearchParams {
     subid1: string;
     subid2: string;
     subid3: string;
-  }
-  
+}
+
+export type SignUpModalFlow = "email" | "otp" | "step3" | "joined";

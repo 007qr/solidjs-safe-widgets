@@ -1,4 +1,4 @@
-import { For, type Component, createEffect } from "solid-js";
+import { For, type Component, createEffect, createContext, createSignal, Setter, Accessor } from "solid-js";
 import { useSearchParams } from "@solidjs/router";
 
 import BigCard from "./components/BigCard";
@@ -9,14 +9,23 @@ import TestimonialCard from "./components/TestimonialCard";
 import Logo from "./components/icons/Logo";
 import Carousel, { CarouselItem } from "./components/Carousel";
 import { AdData } from "./utils/types";
+import Modal from "./components/Modal";
 
 // Type for carousel item props
 type CarouselItemProps = {
     onNext: () => void;
 };
 
+interface ModalContextValue {
+    isModalOpen: Accessor<boolean>;
+    setIsModalOpen: Setter<boolean>;
+}
+
+export const ModalContext = createContext<ModalContextValue>();
+
 const App: Component = () => {
     const [searchParams] = useSearchParams<AdData>();
+    const [isModalOpen, setIsModalOpen] = createSignal<boolean>(false);
 
     // Helper function to render carousel items in mobile view
     const renderItem = (item: CarouselItem) => {
@@ -51,9 +60,9 @@ const App: Component = () => {
     });
 
     return (
-        <>
+        <ModalContext.Provider value={{ isModalOpen, setIsModalOpen }}>
             {/* Desktop Version */}
-            <div class="flex flex-col max-lg:gap-[60px] bg-[#F5F5F5] w-full max-lg:pt-[100px] max-lg:pb-12" id="container">
+            <div class={`flex flex-col max-lg:gap-[60px] bg-[#F5F5F5] w-full max-lg:pt-[100px] max-lg:pb-12 ${isModalOpen() ? "overflow-hidden" : ""}`}>
                 <div class="max-lg:pb-[60px] max-lg:mx-auto lg:p-[40px]">
                     <Logo />
                 </div>
@@ -69,7 +78,9 @@ const App: Component = () => {
                     </For>
                 </div>
             </div>
-        </>
+
+            <Modal isModalOpen={isModalOpen} />
+        </ModalContext.Provider>
     );
 };
 
