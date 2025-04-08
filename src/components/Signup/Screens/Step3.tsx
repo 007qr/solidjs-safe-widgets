@@ -38,7 +38,7 @@ export default function Step3({setFlow}: {setFlow: Setter<SignUpModalFlow>}) {
                         type="tel"
                         class="w-full bg-transparent outline-none border-none"
                         placeholder="Phone number"
-                        onkeydown={(e) => {
+                        onchange={(e) => {
                             const target = e.target as HTMLInputElement;
                             let isValid = isValidPhoneNumber(target.value);
                             setDisabled(isValid);

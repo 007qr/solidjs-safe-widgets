@@ -51,7 +51,7 @@ export default function Email({
             <div class="bg-[#EBEBEB] text-black/90 p-[12px] rounded-[12px] mt-[12px]">
                 <input
                     type="text"
-                    onkeydown={(e) => {
+                    onchange={(e) => {
                         const target = e.target as HTMLInputElement;
                         let isValid = isValidEmail(target.value);
                         setValid(isValid);
