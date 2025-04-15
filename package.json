@@ -25,6 +25,7 @@
     "solid-motionone": "^1.0.3",
     "solid-transition-group": "^0.3.0",
     "tailwind-merge": "^3.2.0",
-    "tailwindcss": "^4.1.1"
+    "tailwindcss": "^4.1.1",
+    "uuid": "^11.1.0"
   }
 }

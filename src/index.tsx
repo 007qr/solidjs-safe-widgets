@@ -4,6 +4,7 @@ import "./index.css";
 
 import { Router } from "@solidjs/router";
 import { lazy } from "solid-js";
+import EditorProvider from "./providers/editor-provider";
 
 const root = document.getElementById("root");
 
@@ -18,4 +19,11 @@ const routes = {
     component: lazy(() => import("./App")),
 };
 
-render(() => <Router>{routes}</Router>, root!);
+render(
+    () => (
+        <EditorProvider pageDetails={{}} pageId={""}>
+            <Router>{routes}</Router>
+        </EditorProvider>
+    ),
+    root!
+);

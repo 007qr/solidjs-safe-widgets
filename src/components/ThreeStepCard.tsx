@@ -1,6 +1,7 @@
 import { createSignal, onCleanup, onMount, For, Show, JSX } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import ArrowForward from "./icons/ArrowForward";
+import { EditorElement } from "../providers/editor-provider";
 
 interface Step {
     id: number;
@@ -10,6 +11,7 @@ interface Step {
 }
 
 interface Props {
+    element: EditorElement
     altText: string;
     steps: Step[];
     nextButton: boolean;
