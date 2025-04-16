@@ -1,434 +1,221 @@
-import { createContext, JSX, useContext } from "solid-js";
+import {
+    createContext,
+    createEffect,
+    JSX,
+    useContext,
+    createSignal,
+} from "solid-js";
+import { createStore } from "solid-js/store";
 import { EditorAction } from "./editor-action";
-import { createStore, reconcile } from "solid-js/store";
 
-export type DeviceTypes = "Desktop" | "Mobile" | "Tablet" | "Landscape";
+export type ElementStyles = {
+    [key: string]: string | number;
+};
 
 export type EditorElement = {
     id: string;
-    styles: JSX.CSSProperties;
     name: string;
-    type: string | null;
-    content: EditorElement[] | { href?: string, innerText?: string};
+    type: string;
+    content: EditorElement[] | { innerText: string } | any;
+    styles: ElementStyles;
 };
 
 export type Editor = {
-    liveMode: boolean;
     elements: EditorElement[];
     selectedElement: EditorElement;
-    device: DeviceTypes;
-    previewMode: boolean;
-    pageId: string;
-};
-
-export type HistoryState = {
-    history: Editor[];
-    currentIndex: number;
+    liveMode: boolean;
 };
 
 export type EditorState = {
     editor: Editor;
-    history: HistoryState;
 };
 
-const initialEditorState: EditorState["editor"] = {
-    elements: [
-        {
-            content: [],
-            id: "__body",
-            name: "Body",
-            styles: {},
-            type: "__body",
-        },
-    ],
-    selectedElement: {
-        id: "",
-        content: [],
-        name: "",
-        styles: {},
-        type: null,
-    },
-    device: "Desktop",
-    previewMode: false,
-    liveMode: false,
-    pageId: "",
-};
-
-const initialHistoryState: HistoryState = {
-    history: [initialEditorState],
-    currentIndex: 0,
-};
-
-const initialState: EditorState = {
-    editor: initialEditorState,
-    history: initialHistoryState,
-};
-
-const addAnElement = (
-    editorArray: EditorElement[],
-    action: EditorAction
-): EditorElement[] => {
-    if (action.type !== "ADD_ELEMENT")
-        throw Error(
-            "You sent the wrong action type to the Add Element editor State"
-        );
-
-    return editorArray.map((item) => {
-        if (
-            item.id === action.payload.containerId &&
-            Array.isArray(item.content)
-        ) {
-            return {
-                ...item,
-                content: [...item.content, action.payload.elementDetails],
-            };
-        } else if (item.content && Array.isArray(item.content)) {
-            return {
-                ...item,
-                content: addAnElement(item.content, action),
-            };
-        }
-        return item;
-    });
-};
-
-const updateAnElement = (
-    editorArray: EditorElement[],
-    action: EditorAction
-): EditorElement[] => {
-    if (action.type !== "UPDATE_ELEMENT")
-        throw Error(
-            "You sent the wrong action type to the update Element State"
-        );
-
-    return editorArray.map((item) => {
-        if (item.id === action.payload.elementDetails.id) {
-            return {
-                ...item,
-                ...action.payload.elementDetails,
-            };
-        } else if (item.content && Array.isArray(item.content)) {
-            return {
-                ...item,
-                content: updateAnElement(item.content, action),
-            };
-        }
-        return item;
-    });
-};
-
-const deleteAnElement = (
-    editorArray: EditorElement[],
-    action: EditorAction
-): EditorElement[] => {
-    if (action.type !== "DELETE_ELEMENT")
-        throw Error(
-            "You sent the wrong action type to the delete Element State"
-        );
-
-    return editorArray.filter((item) => {
-        if (item.id === action.payload.elementDetails.id) {
-            return false;
-        } else if (item.content && Array.isArray(item.content)) {
-            item.content = deleteAnElement(item.content, action); // recursive call
-        }
-        return true;
-    });
-};
-
-const editorReducer = (
-    state: EditorState = initialState,
-    action: EditorAction
-): EditorState => {
-    switch (action.type) {
-        case "ADD_ELEMENT":
-            console.log("ADD_ELEMENT");
-            const updatedEditorState = {
-                ...state.editor,
-                elements: addAnElement(state.editor.elements, action),
-            };
-
-            // update the history stack
-            const updatedHistory = [
-                ...state.history.history.slice(
-                    0,
-                    state.history.currentIndex + 1
-                ),
-                { ...updatedEditorState },
-            ];
-
-            const newEditorState = {
-                ...state,
-                editor: updatedEditorState,
-                history: {
-                    ...state.history,
-                    history: updatedHistory,
-                    currentIndex: updatedHistory.length - 1,
-                },
-            };
-
-            return newEditorState;
-        case "UPDATE_ELEMENT":
-            const updatedElements = updateAnElement(
-                state.editor.elements,
-                action
-            );
-
-            const UpdatedElementIsSelected =
-                state.editor.selectedElement.id ===
-                action.payload.elementDetails.id;
-
-            const updatedEditorStateWithUpdate = {
-                ...state.editor,
-                elements: updatedElements,
-                selectedElement: UpdatedElementIsSelected
-                    ? action.payload.elementDetails
-                    : {
-                          id: "",
-                          content: [],
-                          name: "",
-                          styles: {},
-                          type: null,
-                      },
-            };
-
-            const updatedHistoryWithUpdate = [
-                ...state.history.history.slice(
-                    0,
-                    state.history.currentIndex + 1
-                ),
-                { ...updatedEditorStateWithUpdate },
-            ];
-
-            const updatedEditor = {
-                ...state,
-                editor: updatedEditorStateWithUpdate,
-                history: {
-                    ...state.history,
-                    history: updatedHistoryWithUpdate,
-                    currentIndex: updatedHistoryWithUpdate.length - 1,
-                },
-            };
-
-            return updatedEditor;
-        case "DELETE_ELEMENT":
-            const updatedElementsAfterDelete = deleteAnElement(
-                state.editor.elements,
-                action
-            );
-
-            const updatedEditorStateAfterDelete = {
-                ...state.editor,
-                elements: updatedElementsAfterDelete,
-            };
-
-            const updatedHistoryAfterDelete = [
-                ...state.history.history.slice(
-                    0,
-                    state.history.currentIndex + 1
-                ),
-                { ...updatedEditorStateAfterDelete },
-            ];
-
-            const deletedState = {
-                ...state,
-                editor: updatedEditorStateAfterDelete,
-                history: {
-                    ...state.history,
-                    history: updatedHistoryAfterDelete,
-                    currentIndex: updatedHistoryAfterDelete.length - 1,
-                },
-            };
-
-            return deletedState;
-        case "CHANGE_CLICKED_ELEMENT":
-            const clickedState = {
-                ...state,
-                editor: {
-                    ...state.editor,
-                    selectedElement: action.payload.elementDetails || {
-                        id: "",
-                        content: [],
-                        name: "",
-                        styles: {},
-                        type: null,
-                    },
-                },
-                history: {
-                    ...state.history,
-                    history: [
-                        ...state.history.history.slice(
-                            0,
-                            state.history.currentIndex + 1
-                        ),
-                        { ...state.editor },
-                    ],
-                    currentIndex: state.history.currentIndex + 1,
-                },
-            };
-            return clickedState;
-        case "CHANGE_DEVICE":
-            const changedDeviceState = {
-                ...state,
-                editor: {
-                    ...state.editor,
-                    device: action.payload.device,
-                },
-            };
-
-            return changedDeviceState;
-        case "TOGGLE_PREVIEW_MODE":
-            const toggleState = {
-                ...state,
-                editor: {
-                    ...state.editor,
-                    previewMode: !state.editor.previewMode,
-                },
-            };
-
-            return toggleState;
-        case "TOGGLE_LIVE_MODE":
-            const toggleLiveMode = {
-                ...state,
-                editor: {
-                    ...state.editor,
-                    liveMode: action.payload
-                        ? action.payload.value
-                        : !state.editor.liveMode,
-                },
-            };
-
-            return toggleLiveMode;
-        case "REDO":
-            if (state.history.currentIndex < state.history.history.length - 1) {
-                const nextIndex = state.history.currentIndex + 1;
-                const nextEditorState = { ...state.history.history[nextIndex] };
-                const redoState = {
-                    ...state,
-                    editor: nextEditorState,
-                    history: {
-                        ...state.history,
-                        currentIndex: nextIndex,
-                    },
-                };
-                return redoState;
-            }
-
-            return state;
-        case "UNDO":
-            if (state.history.currentIndex > 0) {
-                const prevIndex = state.history.currentIndex - 1;
-                const prevEditorState = { ...state.history.history[prevIndex] };
-                const undoState = {
-                    ...state,
-                    editor: prevEditorState,
-                    history: {
-                        ...state.history,
-                        currentIndex: prevIndex,
-                    },
-                };
-
-                return undoState;
-            }
-
-            return state;
-        case "LOAD_DATA":
-            return {
-                ...initialState,
-                editor: {
-                    ...initialState.editor,
-                    elements:
-                        action.payload.elements || initialEditorState.elements,
-                    liveMode: !action.payload.withLive,
-                },
-            };
-        case "SET_PAGE_ID":
-            const { pageId } = action.payload;
-
-            const updatedEditorStateWithPageId = {
-                ...state.editor,
-                pageId,
-            };
-
-            const updatedHistoryWithPageId = [
-                ...state.history.history.slice(
-                    0,
-                    state.history.currentIndex + 1
-                ),
-                { ...updatedEditorStateWithPageId },
-            ];
-
-            const pageIdState = {
-                ...state,
-                editor: updatedEditorStateWithPageId,
-                history: {
-                    ...state.history,
-                    history: updatedHistoryWithPageId,
-                    currentIndex: updatedHistoryWithPageId.length - 1,
-                },
-            };
-
-            return pageIdState;
-        default:
-            return state;
-    }
-};
-
-type PageDetails = {}; // TODO: Complete this
-
-export type EditorContextData = {
-    device: DeviceTypes;
-    previewMode: boolean;
-    setPreviewMode: (previewMode: boolean) => void;
-    setDevice: (device: DeviceTypes) => void;
-};
-
-export const EditorContext = createContext<{
+type EditorContextType = {
     state: EditorState;
     dispatch: (action: EditorAction) => void;
-    pageId: string;
-    pageDetails: PageDetails | null;
-}>({
-    state: initialState,
-    dispatch: () => undefined,
-    pageDetails: null,
-    pageId: "",
-});
+};
 
-type EditorProps = {
-    children: JSX.Element;
-    pageId: string;
-    pageDetails: PageDetails
-}
+const EditorContext = createContext<EditorContextType | null>(null);
 
-const EditorProvider = (props: EditorProps) => {
-    const [state, setState] = createStore(initialState);
+export function EditorProvider(props: { children: JSX.Element }) {
+    const [liveMode, setLiveMode] = createSignal<boolean>(false);
 
+    // Create an initial state with an empty editor
+    const [state, setState] = createStore<EditorState>({
+        editor: {
+            elements: [],
+            selectedElement: {
+                id: "",
+                name: "",
+                type: "",
+                content: [],
+                styles: {},
+            },
+            liveMode: liveMode(),
+        },
+    });
+
+    // Update liveMode when it changes
+    createEffect(() => {
+        setState("editor", "liveMode", liveMode());
+    });
+
+    // Function to dispatch actions to update the state
     const dispatch = (action: EditorAction) => {
-        const nextState = editorReducer(state, action);
-        setState(reconcile(nextState));
-    }
+        switch (action.type) {
+            case "ADD_ELEMENT":
+                // Handle adding an element to a container
+                if (action.payload.containerId) {
+                    const updatedElements = addElementToContainer(
+                        state.editor.elements,
+                        action.payload.containerId,
+                        action.payload.elementDetails
+                    );
+                    setState("editor", "elements", updatedElements);
+                } else {
+                    // Add the element to the root of the editor
+                    setState("editor", "elements", [
+                        ...state.editor.elements,
+                        action.payload.elementDetails,
+                    ]);
+                }
+                break;
+
+            case "UPDATE_ELEMENT":
+                // Update an element's properties
+                const updatedElements = updateElement(
+                    state.editor.elements,
+                    action.payload.elementDetails
+                );
+                setState("editor", "elements", updatedElements);
+                break;
+
+            case "DELETE_ELEMENT":
+                // Delete an element
+                const filteredElements = deleteElement(
+                    state.editor.elements,
+                    action.payload.elementDetails.id
+                );
+                setState("editor", "elements", filteredElements);
+                break;
+
+            case "CHANGE_CLICKED_ELEMENT":
+                // Set the selected element
+                setState(
+                    "editor",
+                    "selectedElement",
+                    action.payload.elementDetails
+                );
+                break;
+
+            case "TOGGLE_LIVE_MODE":
+                // Toggle live mode or set to specific value
+                if (action.payload) {
+                    setLiveMode(action.payload.liveMode);
+                } else {
+                    setLiveMode(!liveMode());
+                }
+                break;
+
+            default:
+                break;
+        }
+    };
+
+    // Helper function to add an element to a container
+    const addElementToContainer = (
+        elements: EditorElement[],
+        containerId: string,
+        newElement: EditorElement
+    ): EditorElement[] => {
+        return elements.map((element) => {
+            if (element.id === containerId) {
+                return {
+                    ...element,
+                    content: Array.isArray(element.content)
+                        ? [...element.content, newElement]
+                        : [newElement],
+                };
+            }
+
+            // If this element has children, recursively check them
+            if (Array.isArray(element.content)) {
+                return {
+                    ...element,
+                    content: addElementToContainer(
+                        element.content,
+                        containerId,
+                        newElement
+                    ),
+                };
+            }
+
+            return element;
+        });
+    };
+
+    // Helper function to update an element
+    const updateElement = (
+        elements: EditorElement[],
+        updatedElement: EditorElement
+    ): EditorElement[] => {
+        return elements.map((element) => {
+            if (element.id === updatedElement.id) {
+                return updatedElement;
+            }
+
+            // If this element has children, recursively check them
+            if (Array.isArray(element.content)) {
+                return {
+                    ...element,
+                    content: updateElement(element.content, updatedElement),
+                };
+            }
+
+            return element;
+        });
+    };
+
+    // Helper function to delete an element
+    const deleteElement = (
+        elements: EditorElement[],
+        elementId: string
+    ): EditorElement[] => {
+        return elements.filter((element) => {
+            // Don't filter out the root element
+            if (element.type === "__body") {
+                if (Array.isArray(element.content)) {
+                    element.content = deleteElement(element.content, elementId);
+                }
+                return true;
+            }
+
+            if (element.id === elementId) {
+                return false;
+            }
+
+            // If this element has children, recursively check them
+            if (Array.isArray(element.content)) {
+                element.content = deleteElement(element.content, elementId);
+            }
+
+            return true;
+        });
+    };
 
     return (
-        <EditorContext.Provider
-            value={{
-                state,
-                dispatch,
-                pageDetails: props.pageDetails,
-                pageId: props.pageId
-            }}
-        >
+        <EditorContext.Provider value={{ state, dispatch }}>
             {props.children}
         </EditorContext.Provider>
-    )
+    );
 }
 
-export const useEditor = () => {
+// Custom hook to use the editor context
+export function useEditor() {
     const context = useContext(EditorContext);
     if (!context) {
-        throw new Error("useEditor Hook must be used within a editor provider")
+        throw new Error("useEditor must be used within an EditorProvider");
     }
-
     return context;
 }
 

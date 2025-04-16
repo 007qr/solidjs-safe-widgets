@@ -1,6 +1,6 @@
-import { FiType } from "solid-icons/fi";
+import { FiBox } from "solid-icons/fi";
 
-export default function TextPlaceHolder() {
+export default function ContainerPlaceholder() {
     const handleDragStart = (e: DragEvent, type: string) => {
         if (type == null) return;
 
@@ -11,11 +11,12 @@ export default function TextPlaceHolder() {
         e.dataTransfer!.effectAllowed = "copy";
 
         const dragIcon = document.createElement("div");
-        dragIcon.innerHTML = "Text";
-        dragIcon.className = "bg-amber-100 p-2 rounded text-sm opacity-70";
+        dragIcon.innerHTML = "Container";
+        dragIcon.className = "bg-blue-100 p-2 rounded text-sm opacity-70";
         document.body.appendChild(dragIcon);
         e.dataTransfer?.setDragImage(dragIcon, 0, 0);
 
+        // Clean up the drag icon after a short delay
         setTimeout(() => {
             document.body.removeChild(dragIcon);
         }, 0);
@@ -25,10 +26,10 @@ export default function TextPlaceHolder() {
         <>
             <div
                 draggable={true}
-                onDragStart={(e) => handleDragStart(e, "text")}
-                class="h-14 w-14 bg-amber-100 rounded-lg flex items-center justify-center cursor-grab hover:bg-amber-200 transition-colors"
+                onDragStart={(e) => handleDragStart(e, "container")}
+                class="h-14 w-14 bg-blue-100 rounded-lg flex items-center justify-center cursor-grab hover:bg-blue-200 transition-colors"
             >
-                <FiType size={40} class="text-amber-800" />
+                <FiBox size={40} class="text-blue-800" />
             </div>
         </>
     );

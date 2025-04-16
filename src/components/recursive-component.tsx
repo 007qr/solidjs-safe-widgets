@@ -4,22 +4,28 @@ import TextComponent from "./TextComponent";
 import ThreeStepCard from "./ThreeStepCard";
 
 type Props = {
-    element: EditorElement
-}
+    element: EditorElement;
+};
 
-
-const Recursive = ({element}: Props) => {
-
-    switch(element.type) {
-        case 'three-step-card':
-            return <ThreeStepCard element={element} altText="" nextButton={false} steps={[]} />
-        case 'text':
-            return <TextComponent element={element} />
-        case '__body':
-            return <Container element={element} />
+const Recursive = ({ element }: Props) => {
+    switch (element.type) {
+        case "three-step-card":
+            return (
+                <ThreeStepCard
+                    element={element}
+                    altText=""
+                    nextButton={false}
+                    steps={[]}
+                />
+            );
+        case "text":
+            return <TextComponent element={element} />;
+        case "container":
+        case "__body":
+            return <Container element={element} />;
         default:
             return null;
     }
-}
+};
 
 export default Recursive;
