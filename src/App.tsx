@@ -2,10 +2,10 @@ import {
     For,
     type Component,
     createEffect,
-    createMemo,
+    // createMemo,
     onCleanup,
 } from "solid-js";
-import { useSearchParams } from "@solidjs/router";
+// import { useSearchParams } from "@solidjs/router";
 
 import { OcDevicedesktop3 } from 'solid-icons/oc'
 import { BsLaptop } from 'solid-icons/bs'
@@ -13,17 +13,18 @@ import { IoPhoneLandscapeOutline } from 'solid-icons/io'
 import { VsDeviceMobile } from 'solid-icons/vs'
 import { FiPlay } from 'solid-icons/fi'
 
-import BigCard from "./components/BigCard";
-import Card from "./components/Card";
-import ThreeStepCard from "./components/ThreeStepCard";
-import Connect from "./components/icons/Connect";
-import TestimonialCard from "./components/TestimonialCard";
-import Logo from "./components/icons/Logo";
-import Carousel, { CarouselItem } from "./components/Carousel";
-import { AdData, SignUpModalFlow } from "./utils/types";
-import EditorProvider, { useEditor } from "./providers/editor-provider";
+// import BigCard from "./components/BigCard";
+// import Card from "./components/Card";
+// import ThreeStepCard from "./components/ThreeStepCard";
+// import Connect from "./components/icons/Connect";
+// import TestimonialCard from "./components/TestimonialCard";
+// import Logo from "./components/icons/Logo";
+// import Carousel, { CarouselItem } from "./components/Carousel";
+// import { AdData, SignUpModalFlow } from "./utils/types";
+import { useEditor } from "./providers/editor-provider";
 import Recursive from "./components/recursive-component";
-import ComponentsTabs from "./components/compoenents-tabs";
+import ComponentsTabs from "./components/components-tabs";
+import SettingsTab from "./components/settings-tab";
 
 // Type for carousel item props
 type CarouselItemProps = {
@@ -181,7 +182,7 @@ const EditorDebugLogger = () => {
 
 
 const App: Component = () => {
-    const {state, dispatch} = useEditor();
+    const {state} = useEditor();
 
     return (
         <>
@@ -217,6 +218,7 @@ const App: Component = () => {
                     <div class="col-span-1 bg-white shadow-md">
                         <div class="space-x-4 p-3">
                             <span class="cursor-pointer">Styles</span>
+                            <SettingsTab />
                         </div>
                     </div>
                 </div>
