@@ -144,15 +144,14 @@ const App: Component = () => {
                 <Logo />
             </div>
 
-            <For each={cardItems}>{(cardItem) => renderItem(cardItem)}</For>
-            {/* <div class="relative pb-12 overflow-hidden max-lg:hidden">
+            <div class="relative pb-12 overflow-hidden max-lg:hidden">
                 <Carousel>{cardItems}</Carousel>
             </div>
 
-            {Mobile Version 
+            {/* {Mobile Version  */}
             <div class="flex flex-col px-[24px] gap-[48px] items-center lg:hidden">
                 <For each={cardItems}>{(cardItem) => renderItem(cardItem)}</For>
-            </div> */}
+            </div>
         </div>
     );
 };

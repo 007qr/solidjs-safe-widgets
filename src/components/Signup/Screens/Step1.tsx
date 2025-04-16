@@ -19,7 +19,7 @@ export default function Step1(props: Props) {
                 <source src="/masked-video.webm" type="video/webm" />
             </video>
 
-            <h1 class="[transform:translate3d(0,0,0)] max-lg:text-[48px] break-words flex items-center justify-center p-[32px] lg:p-[75px] text-[64px] absolute top-0 left-0 w-full h-full bg-white text-black font-bold leading-[110%] tracking-[-2%] mix-blend-screen">
+            <h1 class="[transform:translate3d(0,0,0)] rounded-[48px] max-lg:text-[48px] break-words flex items-center justify-center p-[32px] lg:p-[75px] text-[64px] absolute top-0 left-0 w-full h-full bg-white text-black font-bold leading-[110%] tracking-[-2%] mix-blend-screen">
                 {props.title}
             </h1>
 
