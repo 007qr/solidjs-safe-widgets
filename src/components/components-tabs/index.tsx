@@ -1,5 +1,6 @@
 import { For, JSX } from "solid-js";
 import TextPlaceHolder from "./TextPlaceHolder";
+import ContainerPlaceHolder from "./ContainerPlaceHolder";
 
 type Props = {};
 
@@ -15,7 +16,13 @@ const ComponentsTabs = (props: Props) => {
             label: 'Text',
             id: 'text',
             group: 'elements'
-        }
+        },
+        {
+            Component: () => <ContainerPlaceHolder />,
+            label: 'Container',
+            id: 'container',
+            group: 'layout'
+        },
     ];
 
     return (

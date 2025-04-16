@@ -7,8 +7,8 @@ type Props = {};
 
 const SettingsTab: Component = (props: Props) => {
     const [settingsState, setSettingsState] = createSignal<
-        "custom" | "typography" | "background" | "flexbox" | "none"
-    >("flexbox");
+        "custom" | "typography" | "background" | "display" | "none"
+    >("display");
     const { state, dispatch } = useEditor();
 
     const handleChangeCustomValues = (e: any) => {
@@ -145,22 +145,22 @@ const SettingsTab: Component = (props: Props) => {
                 <div
                     onClick={() => {
                         setSettingsState((value) =>
-                            value === "flexbox" ? "none" : "flexbox"
+                            value === "display" ? "none" : "display"
                         );
                     }}
                     class="w-full cursor-pointer flex items-center justify-between"
                 >
-                    <p class="text-2xl font-bold">Flexbox</p>
+                    <p class="text-2xl font-bold">Display</p>
                     <span
                         class={clsx(
                             "-rotate-90",
-                            settingsState() === "flexbox" && "rotate-0"
+                            settingsState() === "display" && "rotate-0"
                         )}
                     >
                         <RiArrowsArrowDownSLine size={22} />
                     </span>
                 </div>
-                <Show when={settingsState() === "flexbox"}>
+                <Show when={settingsState() === "display"}>
                     <div class="flex flex-col gap-2">
                         <p>Display</p>
                         <select class="border h-10 rounded-xl" name="display" id="display" onChange={handleOnChanges} value={state.editor.selectedElement.styles.display || 'block'}>

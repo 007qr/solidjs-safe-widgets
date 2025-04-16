@@ -13,6 +13,8 @@ const Recursive = ({element}: Props) => {
     switch(element.type) {
         case 'three-step-card':
             return <ThreeStepCard element={element} altText="" nextButton={false} steps={[]} />
+        case 'container':
+            return <Container element={element} />
         case 'text':
             return <TextComponent element={element} />
         case '__body':
