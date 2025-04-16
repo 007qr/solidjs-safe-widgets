@@ -186,7 +186,6 @@ const App: Component = () => {
 
     return (
         <>
-        
             <EditorDebugLogger />
             <div class="grid grid-rows-12 w-full max-h-screen h-screen">
                 <div class="grid-rows-1 grid items-center">
@@ -201,6 +200,7 @@ const App: Component = () => {
                             <FiPlay size={20} color="#9c9c9c" />
                         </span>
                     </div>
+
                 </div>   
                 <div class="row-span-11 grid grid-cols-6">
                     <div class="col-span-1 bg-white shadow-md">

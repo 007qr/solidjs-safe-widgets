@@ -142,7 +142,6 @@ const editorReducer = (
 ): EditorState => {
     switch (action.type) {
         case "ADD_ELEMENT":
-            console.log("ADD_ELEMENT");
             const updatedEditorState = {
                 ...state.editor,
                 elements: addAnElement(state.editor.elements, action),
@@ -173,7 +172,6 @@ const editorReducer = (
                 state.editor.elements,
                 action
             );
-
             const UpdatedElementIsSelected =
                 state.editor.selectedElement.id ===
                 action.payload.elementDetails.id;
