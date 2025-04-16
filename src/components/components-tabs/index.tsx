@@ -27,7 +27,7 @@ const ComponentsTabs = (props: Props) => {
 
     return (
         <div class="flex flex-col gap-2.5">
-            <h2 class="text-2xl">Layout</h2>
+            <h2 class="text-xl font-bold">Layout</h2>
             <div class="flex flex-wrap gap-2">
                 <For
                     each={elements.filter(
@@ -45,7 +45,7 @@ const ComponentsTabs = (props: Props) => {
                 </For>
             </div>
 
-            <h2 class="text-2xl">Element</h2>
+            <h2 class="text-xl font-bold">Element</h2>
             <div class="flex flex-wrap gap-2">
                 <For
                     each={elements.filter(

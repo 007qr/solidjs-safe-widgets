@@ -63,7 +63,7 @@ const SettingsTab: Component = (props: Props) => {
                 !Array.isArray(state.editor.selectedElement.content) && (
                     <>
                         <div>
-                            <p class="text-2xl font-bold">Custom</p>
+                            <p class="text-xl font-bold">Custom</p>
                         </div>
                         <Show when={settingsState() === "custom"}>
                             <div class="flex flex-col gap-2">
@@ -92,7 +92,7 @@ const SettingsTab: Component = (props: Props) => {
                     }}
                     class="w-full cursor-pointer flex items-center justify-between"
                 >
-                    <p class="text-2xl font-bold">Typography</p>
+                    <p class="text-xl font-bold">Typography</p>
                     <span
                         class={clsx(
                             "-rotate-90",
@@ -150,7 +150,7 @@ const SettingsTab: Component = (props: Props) => {
                     }}
                     class="w-full cursor-pointer flex items-center justify-between"
                 >
-                    <p class="text-2xl font-bold">Display</p>
+                    <p class="text-xl font-bold">Display</p>
                     <span
                         class={clsx(
                             "-rotate-90",
