@@ -14,7 +14,7 @@ export default function App() {
             </nav>
 
             <div class="w-[1150px] mx-auto rounded-[32px]">
-                <h2 class="gap-2 text-4xl font-bold text-[48px] leading-tight text-black/80 tracking-tighter">
+                <h2 class="mt-[141px] gap-2 text-4xl font-bold text-[48px] leading-tight text-black/80 tracking-tighter">
                     <For each={firstLine.split(" ")}>
                         {(item: string, index: Accessor<number>) => (
                             <>
