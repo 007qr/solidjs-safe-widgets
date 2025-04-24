@@ -14,7 +14,7 @@ export default function App() {
             </nav>
 
             <div class="w-[1150px] mx-auto rounded-[32px]">
-                <h2 class="mt-[141px] gap-2 text-4xl font-bold text-[48px] leading-tight text-black/80 tracking-tighter">
+                <h2 class="gap-2 mt-[30px] text-4xl font-bold text-[48px] leading-tight text-black/80 tracking-tighter">
                     <For each={firstLine.split(" ")}>
                         {(item: string, index: Accessor<number>) => (
                             <>
@@ -137,7 +137,7 @@ export default function App() {
                     </For> */}
                 {/* </h1> */}
 
-                <div class="bg-white mt-[182px] w-full h-[340px] rounded-[32px] p-[32px] flex justify-between mb-[100px]">
+                <div class="bg-white mt-[152px] w-full h-[340px] rounded-[32px] p-[32px] flex justify-between">
                     <div class="flex flex-col gap-[16px]">
                         <h4 class="text-[#333232] text-[21px] leading-[120%] tracking-[-2%] font-medium font-instrument-sans">
                             Enter your name
