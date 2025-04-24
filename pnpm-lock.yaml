@@ -17,6 +17,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.1.1
         version: 4.1.1(vite@6.0.0(jiti@2.4.2)(lightningcss@1.29.2))
+      '@thisbeyond/solid-dnd':
+        specifier: ^0.7.5
+        version: 0.7.5(solid-js@1.9.5)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -513,6 +516,12 @@ packages:
     resolution: {integrity: sha512-tFTkRZwXq4XKr3S2dUZBxy80wbWYHdDSsu4QOB1yE1HJFKjfxKVpXtup4dyTVdQcLInoHC9lZXFPHnjoBP774g==}
     peerDependencies:
       vite: ^5.2.0 || ^6
+
+  '@thisbeyond/solid-dnd@0.7.5':
+    resolution: {integrity: sha512-DfI5ff+yYGpK9M21LhYwIPlbP2msKxN2ARwuu6GF8tT1GgNVDTI8VCQvH4TJFoVApP9d44izmAcTh/iTCH2UUw==}
+    engines: {node: '>=18.0.0', pnpm: '>=8.6.0'}
+    peerDependencies:
+      solid-js: ^1.5
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -1262,6 +1271,10 @@ snapshots:
       '@tailwindcss/oxide': 4.1.1
       tailwindcss: 4.1.1
       vite: 6.0.0(jiti@2.4.2)(lightningcss@1.29.2)
+
+  '@thisbeyond/solid-dnd@0.7.5(solid-js@1.9.5)':
+    dependencies:
+      solid-js: 1.9.5
 
   '@types/babel__core@7.20.5':
     dependencies:
