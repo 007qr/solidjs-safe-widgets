@@ -26,3 +26,14 @@ export interface AdData extends SearchParams {
 }
 
 export type SignUpModalFlow = "step1" | "email" | "otp" | "step3" | "joined";
+
+export type GridLayout = {
+    width: number;
+    height: number;
+    data: Array<number>
+}
+
+export type Block = {
+    width: number;
+    height: number;
+}

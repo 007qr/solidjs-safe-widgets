@@ -134,7 +134,6 @@ export default function Container(props: Props) {
                     </div>
                 )
             }
-
             <For
                 each={
                     Array.isArray(props.element.content)
