@@ -14,10 +14,16 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
     );
 }
 
-const routes = {
-    path: "/",
-    component: lazy(() => import("./App")),
-};
+const routes = [
+    {
+        path: "/",
+        component: lazy(() => import("./App")),
+    },
+    {
+        path: "/safe",
+        component: lazy(() => import("./LandingPage")),
+    },
+];
 
 render(
     () => (

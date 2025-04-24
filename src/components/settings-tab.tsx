@@ -1,11 +1,16 @@
-import { Component, createSignal, Show } from "solid-js";
+import { Accessor, Component, createSignal, Setter, Show } from "solid-js";
 import { useEditor } from "../providers/editor-provider";
 import { RiArrowsArrowDownSLine } from "solid-icons/ri";
 import clsx from "clsx";
+import { GridLayout } from "../utils/types";
+import { SetStoreFunction } from "solid-js/store";
 
-type Props = {};
+type Props = {
+    gridLayout: GridLayout;
+    setGridLayout: SetStoreFunction<GridLayout>;
+}
 
-const SettingsTab: Component = (props: Props) => {
+const SettingsTab = (props: Props) => {
     const [settingsState, setSettingsState] = createSignal<
         "custom" | "typography" | "background" | "display" | "none"
     >("display");
@@ -59,11 +64,17 @@ const SettingsTab: Component = (props: Props) => {
     return (
         <>
         <div class="flex flex-col gap-5">
+            
+            <div class="flex w-full gap-2.5">
+                <span class="flex items-center justify-center gap-1.5">w: <input type="number" class="rounded-xl pl-2 w-16 p-0.5 bg-black/10" value={props.gridLayout.width} on:change={(e) => props.setGridLayout("width", Number(e.target.value))}/></span>
+                <span class="flex items-center justify-center gap-1.5">h: <input type="number" class="rounded-xl pl-2 w-16 p-0.5 bg-black/10" value={props.gridLayout.height} on:change={(e) => props.setGridLayout("height",Number(e.target.value))} /></span>
+            </div>
+
             {state.editor.selectedElement.type === "link" &&
                 !Array.isArray(state.editor.selectedElement.content) && (
                     <>
                         <div>
-                            <p class="text-2xl font-bold">Custom</p>
+                            <p class="text-xl font-bold">Custom</p>
                         </div>
                         <Show when={settingsState() === "custom"}>
                             <div class="flex flex-col gap-2">
@@ -92,7 +103,7 @@ const SettingsTab: Component = (props: Props) => {
                     }}
                     class="w-full cursor-pointer flex items-center justify-between"
                 >
-                    <p class="text-2xl font-bold">Typography</p>
+                    <p class="text-xl font-bold">Typography</p>
                     <span
                         class={clsx(
                             "-rotate-90",
@@ -150,7 +161,7 @@ const SettingsTab: Component = (props: Props) => {
                     }}
                     class="w-full cursor-pointer flex items-center justify-between"
                 >
-                    <p class="text-2xl font-bold">Display</p>
+                    <p class="text-xl font-bold">Display</p>
                     <span
                         class={clsx(
                             "-rotate-90",
@@ -165,7 +176,7 @@ const SettingsTab: Component = (props: Props) => {
                         <p>Display</p>
                         <select class="border h-10 rounded-xl" name="display" id="display" onChange={handleOnChanges} value={state.editor.selectedElement.styles.display || 'block'}>
                             <option value="flex">Flex</option>
-                            <option value="block">Block</option>
+                            <option value="block">Free</option>
                             <option value="grid">Grid</option>
                             <option value="none">None</option>
                         </select>

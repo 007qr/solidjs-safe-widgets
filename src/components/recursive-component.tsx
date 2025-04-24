@@ -7,7 +7,6 @@ type Props = {
     element: EditorElement
 }
 
-
 const Recursive = ({element}: Props) => {
 
     switch(element.type) {
