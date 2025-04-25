@@ -18,7 +18,7 @@ export default function App() {
                 </div>
             </nav>
 
-            <div class="w-[1150px] mx-auto rounded-[32px]">
+            <div class="max-w-[1150px] mx-auto rounded-[32px]">
                 <h2 class="gap-2 mt-[30px] text-4xl  font-instrument-sans font-medium text-[48px] leading-[120%] tracking-[-2%] text-black/80">
                     <For each={firstLine.split(" ")}>
                         {(item: string, index: Accessor<number>) => (
@@ -148,7 +148,7 @@ export default function App() {
                     </For> */}
                 {/* </h1> */}
 
-                <div class="bg-white mt-[152px] w-full h-[340px] rounded-[32px] p-[32px] flex justify-between">
+                <div class="bg-white mt-[152px] w-full gap-[20px] rounded-[32px] p-[32px] flex justify-between flex-wrap">
                     <div class="flex flex-col gap-[16px]">
                         <Presence exitBeforeEnter>
                             <Show when={flowPattern[flow()] === "name"}>
@@ -255,14 +255,14 @@ export default function App() {
                                             easing: [0.16, 1, 0.29, 0.99],
                                         },
                                     }}
-                                    class="bg-[#F5F5F5] flex flex-col gap-0.5 justify-center p-[12px] rounded-[16px] w-[374px] h-[70px]"
+                                    class="bg-[#F5F5F5] flex flex-col gap-0.5 justify-center p-[12px] rounded-[16px] w-full max-w-[374px] h-[70px]"
                                 >
                                     <p class="text-[#6B6B6B] text-[13px] font-inter">
                                         Your name
                                     </p>
                                     <input
                                         type="text"
-                                        class="font-inter text-[17px] outline-none border-none text-[##1D1D1F]"
+                                        class="font-inter w-full text-[17px] outline-none border-none text-[##1D1D1F]"
                                         placeholder="type here"
                                         value="Vish Vadlamani"
                                     />
