@@ -19,7 +19,7 @@ export default function App() {
             </nav>
 
             <div class="max-w-[1150px] mx-auto rounded-[32px]">
-                <h2 class="gap-2 mt-[30px] text-4xl  font-instrument-sans font-medium text-[48px] leading-[120%] tracking-[-2%] text-black/80">
+                <h2 class="gap-2 mt-[30px] font-instrument-sans font-medium text-[48px] max-md:text-[38px] leading-[120%] tracking-[-2%] text-black/80">
                     <For each={firstLine.split(" ")}>
                         {(item: string, index: Accessor<number>) => (
                             <>
@@ -148,8 +148,8 @@ export default function App() {
                     </For> */}
                 {/* </h1> */}
 
-                <div class="bg-white mt-[152px] w-full gap-[20px] rounded-[32px] p-[32px] flex justify-between flex-wrap">
-                    <div class="flex flex-col gap-[16px]">
+                <div class="bg-white mt-[152px] w-full gap-[20px] rounded-[32px] p-[32px] flex justify-between max-md:flex-wrap max-md:items-center">
+                    <div class="w-full flex flex-col gap-[16px]">
                         <Presence exitBeforeEnter>
                             <Show when={flowPattern[flow()] === "name"}>
                                 <Motion.h4
@@ -262,7 +262,7 @@ export default function App() {
                                     </p>
                                     <input
                                         type="text"
-                                        class="font-inter w-full text-[17px] outline-none border-none text-[##1D1D1F]"
+                                        class="font-inter text-[17px] outline-none border-none text-[##1D1D1F]"
                                         placeholder="type here"
                                         value="Vish Vadlamani"
                                     />
@@ -338,6 +338,7 @@ export default function App() {
                             </Show>
                         </Presence>
 
+                        <div class="flex justify-end max-w-[374px] w-full mt-auto">
                         <button
                             on:click={() => setFlow((v) => (v + 1) % flowPattern.length)}
                             class="bg-black w-[56px] h-[56px] flex items-center justify-center rounded-full mt-auto self-end"
@@ -348,8 +349,9 @@ export default function App() {
                                 class="w-[24px] h-[24px]"
                             />
                         </button>
+                        </div>
                     </div>
-                    <div class="bg-[#f5f5f5] w-[500px] h-[276px] rounded-[24px]"></div>
+                    <div class="bg-[#f5f5f5] w-full max-w-[500px] h-[276px] rounded-[24px]"></div>
                 </div>
             </div>
         </>
