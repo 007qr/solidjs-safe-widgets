@@ -5,8 +5,8 @@ import { Motion, Presence } from "solid-motionone";
 export type Flow = "email" | "name" | "phone" | "otp" | "done";
 
 export default function App() {
-    const firstLine = "Hey👋 You're new here.";
-    const secondLine = "Let's get you setup.";
+    const firstLine = "Hey👋 You’re new here.";
+    const secondLine = "Let’s get you setup.";
     const flowPattern = ["name", "email", "phone", "otp", "done"];
     const [flow, setFlow] = createSignal<number>(0);
 
@@ -19,14 +19,14 @@ export default function App() {
             </nav>
 
             <div class="w-[1150px] mx-auto rounded-[32px]">
-                <h2 class="gap-2 mt-[30px] text-4xl font-bold text-[48px] leading-tight text-black/80 tracking-tighter">
+                <h2 class="gap-2 mt-[30px] text-4xl  font-instrument-sans font-medium text-[48px] leading-[120%] tracking-[-2%] text-black/80">
                     <For each={firstLine.split(" ")}>
                         {(item: string, index: Accessor<number>) => (
                             <>
                                 <span
                                     class={`staggered-animation whitespace-pre inline-block animate-fade-in ${
                                         item === "new"
-                                            ? "font-dot-gothic font-medium"
+                                            ? "font-damion font-medium"
                                             : ""
                                     }`}
                                     style={{
@@ -58,7 +58,7 @@ export default function App() {
                                 <span
                                     class={`staggered-animation whitespace-pre inline-block animate-fade-in ${
                                         item === "setup."
-                                            ? "font-dot-gothic font-medium"
+                                            ? "font-damion font-medium"
                                             : ""
                                     }`}
                                     style={{
@@ -86,14 +86,14 @@ export default function App() {
                 </h2>
                 {/* <h1 class="font-instrument-sans text-[48px] leading-[120%] tracking-[-2%] font-bold mt-[141px]"> */}
                 {/* <span class="font-medium font-instrument-sans fade-in">
-                        Hey👋 You're <span class="font-dot-gothic">new</span> here. <br /> Let's get you <span class="font-dot-gothic">setup.</span>
+                        Hey👋 You're <span class="font-damion">new</span> here. <br /> Let's get you <span class="font-damion">setup.</span>
                     </span> */}
                 {/* 
                     <For each={Array.from(firstLine.split(" "))}>
                         {(el, index) => (
                             <>
                                 <span
-                                    class={`whitespace-pre inline-block animate-fade-in ${el === 'new' ? 'font-dot-gothic font-medium': ''}`}
+                                    class={`whitespace-pre inline-block animate-fade-in ${el === 'new' ? 'font-damion font-medium': ''}`}
                                     style={{
                                         "animation-delay": `${
                                             (index() + 1) * 100
@@ -122,7 +122,7 @@ export default function App() {
                         {(el, index) => (
                             <>
                                 <span
-                                    class={`whitespace-pre inline-block animate-fade-in ${el === 'setup.' ? 'font-dot-gothic font-medium': ''}`}
+                                    class={`whitespace-pre inline-block animate-fade-in ${el === 'setup.' ? 'font-damion font-medium': ''}`}
                                     style={{
                                         "animation-delay": `${
                                             (index() + 5) * 100
