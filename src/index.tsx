@@ -21,7 +21,7 @@ const routes = [
     },
     {
         path: "/safe",
-        component: lazy(() => import("./LandingPage")),
+        component: lazy(() => import("./landing-page1")),
     },
 ];
 

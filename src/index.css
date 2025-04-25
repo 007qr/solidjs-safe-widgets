@@ -20,7 +20,7 @@ body {
 }
 
 .font-inter {
-    font-family: 'Inter', sans-serif !important;
+    font-family: "Inter", sans-serif !important;
 }
 
 #container::-webkit-scrollbar {
@@ -61,7 +61,6 @@ body {
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
-
 }
 @keyframes fade-in {
     from {
@@ -85,7 +84,6 @@ body {
         filter: blur(0px);
     }
 }
-
 
 @keyframes lds-ripple {
     0% {
