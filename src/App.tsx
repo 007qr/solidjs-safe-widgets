@@ -15,7 +15,7 @@ export default function App() {
 
         Fathom.trackEvent(`${flow}-entered`);
     }
-    
+
     const firstLine = "Hey👋 You’re new here.";
     const secondLine = "Let’s get you setup.";
     const flowPattern = ["name", "email", "phone", "otp", "done"];
@@ -282,7 +282,7 @@ export default function App() {
 
                             <Show when={flowPattern[flow()] === "email"}>
                                 <Motion.div
-                                    initial={{ opacity: 0, y: 30 }}
+                                initial={{ opacity: 0, y: 30 }}
                                     animate={{
                                         opacity: 1,
                                         y: 0,
