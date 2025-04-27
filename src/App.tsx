@@ -1,10 +1,21 @@
-import { Accessor, createSignal, For, Show } from "solid-js";
+import { Accessor, createSignal, For, onMount, Show } from "solid-js";
 import Logo from "./components/icons/Logo";
 import { Motion, Presence } from "solid-motionone";
+import * as Fathom from 'fathom-client';
 
 export type Flow = "email" | "name" | "phone" | "otp" | "done";
 
 export default function App() {
+    onMount(() => {
+        Fathom.load("WHWYFZJD");
+    })
+
+    const onUserEntered = (flow: Flow) => {
+        if (flow === "done") return;
+
+        Fathom.trackEvent(`${flow}-entered`);
+    }
+    
     const firstLine = "Hey👋 You’re new here.";
     const secondLine = "Let’s get you setup.";
     const flowPattern = ["name", "email", "phone", "otp", "done"];
@@ -340,7 +351,12 @@ export default function App() {
 
                         <div class="flex justify-end max-w-[374px] w-full mt-auto">
                         <button
-                            on:click={() => setFlow((v) => (v + 1) % flowPattern.length)}
+                            on:click={() => 
+                            {                                
+                                onUserEntered(flowPattern[flow()] as Flow);
+                                setFlow((v) => (v + 1) % flowPattern.length)
+                            }
+                            }
                             class="bg-black w-[56px] h-[56px] flex items-center justify-center rounded-full mt-auto self-end"
                         >
                             <img
