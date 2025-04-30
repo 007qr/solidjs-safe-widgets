@@ -1,7 +1,45 @@
-import { SearchParams } from "@solidjs/router/dist/types";
-
-export interface AdData extends SearchParams {
+export type AdData = {
+    timestamp: string;
     email: string;
+    phone: string;
+    campaign_id: string;
+    adset_id: string;
+    ad_id: string;
+    utm_source: string;
+    landing_page_id: string;
+};
+
+
+export type Events = {
+	timestamp: string;
+	event_name: string;
+	campaign_id: string;
+	adset_id: string;
+	ad_id: string;
+	utm_source: string;
+	landing_page_id: string;
+	email: string;
+	phone: string;
+	clicks: number;
+};
+
+
+// export type SignUpModalFlow = "step1" | "email" | "otp" | "step3" | "joined";
+
+export type GridLayout = {
+    width: number;
+    height: number;
+    data: Array<number>;
+};
+
+export type Block = {
+    width: number;
+    height: number;
+};
+
+/**
+ * 
+ *  email: string;
     utm_source: string;
     created_time: string;
     ad_id: string;
@@ -23,17 +61,4 @@ export interface AdData extends SearchParams {
     subid1: string;
     subid2: string;
     subid3: string;
-}
-
-export type SignUpModalFlow = "step1" | "email" | "otp" | "step3" | "joined";
-
-export type GridLayout = {
-    width: number;
-    height: number;
-    data: Array<number>
-}
-
-export type Block = {
-    width: number;
-    height: number;
-}
+ */
