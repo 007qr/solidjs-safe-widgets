@@ -477,7 +477,7 @@ export default function App() {
                                             utm_source: searchParams.utm_source,
                                         } as Events;
 
-                                        fetch("http://127.0.0.1:8787/events", {
+                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                             headers: {
@@ -509,7 +509,7 @@ export default function App() {
                                             utm_source: searchParams.utm_source,
                                         } as Events;
 
-                                        fetch("http://127.0.0.1:8787/", {
+                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/", {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                             headers: {
@@ -527,7 +527,7 @@ export default function App() {
 
                                         data["event_name"] = "phone-entered";
                                         data["clicks"] = 1;
-                                        fetch("http://127.0.0.1:8787/events", {
+                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                             headers: {
@@ -559,7 +559,7 @@ export default function App() {
                                             utm_source: searchParams.utm_source,
                                         } as Events;
 
-                                        fetch("http://127.0.0.1:8787/", {
+                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/", {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                             headers: {
@@ -578,7 +578,7 @@ export default function App() {
                                         data["event_name"] = "email-entered";
                                         data["clicks"] = 1;
 
-                                        fetch("http://127.0.0.1:8787/events", {
+                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", {
                                             method: "POST",
                                             body: JSON.stringify(data),
                                             headers: {
