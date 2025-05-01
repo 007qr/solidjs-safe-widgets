@@ -53,14 +53,11 @@ export default class Tracker {
         };
 
         fetch(
-            "https://api.europe-west2.gcp.tinybird.co/v0/events?name=session", // replace it with cloudflare worker
+            "https://user-tracking-worker.aayushpatil558321.workers.dev", // replace it with cloudflare worker
             {
                 method: "POST",
                 headers: {
-                    Authorization: `Bearer ${
-                        import.meta.env.VITE_TINYBIRD_TOKEN
-                    }`,
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data),
             }
@@ -89,11 +86,10 @@ export default class Tracker {
             "meta_value": meta_value
           };
           
-          fetch("https://api.europe-west2.gcp.tinybird.co/v0/events?name=events", { // replace it with cloudflare worker
+          fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", { // replace it with cloudflare worker
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${import.meta.env.VITE_TINYBIRD_TOKEN}`,
-              "Content-Type": "application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
           })

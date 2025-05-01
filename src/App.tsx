@@ -1,66 +1,77 @@
-import { Accessor, createSignal, For, onMount, Show } from "solid-js";
-import Logo from "./components/icons/Logo";
+import { createSignal, onMount, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
-import * as Fathom from "fathom-client";
-import { AdData, Events } from "./utils/types";
-import { useParams, useSearchParams } from "@solidjs/router";
+
 import GPTAnimation from "./components/GPTAnimation";
 import Tracker from "./Tracker";
+import { authenticate, refreshAccessToken, requestOtp } from "./lib/authApi";
+import {
+    clearAuth,
+    getRefreshToken,
+    storeAccessToken,
+    storeRefreshToken,
+} from "./lib/auth";
+
+import Logo from "./components/icons/Logo";
 
 export type Flow = "email" | "name" | "phone" | "email-otp" | "otp" | "done";
 
-const GETOTP_ENDPOINT =
-    "https://user-svc-worker.safeapp.workers.dev/signup/get-code";
-const AUTHENTICATEUSER_ENDPOINT =
-    "https://user-svc-worker.safeapp.workers.dev/authenticate/jwt";
+const FLOW_PATTERN: Flow[] = [
+    "name",
+    "email",
+    "email-otp",
+    "phone",
+    "otp",
+    "done",
+];
 
 export default function App() {
     const tracker = new Tracker("lp1");
-    const [disabled, setDisabled] = createSignal<boolean>(false);
-    const [error, setError] = createSignal<string>("");
+
     const [email, setEmail] = createSignal<string>("");
-    const [otp, setOtp] = createSignal<string>();
+    const [otp, setOtp] = createSignal<string>("");
     const [name, setName] = createSignal<string>("Vish Vadlamani");
     const [phone, setPhone] = createSignal<string>("");
+    const [methodId, setMethodId] = createSignal<string>("");
 
-    const flowPattern: Flow[] = [
-        "name",
-        "email",
-        "email-otp",
-        "phone",
-        "otp",
-        "done",
-    ];
     const [flow, setFlow] = createSignal<number>(0);
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
     const handleClick = async () => {
-        // if (disabled()) return;
-
-        setFlow((v) => (v + 1) % flowPattern.length);
-
-        switch (flowPattern[flow()]) {
-            case "email-otp": // user is requesting for otp
-                const res = await fetch(GETOTP_ENDPOINT, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                });
-
-                const jsonContent = await res.json();
-
-                if (jsonContent["status_code"] !== 200) {
-                    setError(jsonContent["error_message"]);
-                }
+        switch (FLOW_PATTERN[flow()]) {
+            case "email": // user is requesting for otp
+                // const res = await requestOtp(email());
+                // setMethodId(res.email_id);
                 break;
-            case "phone": // user has successfully entered the email and verified it
+                
+            case "email-otp": // user has successfully entered the email and otp
+                // const { accessToken, refreshToken } = await authenticate(
+                //     email(),
+                //     otp(),
+                //     methodId()
+                // );
+                // storeAccessToken(accessToken);
+                // storeRefreshToken(refreshToken);
                 tracker.trackEvent("email-entered", ["email"], [email()]);
                 break;
-            case "done": // user has successfully entered the phone and verified it
+            case "otp": // user has successfully entered the phone and verified it
                 tracker.trackEvent("phone-entered", ["phone"], [phone()]);
                 break;
         }
+
+        setFlow((v) => (v + 1) % FLOW_PATTERN.length);
+
     };
+
+    onMount(async () => {
+        const refreshToken = getRefreshToken();
+        if (!refreshToken) return;
+
+        try {
+            const newToken = await refreshAccessToken(refreshToken);
+            storeAccessToken(newToken);
+        } catch {
+            clearAuth();
+        }
+    });
 
     return (
         <>
@@ -77,7 +88,7 @@ export default function App() {
                 <div class="bg-white mt-[152px] w-full gap-[20px] rounded-[32px] p-[32px] flex justify-between max-md:flex-wrap max-md:items-center">
                     <div class="w-full flex flex-col gap-[16px]">
                         <Presence exitBeforeEnter>
-                            <Show when={flowPattern[flow()] === "name"}>
+                            <Show when={FLOW_PATTERN[flow()] === "name"}>
                                 <Motion.h4
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -104,7 +115,7 @@ export default function App() {
                                 </Motion.h4>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "email"}>
+                            <Show when={FLOW_PATTERN[flow()] === "email"}>
                                 <Motion.h4
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -131,7 +142,7 @@ export default function App() {
                                 </Motion.h4>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "email-otp"}>
+                            <Show when={FLOW_PATTERN[flow()] === "email-otp"}>
                                 <Motion.h4
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -158,7 +169,7 @@ export default function App() {
                                 </Motion.h4>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "phone"}>
+                            <Show when={FLOW_PATTERN[flow()] === "phone"}>
                                 <Motion.h4
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -185,7 +196,7 @@ export default function App() {
                                 </Motion.h4>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "otp"}>
+                            <Show when={FLOW_PATTERN[flow()] === "otp"}>
                                 <Motion.h4
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -212,7 +223,7 @@ export default function App() {
                                 </Motion.h4>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "done"}>
+                            <Show when={FLOW_PATTERN[flow()] === "done"}>
                                 <Motion.h4
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -241,7 +252,7 @@ export default function App() {
                         </Presence>
 
                         <Presence exitBeforeEnter>
-                            <Show when={flowPattern[flow()] === "name"}>
+                            <Show when={FLOW_PATTERN[flow()] === "name"}>
                                 <Motion.div
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -279,7 +290,7 @@ export default function App() {
                                 </Motion.div>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "email"}>
+                            <Show when={FLOW_PATTERN[flow()] === "email"}>
                                 <Motion.div
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -317,7 +328,7 @@ export default function App() {
                                 </Motion.div>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "email-otp"}>
+                            <Show when={FLOW_PATTERN[flow()] === "email-otp"}>
                                 <Motion.div
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -353,7 +364,7 @@ export default function App() {
                                 </Motion.div>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "phone"}>
+                            <Show when={FLOW_PATTERN[flow()] === "phone"}>
                                 <Motion.div
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -391,7 +402,7 @@ export default function App() {
                                 </Motion.div>
                             </Show>
 
-                            <Show when={flowPattern[flow()] === "otp"}>
+                            <Show when={FLOW_PATTERN[flow()] === "otp"}>
                                 <Motion.div
                                     initial={{ opacity: 0, y: 30 }}
                                     animate={{
@@ -447,133 +458,3 @@ export default function App() {
         </>
     );
 }
-
-/**
- * 
- * if (
-                                        (flowPattern[flow()] as Flow) ===
-                                        "email"
-                                    ) {
-                                        const data = {
-                                            event_name: 'name-entered',
-                                            clicks: 1,
-                                            ad_id: searchParams.utm_content,
-                                            campaign_id:
-                                                searchParams.utm_campaign,
-                                            adset_id: searchParams.utm_term,
-                                            landing_page_id: "lp1",
-                                            timestamp: new Date().toISOString(),
-                                            utm_source: searchParams.utm_source,
-                                        } as Events;
-
-                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", {
-                                            method: "POST",
-                                            body: JSON.stringify(data),
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                            },
-                                        })
-                                            .then((res) =>
-                                                console.log(res.json())
-                                            )
-                                            .then((res) => console.log(res))
-                                            .catch((err) =>
-                                                console.error("Error", err)
-                                            );
-                                    }
-
-                                    if (
-                                        (flowPattern[flow()] as Flow) === "done"
-                                    ) {
-                                        const data = {
-                                            ad_id: searchParams.utm_content,
-                                            campaign_id:
-                                                searchParams.utm_campaign,
-                                            adset_id: searchParams.utm_term,
-                                            email: email(),
-                                            landing_page_id: "lp1",
-                                            phone: phone(),
-                                            timestamp: new Date().toISOString(),
-                                            utm_source: searchParams.utm_source,
-                                        } as Events;
-
-                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/", {
-                                            method: "POST",
-                                            body: JSON.stringify(data),
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                            },
-                                        })
-                                            .then((res) =>
-                                                console.log(res.json())
-                                            )
-                                            .then((res) => console.log(res))
-                                            .catch((err) =>
-                                                console.error("Error", err)
-                                            );
-
-                                        data["event_name"] = "phone-entered";
-                                        data["clicks"] = 1;
-                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", {
-                                            method: "POST",
-                                            body: JSON.stringify(data),
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                            },
-                                        })
-                                            .then((res) =>
-                                                console.log(res.json())
-                                            )
-                                            .then((res) => console.log(res))
-                                            .catch((err) =>
-                                                console.error("Error", err)
-                                            );
-                                    }
-
-                                    if (
-                                        (flowPattern[flow()] as Flow) ===
-                                        "phone"
-                                    ) {
-                                        const data = {
-                                            ad_id: searchParams.utm_content,
-                                            campaign_id:
-                                                searchParams.utm_campaign,
-                                            adset_id: searchParams.utm_term,
-                                            email: email(),
-                                            landing_page_id: "lp1",
-                                            timestamp: new Date().toISOString(),
-                                            utm_source: searchParams.utm_source,
-                                        } as Events;
-
-                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/", {
-                                            method: "POST",
-                                            body: JSON.stringify(data),
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                            },
-                                        })
-                                            .then((res) =>
-                                                console.log(res.json())
-                                            )
-                                            .then((res) => console.log(res))
-                                            .catch((err) =>
-                                                console.error("Error", err)
-                                            );
-
-                                        data["event_name"] = "email-entered";
-                                        data["clicks"] = 1;
-
-                                        fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", {
-                                            method: "POST",
-                                            body: JSON.stringify(data),
-                                            headers: {
-                                                "Content-Type":
-                                                    "application/json",
-                                            },
-                                        });
-                                    }
- */
