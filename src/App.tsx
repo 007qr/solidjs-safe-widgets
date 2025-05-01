@@ -26,8 +26,7 @@ const FLOW_PATTERN: Flow[] = [
 ];
 
 export default function App() {
-    // const tracker = new Tracker("lp1");
-    const tracker = {};
+    const tracker = new Tracker("lp1");
 
     const [email, setEmail] = createSignal<string>("");
     const [otp, setOtp] = createSignal<string>("");
@@ -53,10 +52,10 @@ export default function App() {
                 // );
                 // storeAccessToken(accessToken);
                 // storeRefreshToken(refreshToken);
-                // tracker.trackEvent("email-entered", ["email"], [email()]);
+                tracker.trackEvent("email-entered", ["email"], [email()]);
                 break;
             case "otp": // user has successfully entered the phone and verified it
-                // tracker.trackEvent("phone-entered", ["phone"], [phone()]);
+                tracker.trackEvent("phone-entered", ["phone"], [phone()]);
                 break;
         }
 
