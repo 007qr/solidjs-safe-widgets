@@ -27,11 +27,11 @@ export default class Tracker {
     }
 
     getSessionId() {
-        const newSessionId = String(this.generateId());
-        sessionStorage.setItem("session_id", newSessionId);
-        return newSessionId;
+        let sessionId = sessionStorage.getItem("session_id") || String(this.generateId());
+        sessionStorage.setItem("session_id", sessionId);
+
+        return sessionId;
     }
-    
 
     private createSession() {
         // {lpurl}?utm_campaign={campaignid}&utm_term={adgroupid}&utm_content={creative}
