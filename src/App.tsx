@@ -4,30 +4,63 @@ import { Motion, Presence } from "solid-motionone";
 import * as Fathom from "fathom-client";
 import { AdData, Events } from "./utils/types";
 import { useParams, useSearchParams } from "@solidjs/router";
+import GPTAnimation from "./components/GPTAnimation";
+import Tracker from "./Tracker";
 
 export type Flow = "email" | "name" | "phone" | "email-otp" | "otp" | "done";
 
+const GETOTP_ENDPOINT =
+    "https://user-svc-worker.safeapp.workers.dev/signup/get-code";
+const AUTHENTICATEUSER_ENDPOINT =
+    "https://user-svc-worker.safeapp.workers.dev/authenticate/jwt";
+
 export default function App() {
+    const tracker = new Tracker("lp1");
+    const [disabled, setDisabled] = createSignal<boolean>(false);
+    const [error, setError] = createSignal<string>("");
     const [email, setEmail] = createSignal<string>("");
+    const [otp, setOtp] = createSignal<string>();
     const [name, setName] = createSignal<string>("Vish Vadlamani");
     const [phone, setPhone] = createSignal<string>("");
 
-    onMount(() => {
-        Fathom.load("WHWYFZJD");
-    });
-
-    const onUserEntered = (flow: Flow) => {
-        if (flow === "done") return;
-
-        Fathom.trackEvent(`${flow}-entered`);
-    };
-
-    const firstLine = "Hey👋 You’re new here.";
-    const secondLine = "Let’s get you setup.";
-    const flowPattern = ["name", "email", "email-otp", "phone", "otp", "done"];
+    const flowPattern: Flow[] = [
+        "name",
+        "email",
+        "email-otp",
+        "phone",
+        "otp",
+        "done",
+    ];
     const [flow, setFlow] = createSignal<number>(0);
 
     const [searchParams, setSearchParams] = useSearchParams();
+
+    const handleClick = async () => {
+        // if (disabled()) return;
+
+        setFlow((v) => (v + 1) % flowPattern.length);
+
+        switch (flowPattern[flow()]) {
+            case "email-otp": // user is requesting for otp
+                const res = await fetch(GETOTP_ENDPOINT, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                });
+
+                const jsonContent = await res.json();
+
+                if (jsonContent["status_code"] !== 200) {
+                    setError(jsonContent["error_message"]);
+                }
+                break;
+            case "phone": // user has successfully entered the email and verified it
+                tracker.trackEvent("email-entered", ["email"], [email()]);
+                break;
+            case "done": // user has successfully entered the phone and verified it
+                tracker.trackEvent("phone-entered", ["phone"], [phone()]);
+                break;
+        }
+    };
 
     return (
         <>
@@ -39,69 +72,7 @@ export default function App() {
 
             <div class="max-w-[1150px] mx-auto rounded-[32px]">
                 <h2 class="gap-2 mt-[30px] font-instrument-sans font-medium text-[48px] max-md:text-[38px] leading-[120%] tracking-[-2%] text-black/80">
-                    <For each={firstLine.split(" ")}>
-                        {(item: string, index: Accessor<number>) => (
-                            <>
-                                <span
-                                    class={`staggered-animation whitespace-pre inline-block animate-fade-in ${
-                                        item === "new"
-                                            ? "font-damion font-medium"
-                                            : ""
-                                    }`}
-                                    style={{
-                                        "animation-delay": `${
-                                            (index() + 1) * 200
-                                        }ms`,
-                                    }}
-                                >
-                                    {item}
-                                </span>
-                                <span
-                                    class="whitespace-pre inline-block animate-fade-in"
-                                    style={{
-                                        "animation-delay": `${
-                                            (index() + 1) * 100
-                                        }ms`,
-                                    }}
-                                    aria-hidden="true"
-                                >
-                                    {" "}
-                                </span>
-                            </>
-                        )}
-                    </For>
-                    <br />
-                    <For each={secondLine.split(" ")}>
-                        {(item: string, index: Accessor<number>) => (
-                            <>
-                                <span
-                                    class={`staggered-animation whitespace-pre inline-block animate-fade-in ${
-                                        item === "setup."
-                                            ? "font-damion font-medium"
-                                            : ""
-                                    }`}
-                                    style={{
-                                        "animation-delay": `${
-                                            (index() + 5) * 200
-                                        }ms`,
-                                    }}
-                                >
-                                    {item}
-                                </span>
-                                <span
-                                    class="whitespace-pre inline-block animate-fade-in"
-                                    style={{
-                                        "animation-delay": `${
-                                            (index() + 1) * 100
-                                        }ms`,
-                                    }}
-                                    aria-hidden="true"
-                                >
-                                    {" "}
-                                </span>
-                            </>
-                        )}
-                    </For>
+                    <GPTAnimation />
                 </h2>
                 <div class="bg-white mt-[152px] w-full gap-[20px] rounded-[32px] p-[32px] flex justify-between max-md:flex-wrap max-md:items-center">
                     <div class="w-full flex flex-col gap-[16px]">
@@ -373,6 +344,8 @@ export default function App() {
                                         OTP
                                     </p>
                                     <input
+                                        value={otp()}
+                                        onInput={(e) => setOtp(e.target.value)}
                                         type="text"
                                         class="font-inter text-[17px] outline-none border-none text-[##1D1D1F]"
                                         placeholder="type here"
@@ -445,6 +418,8 @@ export default function App() {
                                         OTP
                                     </p>
                                     <input
+                                        value={otp()}
+                                        onInput={(e) => setOtp(e.target.value)}
                                         type="text"
                                         class="font-inter text-[17px] outline-none border-none text-[##1D1D1F]"
                                         placeholder="type here"
@@ -455,13 +430,27 @@ export default function App() {
 
                         <div class="flex justify-end max-w-[374px] w-full mt-auto">
                             <button
-                                on:click={() => {
-                                    onUserEntered(flowPattern[flow()] as Flow);
-                                    setFlow(
-                                        (v) => (v + 1) % flowPattern.length
-                                    );
+                                on:click={handleClick}
+                                class="bg-black w-[56px] h-[56px] flex items-center justify-center rounded-full mt-auto self-end"
+                            >
+                                <img
+                                    src="/arrow-right.svg"
+                                    alt=""
+                                    class="w-[24px] h-[24px]"
+                                />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-[#f5f5f5] w-full max-w-[500px] h-[276px] rounded-[24px]"></div>
+                </div>
+            </div>
+        </>
+    );
+}
 
-                                    if (
+/**
+ * 
+ * if (
                                         (flowPattern[flow()] as Flow) ===
                                         "email"
                                     ) {
@@ -587,20 +576,4 @@ export default function App() {
                                             },
                                         });
                                     }
-                                }}
-                                class="bg-black w-[56px] h-[56px] flex items-center justify-center rounded-full mt-auto self-end"
-                            >
-                                <img
-                                    src="/arrow-right.svg"
-                                    alt=""
-                                    class="w-[24px] h-[24px]"
-                                />
-                            </button>
-                        </div>
-                    </div>
-                    <div class="bg-[#f5f5f5] w-full max-w-[500px] h-[276px] rounded-[24px]"></div>
-                </div>
-            </div>
-        </>
-    );
-}
+ */
