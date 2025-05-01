@@ -397,7 +397,9 @@ export default function App() {
                                     }}
                                     class="bg-[#F5F5F5] flex flex-col gap-0.5 justify-center p-[12px] rounded-[16px] w-[374px] h-[70px]"
                                 >
-                                    <PhoneInput />
+                                    <PhoneInput value={phone()} onChange={(fullName, isValid) => {
+                                        setPhone(fullName);
+                                    }} />
                                 </Motion.div>
                             </Show>
 
