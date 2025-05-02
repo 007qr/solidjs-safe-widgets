@@ -11,6 +11,10 @@ body {
     background: #f2f2f2;
 }
 
+div[contenteditable="true"] {
+    outline: none;
+}
+
 .font-instrument-sans {
     font-family: "Instrument Sans", sans-serif !important;
 }
@@ -74,51 +78,51 @@ body {
 
 .animate-mastercard-logo {
     animation: logoCycle 4s infinite ease-in-out;
-  }
-  
-  .animate-mastercard-text {
+}
+
+.animate-mastercard-text {
     animation: textCycle 4s infinite ease-in-out;
-  }
-  
-  @keyframes logoCycle {
+}
+
+@keyframes logoCycle {
     0% {
-      opacity: 1;
+        opacity: 1;
     }
     40% {
-      opacity: 1;
+        opacity: 1;
     }
     50% {
-      opacity: 0;
+        opacity: 0;
     }
     90% {
-      opacity: 0;
+        opacity: 0;
     }
     100% {
-      opacity: 1;
+        opacity: 1;
     }
-  }
-  
-  @keyframes textCycle {
+}
+
+@keyframes textCycle {
     0% {
-      opacity: 0;
+        opacity: 0;
     }
     45% {
-      opacity: 0;
+        opacity: 0;
     }
     55% {
-      opacity: 1;
+        opacity: 1;
     }
     85% {
-      opacity: 1;
+        opacity: 1;
     }
     95% {
-      opacity: 0;
+        opacity: 0;
     }
     100% {
-      opacity: 0;
+        opacity: 0;
     }
-  }
-  
+}
+
 @keyframes fade-in {
     from {
         opacity: 0;

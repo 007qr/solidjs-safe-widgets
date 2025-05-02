@@ -9,7 +9,7 @@ export default class Tracker {
         this.siteId = site_id;
 
         // store the session in tinybird
-        this.createSession();
+        // this.createSession();
     }
 
     private generateId() {
