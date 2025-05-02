@@ -1,7 +1,7 @@
 import { createSignal, onMount, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 
-import GPTAnimation from "./components/GPTAnimation";
+import GPTAnimationWithBlur from "./components/GPTAnimationWithBlur";
 import Tracker from "./Tracker";
 import { authenticate, refreshAccessToken, requestOtp } from "./lib/authApi";
 import {
@@ -84,7 +84,7 @@ export default function App() {
 
             <div class="max-w-[1150px] mx-auto rounded-[32px]">
                 <h2 class="gap-2 mt-[30px] font-instrument-sans font-medium text-[48px] max-md:text-[38px] leading-[120%] tracking-[-2%] text-black/80">
-                    <GPTAnimation />
+                    <GPTAnimationWithBlur />
                 </h2>
                 <div class="bg-white mt-[152px] w-full gap-[20px] rounded-[32px] p-[32px] flex justify-between max-md:flex-wrap max-md:items-center">
                     <div class="w-full flex flex-col gap-[16px]">

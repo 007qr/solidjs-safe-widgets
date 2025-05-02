@@ -24,7 +24,7 @@ export type Events = {
 };
 
 
-// export type SignUpModalFlow = "step1" | "email" | "otp" | "step3" | "joined";
+export type SignUpModalFlow = "step1" | "email" | "otp" | "step3" | "joined";
 
 export type GridLayout = {
     width: number;

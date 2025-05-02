@@ -1,6 +1,6 @@
 import { Accessor, For } from "solid-js";
 
-export default function GPTAnimation() {
+export default function GPTAnimationWithBlur() {
     const firstLine = "Hey👋 You’re new here.";
     const secondLine = "Let’s get you setup.";
     return (

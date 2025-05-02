@@ -72,17 +72,17 @@ export default class Tracker {
         let utmParams = this.getUTMParams();
 
         const data = {
-            "timestamp": new Date().toISOString(),
-            "user_id": parseInt(this.userId),
-            "session_id": parseInt(this.sessionId),
-            "event_name": event_name,
-            "campaign_id": utmParams.campaign_id,
-            "adset_id": utmParams.adset_id,
-            "ad_id": utmParams.ad_id,
-            "utm_source": utmParams.utm_source,
-            "landing_page_id": this.siteId,
-            "meta_key": meta_key,
-            "meta_value": meta_value
+            timestamp: new Date().toISOString(),
+            user_id: parseInt(this.userId),
+            session_id: parseInt(this.sessionId),
+            event_name: event_name,
+            campaign_id: utmParams.campaign_id,
+            adset_id: utmParams.adset_id,
+            ad_id: utmParams.ad_id,
+            utm_source: utmParams.utm_source,
+            landing_page_id: this.siteId,
+            meta_key: meta_key,
+            meta_value: meta_value
           };
           
           fetch("https://user-tracking-worker.aayushpatil558321.workers.dev/events", { // replace it with cloudflare worker

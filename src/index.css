@@ -62,6 +62,63 @@ body {
     animation-fill-mode: forwards;
     animation-timing-function: ease-in-out;
 }
+
+.gtp-style-animation {
+    opacity: 0;
+    transform: translateY(20px);
+    animation-name: fade-in;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.animate-mastercard-logo {
+    animation: logoCycle 4s infinite ease-in-out;
+  }
+  
+  .animate-mastercard-text {
+    animation: textCycle 4s infinite ease-in-out;
+  }
+  
+  @keyframes logoCycle {
+    0% {
+      opacity: 1;
+    }
+    40% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes textCycle {
+    0% {
+      opacity: 0;
+    }
+    45% {
+      opacity: 0;
+    }
+    55% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+    }
+    95% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
 @keyframes fade-in {
     from {
         opacity: 0;
