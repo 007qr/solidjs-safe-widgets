@@ -8,7 +8,6 @@ import SaveIcon from "./icons/SaveIcon";
 
 export default function AIWidget() {
     let ref!: HTMLButtonElement;
-    let containerRef!: HTMLDivElement;
     const [aiThinking, setAIThinking] = createSignal(false);
     const [visibleSteps, setVisibleSteps] = createSignal<string[]>([
         "Terms",
@@ -117,17 +116,19 @@ export default function AIWidget() {
 
                 <div class="w-[200px] flex flex-col mx-auto gap-[14px]">
                     <Show when={aiThinking()}>
-                        <div class="flex flex-col" ref={containerRef}>
+                        <div class="flex flex-col">
                             <div>
                                 <AIGeneratedText aiText={aiText} />
                             </div>
                             <div class="flex flex-col gap-[14px] pt-[8px]">
                                 <For each={visibleSteps()}>
-                                    {(step) => {
-
+                                    {(step, index) => {
                                         return (
-                                            <AISteps stepText={step} containerRef={containerRef} />
-                                        )
+                                            <AISteps
+                                                stepText={step}
+                                                delay={index()}
+                                            />
+                                        );
                                     }}
                                 </For>
                             </div>
@@ -159,37 +160,51 @@ function AIGeneratedText({ aiText }: { aiText: string }) {
 
 function AISteps({
     stepText,
-    containerRef,
+    delay = 0,
 }: {
     stepText: string;
-    containerRef?: HTMLDivElement;
-
+    delay?: number;
 }) {
+    let ref!: HTMLDivElement;
     const [doneThinking, setDoneThinking] = createSignal(false);
 
     onMount(() => {
+        const delayTimeout = 1000 * delay + 3500;
+
+        setTimeout(() => {
+            if (ref) {
+                ref.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }, delayTimeout - 1500);
+
         const timeout = setTimeout(() => {
             setDoneThinking(true);
-        }, 1000);
+        }, delayTimeout);
 
-        containerRef?.scrollTo({
-            top: 10000,
-            behavior: "smooth"
-        });
         onCleanup(() => clearTimeout(timeout));
     });
 
     return (
-        <div class="gap-[4px] flex items-center text-[12px] font-inter leading-[130%]">
-            <Presence>
-                <Show when={!doneThinking()} fallback={<SaveIcon />}>
-                    <Motion.span class="animate-spin">
-                        <Spinner />
-                    </Motion.span>
-                </Show>
-            </Presence>
-            {stepText}
-        </div>
+        <Presence>
+            <Motion.div
+                ref={ref}
+                animate={{
+                    opacity: [0, 1],
+                    transition: { duration: 0, delay: delay + 2 },
+                }}
+            >
+                <div class="gap-[4px] flex items-center text-[12px] font-inter leading-[130%]">
+                    <Presence>
+                        <Show when={!doneThinking()} fallback={<SaveIcon />}>
+                            <Motion.span class="animate-spin">
+                                <Spinner />
+                            </Motion.span>
+                        </Show>
+                    </Presence>
+                    {stepText}
+                </div>
+            </Motion.div>
+        </Presence>
     );
 }
 

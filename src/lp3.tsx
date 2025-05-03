@@ -1,7 +1,9 @@
+import AIWidget from "./components/AIWidget";
+
 export default function Lp3() {
     return (
-<>
-<h1>Landing page 3</h1>
-</>
+        <>
+            <AIWidget />
+        </>
     );
 }
