@@ -359,8 +359,11 @@ export default function App() {
                                         type="text"
                                         value={otp()}
                                         onInput={(e) => {
-                                            e.target.value.replace(/[^0-9]/g, '');
-                                            setOtp(e.target.value)
+                                            e.target.value.replace(
+                                                /[^0-9]/g,
+                                                ""
+                                            );
+                                            setOtp(e.target.value);
                                         }}
                                         name="code"
                                         id="code"
@@ -397,9 +400,12 @@ export default function App() {
                                     }}
                                     class="bg-[#F5F5F5] flex flex-col gap-0.5 justify-center p-[12px] rounded-[16px] w-[374px] h-[70px]"
                                 >
-                                    <PhoneInput value={phone()} onChange={(fullName, isValid) => {
-                                        setPhone(fullName);
-                                    }} />
+                                    <PhoneInput
+                                        value={phone()}
+                                        onChange={(fullName, isValid) => {
+                                            setPhone(fullName);
+                                        }}
+                                    />
                                 </Motion.div>
                             </Show>
 
@@ -433,8 +439,11 @@ export default function App() {
                                         type="text"
                                         value={phoneOtp()}
                                         onInput={(e) => {
-                                            e.target.value.replace(/[^0-9]/g, '')
-                                            setPhoneOtp(e.target.value)
+                                            e.target.value.replace(
+                                                /[^0-9]/g,
+                                                ""
+                                            );
+                                            setPhoneOtp(e.target.value);
                                         }}
                                         name="code"
                                         id="code"

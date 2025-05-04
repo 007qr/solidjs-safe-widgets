@@ -29,6 +29,17 @@ export default function AIWidget() {
                     "box-shadow": "0px 4px 2px 0px #00000005",
                     "-ms-overflow-style": "none",
                     "scrollbar-width": "none",
+
+                    "-webkit-mask-image": `${
+                        aiThinking()
+                            ? "linear-gradient(transparent -22%, black, transparent 113%)"
+                            : ""
+                    } `,
+                    "mask-image": `${
+                        aiThinking()
+                            ? "linear-gradient(transparent -22%, black, transparent 113%)"
+                            : ""
+                    } `,
                 }}
             >
                 <div class="flex flex-col justify-between">
@@ -114,7 +125,10 @@ export default function AIWidget() {
                     </Presence>
                 </div>
 
-                <div class="w-[200px] flex flex-col mx-auto gap-[14px]">
+                <div
+                    class="w-[200px] flex flex-col mx-auto gap-[14px] pb-[12px] "
+                    style={{}}
+                >
                     <Show when={aiThinking()}>
                         <div class="flex flex-col">
                             <div>
