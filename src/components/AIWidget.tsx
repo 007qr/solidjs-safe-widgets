@@ -104,9 +104,6 @@ export default function AIWidget({
                             }}
                         >
                             <div class="flex flex-col gap-[2px]">
-                                <p class="text-[13px] font-inter font-normal">
-                                    Pending
-                                </p>
                                 <h2 class="text-[21px] font-inter font-medium text-[#990B0B]">
                                     -$520.08
                                 </h2>
