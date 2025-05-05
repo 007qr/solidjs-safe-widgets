@@ -6,6 +6,7 @@ import MasterCardLogo from "./icons/MasterCardLogo";
 import { Presence, Motion } from "solid-motionone";
 import SaveIcon from "./icons/SaveIcon";
 import MasterCard from "./MasterCard";
+import ThreeDots from "./icons/ThreeDots";
 
 type DisputeStates =
     | "not_responded"
@@ -82,18 +83,18 @@ export default function AIWidget({
                         onClick={handleOnClick}
                         class={`outline-none cursor-pointer transition-transform duration-500 ease-in-out absolute right-0 top-0 ${
                             aiThinking()
-                                ? "-translate-x-[300px] scale-60"
+                                ? "-translate-x-[300px] scale-70"
                                 : "translate-x-0"
                         }`}
                     >
-                        <AIGif />
+                        <AIGif  width="36" height="36" />
                     </button>
                 </div>
 
                 <Presence exitBeforeEnter>
                     <Show when={!aiThinking()}>
                         <Motion.div
-                            class="flex justify-between items-end mt-[19.5%]"
+                            class="flex justify-between items-end mt-[18%]"
                             animate={{ opacity: 1 }}
                             exit={{
                                 opacity: 0,
@@ -142,7 +143,7 @@ export default function AIWidget({
 function DisputeState({ disputeState }: { disputeState: DisputeStates }) {
     return (
         <div class="flex gap-[8px]">
-            <div class="relative w-[30px] h-[30px]">
+            <div class="relative w-[36px] h-[36px]">
                 <svg
                     class={`absolute top-0 left-0 w-full h-full transform -rotate-90 ${
                         disputeState === "pending_response_from_bank" &&
@@ -263,8 +264,8 @@ function DisputeState({ disputeState }: { disputeState: DisputeStates }) {
                 </div>
             </div>
 
-            <div class="border border-[#1D1D1F14] rounded-[64px] p-[4px] cursor-pointer">
-                <ListIcon />
+            <div class="border border-[#1D1D1F14] w-[36px] h-[36px] flex items-center justify-center rounded-[64px] p-[4px] cursor-pointer">
+                <ThreeDots />
             </div>
         </div>
     );
