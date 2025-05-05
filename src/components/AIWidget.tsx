@@ -25,22 +25,19 @@ export default function AIWidget() {
     return (
         <div class="w-full h-screen flex items-center justify-center">
             <div
-                class="w-[364px] absolute p-[16px] text-[#1D1D1F] overflow-y-auto h-[170px] bg-white border border-[#1D1D1F14] rounded-[24px] leading-[130%] tracking-[0%]"
+                class="w-[364px] absolute p-[16px] text-[#1D1D1F] h-[170px] bg-white border border-[#1D1D1F14] rounded-[24px] leading-[130%] tracking-[0%]"
                 style={{
                     "box-shadow": "0px 4px 2px 0px #00000005",
                     "-ms-overflow-style": "none",
                     "scrollbar-width": "none",
 
-                    "-webkit-mask-image": `${
-                        aiThinking()
-                            ? "linear-gradient(transparent -22%, black, transparent 113%)"
-                            : "none"
-                    } `,
-                    "mask-image": `${
-                        aiThinking()
-                            ? "linear-gradient(transparent -22%, black, transparent 113%)"
-                            : "none"
-                    } `,
+                    "-webkit-mask-image": aiThinking()
+                        ? "linear-gradient(transparent -22%, black, transparent 113%)"
+                        : "none",
+                    "mask-image": aiThinking()
+                        ? "linear-gradient(transparent -22%, black, transparent 113%)"
+                        : "none",
+                    "overflow-y": aiThinking() ? "auto" : "hidden",
                 }}
             >
                 <div class="flex flex-col justify-between">
@@ -106,12 +103,56 @@ export default function AIWidget() {
                                     </h2>
                                 </div>
                                 <div class="flex gap-[8px]">
-                                    <div class="select-none cursor-pointer border border-[#1D1D1F14] rounded-[64px] flex gap-[4px] p-[4px] items-center">
-                                        <ClockIcon />
-                                        <span class="text-[13px] font-inter font-normal">
-                                            25 days
-                                        </span>
+                                    <div class="relative w-[30px] h-[30px]">
+                                        <svg
+                                            class="absolute top-0 left-0 w-full h-full transform -rotate-90"
+                                            viewBox="0 0 36 36"
+                                        >
+                                            <circle
+                                                class="text-gray-200"
+                                                stroke-width="4"
+                                                stroke="currentColor"
+                                                fill="none"
+                                                cx="18"
+                                                cy="18"
+                                                r="16"
+                                            />
+                                            <circle
+                                                class="text-[#990b0a]"
+                                                stroke-width="4"
+                                                stroke-dasharray="100"
+                                                stroke-linecap="round"
+                                                stroke="currentColor"
+                                                fill="none"
+                                                cx="18"
+                                                cy="18"
+                                                r="16"
+                                                style="stroke-dashoffset: calc(100.48 * (1 - 0.55))"
+                                            />
+                                        </svg>
+
+                                        <div class="absolute inset-0 mt-[1px] flex items-center justify-center">
+                                            <svg
+                                                class="mt-[2px] ml-[5px]"
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                            >
+                                                <path
+                                                    d="M10.0003 17.0832C13.9123 17.0832 17.0837 13.9119 17.0837 9.99984C17.0837 6.08782 13.9123 2.9165 10.0003 2.9165C6.08831 2.9165 2.91699 6.08782 2.91699 9.99984C2.91699 13.9119 6.08831 17.0832 10.0003 17.0832Z"
+                                                    stroke="black"
+                                                />
+                                                <path
+                                                    d="M10 5.83301V9.99967L12.3333 12.333"
+                                                    stroke="black"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                />
+                                            </svg>
+                                        </div>
                                     </div>
+
                                     <div class="border border-[#1D1D1F14] rounded-[64px] p-[4px] cursor-pointer">
                                         <ListIcon />
                                     </div>
@@ -121,9 +162,7 @@ export default function AIWidget() {
                     </Presence>
                 </div>
 
-                <div
-                    class="w-[200px] flex flex-col mx-auto gap-[14px] pb-[60px] pt-[30px]"
-                >
+                <div class="w-[200px] flex flex-col mx-auto gap-[14px]">
                     <Show when={aiThinking()}>
                         <div class="flex flex-col">
                             <div>
