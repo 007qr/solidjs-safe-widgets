@@ -13,7 +13,6 @@ export default function Lp3() {
                 <AIWidget disputeStates="won" />
                 <AIWidget disputeStates="lost" />
                 <AIWidget disputeStates="not_responded" />
-                <AIWidget2 />
             </div>
         </>
     );
