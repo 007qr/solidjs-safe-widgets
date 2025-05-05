@@ -5,6 +5,7 @@ import ListIcon from "./icons/ListIcon";
 import MasterCardLogo from "./icons/MasterCardLogo";
 import { Presence, Motion } from "solid-motionone";
 import SaveIcon from "./icons/SaveIcon";
+import MasterCard from "./MasterCard";
 
 export default function AIWidget() {
     let ref!: HTMLButtonElement;
@@ -33,12 +34,12 @@ export default function AIWidget() {
                     "-webkit-mask-image": `${
                         aiThinking()
                             ? "linear-gradient(transparent -22%, black, transparent 113%)"
-                            : ""
+                            : "none"
                     } `,
                     "mask-image": `${
                         aiThinking()
                             ? "linear-gradient(transparent -22%, black, transparent 113%)"
-                            : ""
+                            : "none"
                     } `,
                 }}
             >
@@ -57,12 +58,7 @@ export default function AIWidget() {
                                         },
                                     }}
                                 >
-                                    <div class="border shrink-0 border-[#1D1D1F14] w-max rounded-[4px] py-[7px] px-[2.33px] flex items-center justify-center">
-                                        <MasterCardLogo
-                                            width="23.33"
-                                            height="14.3"
-                                        />
-                                    </div>
+                                    <MasterCard number={4435} />
                                     <div>
                                         <p class="text-[13px] font-inter font-medium">
                                             Leslie Alexander
@@ -126,8 +122,7 @@ export default function AIWidget() {
                 </div>
 
                 <div
-                    class="w-[200px] flex flex-col mx-auto gap-[14px] pb-[12px] "
-                    style={{}}
+                    class="w-[200px] flex flex-col mx-auto gap-[14px] pb-[60px] pt-[30px]"
                 >
                     <Show when={aiThinking()}>
                         <div class="flex flex-col">
@@ -189,7 +184,7 @@ function AISteps({
             if (ref) {
                 ref.scrollIntoView({ behavior: "smooth", block: "start" });
             }
-        }, delayTimeout - 1500);
+        }, delayTimeout - 1250);
 
         const timeout = setTimeout(() => {
             setDoneThinking(true);
