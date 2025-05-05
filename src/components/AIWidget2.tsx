@@ -6,8 +6,9 @@ import MasterCardLogo from "./icons/MasterCardLogo";
 import { Presence, Motion } from "solid-motionone";
 import SaveIcon from "./icons/SaveIcon";
 import MasterCard from "./MasterCard";
+import ThreeDots from "./icons/ThreeDots";
 
-export default function AIWidget() {
+export default function AIWidget2() {
     let ref!: HTMLButtonElement;
     const [aiThinking, setAIThinking] = createSignal(false);
     const [visibleSteps, setVisibleSteps] = createSignal<string[]>([
@@ -24,7 +25,7 @@ export default function AIWidget() {
 
     return (
         <div
-            class="w-[364px] p-[16px] text-[#1D1D1F] h-[170px] bg-white border border-[#1D1D1F14] rounded-[24px] leading-[130%] tracking-[0%]"
+            class="w-[364px] p-[16px] text-[#1D1D1F] h-[170px] bg-white border relative border-[#1D1D1F14] rounded-[24px] leading-[130%] tracking-[0%]"
             style={{
                 "box-shadow": "0px 4px 2px 0px #00000005",
                 "-ms-overflow-style": "none",
@@ -40,7 +41,7 @@ export default function AIWidget() {
             }}
         >
             <div class="flex flex-col justify-between">
-                <div class="flex relative justify-between items-center">
+                <div class="flex relative justify-between items-end">
                     <Presence exitBeforeEnter>
                         <Show when={!aiThinking()}>
                             <Motion.div
@@ -67,23 +68,30 @@ export default function AIWidget() {
                         </Show>
                     </Presence>
 
-                    <button
-                        ref={ref}
-                        onClick={handleOnClick}
-                        class={`outline-none cursor-pointer transition-transform duration-500 ease-in-out absolute right-0 top-0 ${
-                            aiThinking()
-                                ? "-translate-x-[300px] scale-60"
-                                : "translate-x-0"
-                        }`}
-                    >
-                        <AIGif />
-                    </button>
+                    <Presence exitBeforeEnter>
+                        <Show when={!aiThinking()}>
+                            <h4 class="text-[17px] font-inter font-medium text-[#990B0B]">
+                                -$520.08
+                            </h4>
+                        </Show>
+                    </Presence>
                 </div>
 
+                <button
+                    ref={ref}
+                    onClick={handleOnClick}
+                    class={`outline-none absolute bottom-0 left-1/2 cursor-pointer transition-transform duration-500 ease-in-out ${
+                        aiThinking()
+                            ? "-translate-x-[172px] -translate-y-[124px] scale-60"
+                            : "-translate-1/2 "
+                    }`}
+                >
+                    <AIGif width="36" height="36" />
+                </button>
                 <Presence exitBeforeEnter>
                     <Show when={!aiThinking()}>
                         <Motion.div
-                            class="flex justify-between items-end mt-[16%]"
+                            class="flex justify-between items-end mt-[18%]"
                             animate={{ opacity: 1 }}
                             exit={{
                                 opacity: 0,
@@ -93,73 +101,84 @@ export default function AIWidget() {
                                 },
                             }}
                         >
-                            <div class="flex flex-col gap-[2px]">
-                                <p class="text-[13px] font-inter font-normal">
-                                    Pending
-                                </p>
-                                <h2 class="text-[21px] font-inter font-medium text-[#990B0B]">
-                                    -$520.08
-                                </h2>
-                            </div>
-                            <div class="flex gap-[8px]">
-                                <div class="relative w-[30px] h-[30px]">
+                            <div class="relative w-[36px] h-[36px]">
+                                <svg
+                                    class="absolute top-0 left-0 w-full h-full transform -rotate-90"
+                                    viewBox="0 0 36 36"
+                                >
+                                    <circle
+                                        class="text-gray-200"
+                                        stroke-width="4"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        cx="18"
+                                        cy="18"
+                                        r="16"
+                                    />
+                                    <circle
+                                        class="text-[#990b0a]"
+                                        stroke-width="4"
+                                        stroke-dasharray="100"
+                                        stroke-linecap="round"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        cx="18"
+                                        cy="18"
+                                        r="16"
+                                        style="stroke-dashoffset: calc(100.48 * (1 - 0.55))"
+                                    />
+                                </svg>
+
+                                <div class="absolute inset-0 mt-[1px] flex items-center justify-center">
                                     <svg
-                                        class="absolute top-0 left-0 w-full h-full transform -rotate-90"
-                                        viewBox="0 0 36 36"
+                                        class="mt-[2px] ml-[5px]"
+                                        width="20"
+                                        height="20"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
                                     >
-                                        <circle
-                                            class="text-gray-200"
-                                            stroke-width="4"
-                                            stroke="currentColor"
-                                            fill="none"
-                                            cx="18"
-                                            cy="18"
-                                            r="16"
+                                        <path
+                                            d="M10.0003 17.0832C13.9123 17.0832 17.0837 13.9119 17.0837 9.99984C17.0837 6.08782 13.9123 2.9165 10.0003 2.9165C6.08831 2.9165 2.91699 6.08782 2.91699 9.99984C2.91699 13.9119 6.08831 17.0832 10.0003 17.0832Z"
+                                            stroke="black"
                                         />
-                                        <circle
-                                            class="text-[#990b0a]"
-                                            stroke-width="4"
-                                            stroke-dasharray="100"
+                                        <path
+                                            d="M10 5.83301V9.99967L12.3333 12.333"
+                                            stroke="black"
                                             stroke-linecap="round"
-                                            stroke="currentColor"
-                                            fill="none"
-                                            cx="18"
-                                            cy="18"
-                                            r="16"
-                                            style="stroke-dashoffset: calc(100.48 * (1 - 0.55))"
+                                            stroke-linejoin="round"
                                         />
                                     </svg>
-
-                                    <div class="absolute inset-0 mt-[1px] flex items-center justify-center">
-                                        <svg
-                                            class="mt-[2px] ml-[5px]"
-                                            width="20"
-                                            height="20"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                        >
-                                            <path
-                                                d="M10.0003 17.0832C13.9123 17.0832 17.0837 13.9119 17.0837 9.99984C17.0837 6.08782 13.9123 2.9165 10.0003 2.9165C6.08831 2.9165 2.91699 6.08782 2.91699 9.99984C2.91699 13.9119 6.08831 17.0832 10.0003 17.0832Z"
-                                                stroke="black"
-                                            />
-                                            <path
-                                                d="M10 5.83301V9.99967L12.3333 12.333"
-                                                stroke="black"
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                            />
-                                        </svg>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="border border-[#1D1D1F14] rounded-[64px] p-[4px] cursor-pointer">
-                                    <ListIcon />
-                                </div>
+                            <div></div>
+                            <div class="border border-[#1D1D1F14] w-[36px] h-[36px] flex items-center justify-center rounded-[64px] p-[4px] cursor-pointer">
+                                <ThreeDots />
                             </div>
                         </Motion.div>
                     </Show>
                 </Presence>
             </div>
+
+            <Presence exitBeforeEnter>
+                <Show when={!aiThinking()}>
+                    <Motion.div
+                        class="absolute top-1/2 left-1/2 -translate-1/2"
+                        exit={{
+                            opacity: 0,
+                            transition: {
+                                duration: 0.35,
+                                easing: "ease-in-out",
+                            },
+                        }}
+                    >
+                        <div class="font-inter text-[13px] font-medium leading-[130%] tracking-[0%] flex gap-[4px] items-center justify-center border border-[#1D1D1F14] p-[4px] rounded-[64px]">
+                            <ClockIcon />
+                            <span>Pending</span>
+                        </div>
+                    </Motion.div>
+                </Show>
+            </Presence>
 
             <div class="w-[200px] flex flex-col mx-auto gap-[14px] pb-[60px] pt-[30px]">
                 <Show when={aiThinking()}>
