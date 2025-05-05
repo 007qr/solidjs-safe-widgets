@@ -162,7 +162,7 @@ export default function AIWidget() {
                     </Presence>
                 </div>
 
-                <div class="w-[200px] flex flex-col mx-auto gap-[14px]">
+                <div class="w-[200px] flex flex-col mx-auto gap-[14px] pb-[60px] pt-[30px]">
                     <Show when={aiThinking()}>
                         <div class="flex flex-col">
                             <div>
