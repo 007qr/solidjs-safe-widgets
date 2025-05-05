@@ -9,11 +9,11 @@ export default function Lp3() {
             <div class="max-w-[1200px] mx-auto flex-wrap gap-7 w-full h-screen flex items-center justify-center">
                 {/* <StopperForm /> */}
                 <DescriptorWidget />
-                {/* <AIWidget disputeStates="pending_response_from_bank" />
+                <AIWidget disputeStates="pending_response_from_bank" />
                 <AIWidget disputeStates="won" />
                 <AIWidget disputeStates="lost" />
-                <AIWidget disputeStates="not_responded" /> */}
-                {/* <AIWidget2 /> */}
+                <AIWidget disputeStates="not_responded" />
+                <AIWidget2 />
             </div>
         </>
     );
