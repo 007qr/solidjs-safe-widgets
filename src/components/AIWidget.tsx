@@ -93,7 +93,7 @@ export default function AIWidget({
                 <Presence exitBeforeEnter>
                     <Show when={!aiThinking()}>
                         <Motion.div
-                            class="flex justify-between items-end mt-[16%]"
+                            class="flex justify-between items-end mt-[19.5%]"
                             animate={{ opacity: 1 }}
                             exit={{
                                 opacity: 0,
