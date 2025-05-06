@@ -1,9 +1,10 @@
 import { createSignal, Show } from "solid-js";
 
 export default function P1() {
-    const [descriptor, setDescriptor]  = createSignal<string>('');
-    const [contact, setContact]  = createSignal<string>('');
+    const [descriptor, setDescriptor] = createSignal<string>("");
+    const [contact, setContact] = createSignal<string>("");
     const [isEditingContact, setIsEditingContact] = createSignal(false);
+    const [showDescriptorLabel, setShowDescriptorLabel] = createSignal(true);
 
     const triggerAnimation = (direction: "up" | "reverse") => {
         const descriptorEl = document.getElementById("descriptor");
@@ -25,7 +26,13 @@ export default function P1() {
     return (
         <div class="bg-[#F5F5F5] relative flex flex-col justify-center p-[8px] rounded-[16px] w-full max-w-[332px] h-[54px] tracking-[0%] leading-[130%]">
             <div>
-                <p class="text-[#6B6B6B] select-none text-[12px] font-inter absolute top-[8px] tracking-[0%] leading-[130%]">
+                <p
+                    class={`text-[#6B6B6B] select-none text-[12px] font-inter absolute top-[8px] tracking-[0%] leading-[130%] transition-opacity duration-300`}
+                    style={{
+                        opacity: showDescriptorLabel() ? 1 : 0,
+                        "pointer-events": "none",
+                    }}
+                >
                     Enter Descriptor
                 </p>
                 <div
@@ -38,11 +45,16 @@ export default function P1() {
                             setDescriptor(e.target.value ?? "");
                         }}
                         style={{
-                            width: `${!isEditingContact()  ? ((descriptor() || "Descriptor").length + 10) : ((descriptor() || "Descriptor").length + 6)}ch`, // +1 for buffer
-                          }}
+                            width: `${
+                                !isEditingContact()
+                                    ? (descriptor() || "Descriptor").length + 10
+                                    : (descriptor() || "Descriptor").length + 1
+                            }ch`, // +1 for buffer
+                        }}
                         type="text"
                         placeholder="Descriptor"
-                        class="whitespace-pre border-none flex-grow  outline-none font-inter text-[#1d1d1f] font-[15px] leading-[130%] tracking-[0%]"
+                        class="border-none outline-none font-inter text-[#1d1d1f] font-[15px] leading-[130%] tracking-[0%]
+           max-w-[200px] overflow-hidden whitespace-nowrap text-ellipsis"
                     />
                     <Show when={isEditingContact()}>
                         <button
@@ -50,6 +62,7 @@ export default function P1() {
                             onClick={() => {
                                 triggerAnimation("reverse");
                                 setIsEditingContact(false);
+                                setShowDescriptorLabel(true);
                             }}
                         >
                             <EditIcon />
@@ -57,18 +70,17 @@ export default function P1() {
                     </Show>
                 </div>
 
-                <div
-                    class="flex gap-[8px] absolute top-[26px]"
-                    id="contact"
-                >
+                <div class="flex gap-[8px] absolute top-[26px]" id="contact">
                     <input
                         disabled={!isEditingContact()}
                         onInput={(e) => {
                             setContact(e.target.value ?? "");
                         }}
                         style={{
-                            width: `${(contact() || "Descriptor").length + 1}ch`, // +1 for buffer
-                          }}
+                            width: `${
+                                (contact() || "Descriptor").length + 1
+                            }ch`, // +1 for buffer
+                        }}
                         type="text"
                         placeholder="Enter Contact"
                         class="whitespace-pre border-none flex-grow  outline-none font-inter text-[#1d1d1f] font-[15px] leading-[130%] tracking-[0%]"
@@ -77,9 +89,10 @@ export default function P1() {
             </div>
 
             <button
-                onClick={() => {
+                on:click={() => {
                     triggerAnimation("up");
                     setIsEditingContact(true);
+                    setTimeout(() => setShowDescriptorLabel(false), 300);
                 }}
                 class="absolute bottom-[8px] right-[8px] bg-black cursor-pointer w-[20px] h-[20px] flex items-center justify-center rounded-[24px]"
             >
