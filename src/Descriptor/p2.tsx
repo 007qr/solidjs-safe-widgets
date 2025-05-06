@@ -1,15 +1,23 @@
 import { createSignal, For, Show } from "solid-js";
-import { Motion } from "solid-motionone";
+import { Motion, Presence } from "solid-motionone";
 import P1 from "./p1";
+import LeftArrow from "../components/icons/LeftArrow";
+import AddBulkDescriptor from "./AddBulkDescriptor";
 
-type Flow = "first" | "second" | "third" | "fourth";
+export type DescriptorFlow =
+    | "first"
+    | "second"
+    | "third"
+    | "fourth"
+    | "add_bulk"
+    | "list_descriptors";
 
 export default function P2() {
     const text1 = "Here’s how it works —";
     const text2 =
         "We monitor the name your customers see on their bank statements. Then, we intercept any disputes before they hurt you.";
 
-    const [flow, setFlow] = createSignal<Flow>("third");
+    const [flow, setFlow] = createSignal<DescriptorFlow>("add_bulk");
 
     function goBack() {
         setFlow((prev) => {
@@ -22,194 +30,219 @@ export default function P2() {
     return (
         <>
             <div
-                class="w-[364px] h-[364px] bg-white rounded-[24px] border border-[#1D1D1F14] flex flex-col relative"
+                class={`${
+                    flow() === "add_bulk" ? "p-[16px]" : ""
+                } w-[364px] h-[364px] bg-white rounded-[24px] border border-[#1D1D1F14] flex flex-col relative`}
                 style="box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.02);"
             >
-                <div>
-                    <Motion.div
-                        animate={{
-                            height:
+                <Show when={flow() !== "add_bulk"}>
+                    <div>
+                        <Motion.div
+                            animate={{
+                                height:
+                                    flow() === "first"
+                                        ? "364px"
+                                        : flow() === "second" ||
+                                          flow() === "fourth"
+                                        ? "288px"
+                                        : "124px",
+                                background:
+                                    flow() === "first"
+                                        ? "radial-gradient(50% 50% at 50% 50%, #F7E1B7 0%, #FFFFFF 100%)"
+                                        : "linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)",
+                            }}
+                            class={`${
+                                flow() !== "first"
+                                    ? "rounded-t-[24px]"
+                                    : "rounded-[24px]"
+                            } ${
                                 flow() === "first"
-                                    ? "364px"
-                                    : flow() === "second" || flow() === "fourth"
-                                    ? "288px"
-                                    : "124px",
-                            background:
-                                flow() === "first"
-                                    ? "radial-gradient(50% 50% at 50% 50%, #F7E1B7 0%, #FFFFFF 100%)"
-                                    : "linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)",
-                        }}
-                        class={`${
-                            flow() !== "first"
-                                ? "rounded-t-[24px]"
-                                : "rounded-[24px]"
-                        } ${
-                            flow() === "first"
-                                ? "items-center justify-center"
-                                : ""
-                        } 
+                                    ? "items-center justify-center"
+                                    : ""
+                            } 
                             ${
                                 flow() === "fourth"
                                     ? "items-center justify-between"
                                     : ""
                             }
                         relative p-[16px] w-full flex flex-col gap-[16px]`}
-                        style="background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);"
-                    >
-                        <Show when={flow() === "first"}>
-                            <h1
-                                class="w-[222px] text-center font-bold text-[33px] leading-[110%] tracking-[0%] text-[rgba(0,0,0,0.6)] "
-                                style="backdrop-filter: blur(48px)"
+                            style="background: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);"
+                        >
+                            <Show when={flow() === "first"}>
+                                <h1
+                                    class="w-[222px] text-center font-bold text-[33px] leading-[110%] tracking-[0%] text-[rgba(0,0,0,0.6)] "
+                                    style="backdrop-filter: blur(48px)"
+                                >
+                                    Prevent Chargebacks with AI
+                                </h1>
+                            </Show>
+
+                            <Show
+                                when={flow() !== "first" && flow() != "fourth"}
                             >
-                                Prevent Chargebacks with AI
-                            </h1>
-                        </Show>
+                                <div class="flex justify-between items-center">
+                                    <Show when={flow() !== "fourth"}>
+                                        <button on:click={() => goBack()} class="cursor-pointer">
+                                            <LeftArrow />
+                                        </button>
+                                    </Show>
+                                    <Show when={flow() == "second"}>
+                                        <button class="font-inter text-[13px] font-medium text-[#494949] self-end">
+                                            Skip
+                                        </button>
+                                    </Show>
+                                </div>
+                            </Show>
+                            <Show when={flow() === "third"}>
+                                <div class="absolute top-1/2 left-1/2 -translate-1/2">
+                                    <DescriptorText name="NETFLIX.COM" />
+                                </div>
+                            </Show>
 
-                        <Show when={flow() !== "first" && flow() != "fourth"}>
-                            <div class="flex justify-between items-center">
-                                <Show when={flow() !== "fourth"}>
-                                    <button on:click={() => goBack()}>
-                                        <LeftArrow />
-                                    </button>
-                                </Show>
-                                <Show when={flow() == "second"}>
-                                    <button class="font-inter text-[13px] font-medium text-[#494949] self-end">
-                                        Skip
-                                    </button>
-                                </Show>
-                            </div>
-                        </Show>
+                            <Show when={flow() === "second"}>
+                                <div class="flex flex-col gap-[16px]">
+                                    <span>
+                                        <For each={text1.split(" ")}>
+                                            {(el, index) => {
+                                                const isBold =
+                                                    el === "how" ||
+                                                    el === "it" ||
+                                                    el === "works" ||
+                                                    el === "—";
+                                                return (
+                                                    <>
+                                                        <span
+                                                            style={{
+                                                                "animation-delay": `${
+                                                                    300 +
+                                                                    index() *
+                                                                        150
+                                                                }ms`,
+
+                                                                "font-weight": `${
+                                                                    isBold
+                                                                        ? "500"
+                                                                        : ""
+                                                                }`,
+                                                            }}
+                                                            class="animate-fade-in whitespace-pre text-[15px] leading-[150%] tracking-[0] text-[#1d1df] font-inter   "
+                                                        >
+                                                            {el}
+                                                        </span>
+                                                        <span> </span>
+                                                    </>
+                                                );
+                                            }}
+                                        </For>
+                                    </span>
+                                    <span>
+                                        <For each={text2.split(" ")}>
+                                            {(el, index) => {
+                                                const isBold =
+                                                    el === "monitor" ||
+                                                    el === "intercept";
+
+                                                return (
+                                                    <>
+                                                        <span
+                                                            style={{
+                                                                "animation-delay": `${
+                                                                    800 +
+                                                                    index() *
+                                                                        150
+                                                                }ms`,
+
+                                                                "font-weight": `${
+                                                                    isBold
+                                                                        ? "500"
+                                                                        : ""
+                                                                }`,
+                                                            }}
+                                                            class="animate-fade-in whitespace-pre text-[15px] leading-[150%] tracking-[0] text-[#1d1df] font-inter   "
+                                                        >
+                                                            {el}
+                                                        </span>
+                                                        <span> </span>
+                                                    </>
+                                                );
+                                            }}
+                                        </For>
+                                    </span>
+                                </div>
+                            </Show>
+
+                            <Show when={flow() === "fourth"}>
+                                <h3 class="mt-[35px] text-[21px] font-medium leading-[130%] tracking-[0%] text-[#1D1D1F] font-inter text-center">
+                                    You’re all set!
+                                </h3>
+                                <p class="text-center font-inter text-[13px] leading-[130%] tracking-[0%] pb-[7px]">
+                                    Your Payment Descriptors are added. We’ll
+                                    let you know if anything else is needed.
+                                </p>
+                            </Show>
+                        </Motion.div>
                         <Show when={flow() === "third"}>
-                            <div class="absolute top-1/2 left-1/2 -translate-1/2">
-                                <DescriptorText name="NETFLIX.COM" />
+                            <div class="flex flex-col p-[16px] gap-[16px]">
+                                <div class="flex justify-between w-full">
+                                    <p class="text-[15px] font-inter font-medium text-[#1d1d1f]">
+                                        Add Descriptor
+                                    </p>
+                                    <p
+                                        class="text-[13px] font-inter font-medium text-[#1d1d1f] cursor-pointer"
+                                        on:click={(e) => setFlow("add_bulk")}
+                                    >
+                                        + Add bulk
+                                    </p>
+                                </div>
+                                <P1 />
                             </div>
                         </Show>
+                    </div>
 
-                        <Show when={flow() === "second"}>
-                            <div class="flex flex-col gap-[16px]">
-                                <span>
-                                    <For each={text1.split(" ")}>
-                                        {(el, index) => {
-                                            const isBold =
-                                                el === "how" ||
-                                                el === "it" ||
-                                                el === "works" ||
-                                                el === "—";
-                                            return (
-                                                <>
-                                                    <span
-                                                        style={{
-                                                            "animation-delay": `${
-                                                                300 +
-                                                                index() * 150
-                                                            }ms`,
+                    <Show when={flow() !== "first"}>
+                        <button
+                            class="cursor-pointer absolute w-[332px] outline-none bottom-[16px] mx-[16px] text-[13px] bg-[#ececec] rounded-[12px] p-[12px] leading-[110%] tracking-[-2%] font-medium font-inter"
+                            on:click={(e) => {
+                                if (flow() === "second")
+                                    return setFlow("third");
+                                if (flow() === "third")
+                                    return setFlow("fourth");
+                            }}
+                        >
+                            {flow() === "second"
+                                ? "Continue"
+                                : flow() === "third"
+                                ? "Finish Setup"
+                                : "Done"}
+                        </button>
+                    </Show>
 
-                                                            "font-weight": `${
-                                                                isBold
-                                                                    ? "500"
-                                                                    : ""
-                                                            }`,
-                                                        }}
-                                                        class="animate-fade-in whitespace-pre text-[15px] leading-[150%] tracking-[0] text-[#1d1df] font-inter   "
-                                                    >
-                                                        {el}
-                                                    </span>
-                                                    <span> </span>
-                                                </>
-                                            );
-                                        }}
-                                    </For>
-                                </span>
-                                <span>
-                                    <For each={text2.split(" ")}>
-                                        {(el, index) => {
-                                            const isBold =
-                                                el === "monitor" ||
-                                                el === "intercept";
-
-                                            return (
-                                                <>
-                                                    <span
-                                                        style={{
-                                                            "animation-delay": `${
-                                                                800 +
-                                                                index() * 150
-                                                            }ms`,
-
-                                                            "font-weight": `${
-                                                                isBold
-                                                                    ? "500"
-                                                                    : ""
-                                                            }`,
-                                                        }}
-                                                        class="animate-fade-in whitespace-pre text-[15px] leading-[150%] tracking-[0] text-[#1d1df] font-inter   "
-                                                    >
-                                                        {el}
-                                                    </span>
-                                                    <span> </span>
-                                                </>
-                                            );
-                                        }}
-                                    </For>
-                                </span>
-                            </div>
-                        </Show>
-
-                        <Show when={flow() === "fourth"}>
-                            <h3 class="mt-[35px] text-[21px] font-medium leading-[130%] tracking-[0%] text-[#1D1D1F] font-inter text-center">
-                                You’re all set!
-                            </h3>
-                            <p class="text-center font-inter text-[13px] leading-[130%] tracking-[0%] pb-[7px]">
-                                Your Payment Descriptors are added. We’ll let
-                                you know if anything else is needed.
-                            </p>
-                        </Show>
-                    </Motion.div>
-                    <Show when={flow() === "third"}>
-                        <div class="flex flex-col p-[16px] gap-[16px]">
-                            <div class="flex justify-between w-full">
-                                <p class="text-[15px] font-inter font-medium text-[#1d1d1f]">
-                                    Add Descriptor
-                                </p>
-                                <p class="text-[13px] font-inter font-medium text-[#1d1d1f]">
-                                    + Add bulk
-                                </p>
-                            </div>
-                            <P1 />
+                    <Show when={flow() === "first"}>
+                        <div class="absolute flex justify-end max-w-[374px] w-full mt-auto z-10 bottom-[16px] right-[16px]">
+                            <button
+                                on:click={() => setFlow("second")}
+                                class="bg-black cursor-pointer  w-[56px] h-[56px] flex items-center justify-center rounded-full mt-auto self-end"
+                            >
+                                <img
+                                    src="/arrow-right.svg"
+                                    alt=""
+                                    class="w-[24px] h-[24px]"
+                                />
+                            </button>
                         </div>
                     </Show>
-                </div>
-
-                <Show when={flow() !== "first"}>
-                    <button
-                        class="absolute w-[332px] outline-none bottom-[16px] mx-[16px] text-[13px] bg-[#ececec] rounded-[12px] p-[12px] leading-[110%] tracking-[-2%] font-medium font-inter"
-                        on:click={(e) => {
-                            if (flow() === "second") return setFlow("third");
-                            if (flow() === "third") return setFlow("fourth");
-                        }}
-                    >
-                        {flow() === "second"
-                            ? "Continue"
-                            : flow() === "third"
-                            ? "Finish Setup"
-                            : "Done"}
-                    </button>
                 </Show>
 
-                <Show when={flow() === "first"}>
-                    <div class="absolute flex justify-end max-w-[374px] w-full mt-auto z-10 bottom-[16px] right-[16px]">
-                        <button
-                            on:click={() => setFlow("second")}
-                            class="bg-black w-[56px] h-[56px] flex items-center justify-center rounded-full mt-auto self-end"
+                <Presence exitBeforeEnter>
+                    <Show when={flow() === "add_bulk"}>
+                        <Motion.div
+                            class="w-full h-full"
+                            animate={{ opacity: [0, 1], transition: {duration: .3, easing: 'ease-in-out'} }}
                         >
-                            <img
-                                src="/arrow-right.svg"
-                                alt=""
-                                class="w-[24px] h-[24px]"
-                            />
-                        </button>
-                    </div>
-                </Show>
+                            <AddBulkDescriptor flow={flow} setFlow={setFlow} />
+                        </Motion.div>
+                    </Show>
+                </Presence>
             </div>
         </>
     );
@@ -228,26 +261,6 @@ function DescriptorText({ name }: { name: string }) {
                 </div>
             </div>
         </>
-    );
-}
-
-function LeftArrow() {
-    return (
-        <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M12.917 15L7.91699 10L12.917 5"
-                stroke="#1D1D1F"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-        </svg>
     );
 }
 

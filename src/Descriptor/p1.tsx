@@ -24,7 +24,7 @@ export default function P1() {
     };
 
     return (
-        <div class="bg-[#F5F5F5] relative flex flex-col justify-center p-[8px] rounded-[16px] w-full max-w-[332px] h-[54px] tracking-[0%] leading-[130%]">
+        <div class="bg-[#F5F5F5] min-h-[54px] relative flex flex-col justify-center p-[8px] rounded-[16px] w-full max-w-[332px] h-[54px] tracking-[0%] leading-[130%]">
             <div>
                 <p
                     class={`text-[#6B6B6B] select-none text-[12px] font-inter absolute top-[8px] tracking-[0%] leading-[130%] transition-opacity duration-300`}
@@ -36,7 +36,7 @@ export default function P1() {
                     Enter Descriptor
                 </p>
                 <div
-                    class="flex gap-[8px] absolute top-[26px] z-10 bg-[#f5f5f5]"
+                    class="flex absolute top-[26px] z-10 bg-[#f5f5f5]"
                     id="descriptor"
                 >
                     <input

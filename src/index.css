@@ -52,6 +52,14 @@ div[contenteditable="true"] {
     animation-delay: -0.5s;
 }
 
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scrollbar {
+    scrollbar-width: none
+}
+
 .animate-fade-in {
     opacity: 0;
     animation: fade-in 1s steps(45, end) forwards;
@@ -97,7 +105,7 @@ div[contenteditable="true"] {
 @keyframes move-up {
     0% {
         transform: translate3d(0px, 0px, 0px);
-        font-size:15px;
+        font-size: 15px;
         color: #1d1d1f;
     }
 
