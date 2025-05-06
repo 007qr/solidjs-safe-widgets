@@ -84,6 +84,31 @@ div[contenteditable="true"] {
     animation: textCycle 4s infinite ease-in-out;
 }
 
+.animate-move-up {
+    color: #6b6b6b;
+    animation: move-up 500ms ease-in-out forwards;
+}
+
+.animate-move-up-reverse {
+    color: #1d1d1f;
+    animation: move-up 300ms ease-in reverse forwards;
+}
+
+@keyframes move-up {
+    0% {
+        transform: translate3d(0px, 0px, 0px);
+        font-size:15px;
+        color: #1d1d1f;
+    }
+
+    100% {
+        transform: translate3d(0.5px, -19px, 0px);
+        background-color: #f5f5f5;
+        font-size: 12px;
+        color: #6b6b6b;
+    }
+}
+
 @keyframes logoCycle {
     0% {
         opacity: 1;
