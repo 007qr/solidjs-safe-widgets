@@ -1,4 +1,3 @@
-import useStytch from "../../../hooks/useStytch";
 import { storeAccessToken, storeRefreshToken } from "../../../lib/auth";
 import { authenticate } from "../../../lib/authApi";
 import { SignUpModalFlow } from "../../../utils/types";
@@ -49,7 +48,7 @@ export default function OTP({
 
     return (
         <Show when={!isLoading()} fallback={<Loader />}>
-            <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px] items-center">
+            <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px] max-md:p-[20px] items-center">
             <div>
                 <h3 class="text-[31px] font-semibold tracking-tighter leading-[150%]">
                     Check you email

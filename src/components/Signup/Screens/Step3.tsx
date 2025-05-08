@@ -62,7 +62,7 @@ export default function Step3({
     return (
         <>
             <Show when={!isLoading()} fallback={<Loader />}>
-                <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px]">
+                <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px] max-md:p-[20px]">
                     <div class="">
                         <h3 class="text-[31px] font-semibold tracking-tighter leading-[150%]">
                             Get some more details

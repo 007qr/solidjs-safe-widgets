@@ -7,7 +7,7 @@ import Logo from "./components/icons/Logo";
 import Carousel, { CarouselItem } from "./components/Carousel";
 import { AdData, SignUpModalFlow } from "./utils/types";
 import { useSearchParams } from "@solidjs/router";
-import { Component, createEffect, createSignal, For } from "solid-js";
+import { Component, createSignal, For } from "solid-js";
 
 // Type for carousel item props
 type CarouselItemProps = {
@@ -16,12 +16,11 @@ type CarouselItemProps = {
 
 const App: Component = () => {
     const [searchParams] = useSearchParams<AdData>();
-    const [flow, setFlow] = createSignal<SignUpModalFlow>("step1");
+    const [flow, setFlow] = createSignal<SignUpModalFlow>("joined");
     const [methodId, setMethodId] = createSignal<string>("");
     const [userId, setUserId] = createSignal<string>("");
 
 
-    // Define carousel card items
     const cardItems: CarouselItem[] = [
         // Hero card
         ({ onNext }: CarouselItemProps) => (
@@ -98,30 +97,6 @@ const App: Component = () => {
         }
         return item;
     };
-
-    // This function is for tracking user
-    // createEffect(async () => {
-    //     if (Object.keys(searchParams).length > 0) {
-    //         try {
-    //             const response = await fetch(
-    //                 "https://user-svc-worker.safeapp.workers.dev/api/add-pending-user",
-    //                 {
-    //                     method: "POST",
-    //                     headers: { "Content-Type": "application/json" },
-    //                     body: JSON.stringify({
-    //                         ...searchParams,
-    //                         email: `test-ayush${Math.random()}@gmail.com`, // REMOVE this if you are in production
-    //                     }),
-    //                 }
-    //             );
-    //             console.log("API Response:", await response.json());
-    //         } catch (error) {
-    //             console.error("Tracking failed:", error);
-    //         }
-    //     } else {
-    //         console.error("No search params");
-    //     }
-    // });
 
     return (
         <div class="flex flex-col max-lg:gap-[60px] bg-[#F5F5F5] w-full max-lg:pt-[100px] max-lg:pb-12">

@@ -3,7 +3,6 @@
 import { Accessor, createMemo, createSignal, Show } from "solid-js";
 import { Setter } from "solid-js";
 import { SignUpModalFlow } from "../../../utils/types";
-import useStytch from "../../../hooks/useStytch";
 import { requestOtp } from "../../../lib/authApi";
 import { Loader } from "../../BigCard";
 
@@ -56,7 +55,7 @@ export default function Email({
     };
     return (
         <Show when={!isLoading()} fallback={<Loader />}>
-            <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px]">
+            <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px] max-md:p-[20px]">
                 <div class="">
                     <h3 class="text-[31px] font-semibold tracking-tighter leading-[150%]">
                         Enter your email

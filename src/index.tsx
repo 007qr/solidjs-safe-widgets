@@ -36,7 +36,7 @@ render(
                 path="/lp1"
                 component={lazy(() => import("./landing-page1"))}
             />
-            {/* <Route path="/lp3" component={lazy(() => import("./lp3"))} /> */}
+            <Route path="/lp3" component={lazy(() => import("./lp3"))} />
         </Router>
     ),
     root!

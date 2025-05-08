@@ -16,7 +16,7 @@ export default function Joined() {
     });
 
     return (
-        <div class="flex flex-col h-full w-full -mt-[16px] bg-white p-[70px] max-md:p-[40px] items-center justify-center">
+        <div class="flex flex-col h-full w-full -mt-[16px] bg-white p-[70px] max-md:p-[20px] items-center justify-center">
             <div class="flex flex-col gap-[16px] font-inter items-center">
                 <h4 class="text-[23px] font-medium">Get the Safe App Business</h4>
                 <h4 class="text-[15px] hidden max-md:block">Check it out in the app store</h4>
