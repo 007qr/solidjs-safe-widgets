@@ -15,7 +15,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 render(
     () => (
         <Router>
-            <Route
+            {/* <Route
                 path="/"
                 component={() => (
                     <h2 class="text-3xl font-bold font-inter flex flex-col gap-4">
@@ -30,10 +30,10 @@ render(
                         </A>
                     </h2>
                 )}
-            />
-            <Route path="/lp1" component={lazy(() => import("./App"))} />
+            /> */}
+            {/* <Route path="/lp1" component={lazy(() => import("./App"))} /> */}
             <Route
-                path="/lp2"
+                path="/lp1"
                 component={lazy(() => import("./landing-page1"))}
             />
             <Route path="/lp3" component={lazy(() => import("./lp3"))} />
