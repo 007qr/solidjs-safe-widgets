@@ -41,9 +41,6 @@ jobs:
             - name: Remove existing .vercel directory
               run: rm -rf .vercel
               
-            - name: Select Vercel Config
-              run: cp vercel.main.json vercel.json
-
             - name: Pull Vercel Environment Information
               run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --debug
 
