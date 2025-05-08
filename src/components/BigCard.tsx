@@ -1,5 +1,6 @@
 import { Accessor, createSignal, lazy, Setter, Show, Suspense } from "solid-js";
 import { SignUpModalFlow } from "../utils/types";
+import Tracker from "../lib/tracker";
 
 const Step1 = lazy(() => import("./Signup/Screens/Step1"));
 const Email = lazy(() => import("./Signup/Screens/Email"));
@@ -35,6 +36,8 @@ export default function BigCard({
     setUserId,
     userId,
 }: Props) {
+    // Intializing tracker here cause it's easier 
+    const tracker = new Tracker("lp1");
     const [email, setEmail] = createSignal<string>("");
 
     return (
@@ -55,12 +58,12 @@ export default function BigCard({
             </Show>
             <Show when={flow() == "otp"}>
                 <Suspense fallback={<Loader />}>
-                    <OTP methodId={methodId} setFlow={setFlow} email={email} />
+                    <OTP methodId={methodId} setFlow={setFlow} email={email} tracker={tracker} />
                 </Suspense>
             </Show>
             <Show when={flow() == "step3"}>
                 <Suspense fallback={<Loader />}>
-                    <Step3 setFlow={setFlow} email={email} userId={userId} />
+                    <Step3 setFlow={setFlow} email={email} userId={userId} tracker={tracker} />
                 </Suspense>
             </Show>
             <Show when={flow() == "joined"}>

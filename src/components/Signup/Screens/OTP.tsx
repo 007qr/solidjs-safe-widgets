@@ -1,5 +1,6 @@
 import { storeAccessToken, storeRefreshToken } from "../../../lib/auth";
 import { authenticate } from "../../../lib/authApi";
+import Tracker from "../../../lib/tracker";
 import { SignUpModalFlow } from "../../../utils/types";
 import { Loader } from "../../BigCard";
 import OTPInputComponent from "../../OTPInputComponent";
@@ -8,11 +9,13 @@ import { Accessor, createSignal, Setter, Show } from "solid-js";
 export default function OTP({
     methodId,
     setFlow,
-    email
+    email,
+    tracker
 }: {
     email: Accessor<string>;
     methodId: Accessor<string>;
     setFlow: Setter<SignUpModalFlow>;
+    tracker: Tracker
 }) {
     const [isLoading, setIsLoading] = createSignal<boolean>(false);
     const [otp, setOTP] = createSignal<string>("");
@@ -38,6 +41,8 @@ export default function OTP({
                 storeAccessToken(accessToken);
                 storeRefreshToken(refreshToken);
                 setFlow("step3");
+                
+                tracker.trackEvent("email-entered", ['email'], [email()])
             } catch (err) {
                 setError(true);
             } finally {

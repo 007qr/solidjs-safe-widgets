@@ -1,14 +1,10 @@
 "use client";
 
-import { Accessor, createMemo, createSignal, Show } from "solid-js";
+import { Accessor, createSignal, Show } from "solid-js";
 import { Setter } from "solid-js";
 import { SignUpModalFlow } from "../../../utils/types";
 import { requestOtp } from "../../../lib/authApi";
 import { Loader } from "../../BigCard";
-
-function isValidEmail(email: string) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
 
 export default function Email({
     setMethodId,
@@ -23,12 +19,10 @@ export default function Email({
     setMethodId: Setter<string>;
     setUserId: Setter<string>;
 }) {
-    // const [valid, setValid] = createSignal<boolean>(false);
     const [isLoading, setIsLoading] = createSignal<boolean>(false);
     const [emailError, setEmailError] = createSignal<string>("");
 
     const validateEmail = () => {
-        // More comprehensive email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email())) {
             setEmailError("Please enter a valid email address");

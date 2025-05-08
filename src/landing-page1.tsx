@@ -5,8 +5,7 @@ import Connect from "./components/icons/Connect";
 import TestimonialCard from "./components/TestimonialCard";
 import Logo from "./components/icons/Logo";
 import Carousel, { CarouselItem } from "./components/Carousel";
-import { AdData, SignUpModalFlow } from "./utils/types";
-import { useSearchParams } from "@solidjs/router";
+import { SignUpModalFlow } from "./utils/types";
 import { Component, createSignal, For } from "solid-js";
 
 // Type for carousel item props
@@ -15,7 +14,6 @@ type CarouselItemProps = {
 };
 
 const App: Component = () => {
-    const [searchParams] = useSearchParams<AdData>();
     const [flow, setFlow] = createSignal<SignUpModalFlow>("step1");
     const [methodId, setMethodId] = createSignal<string>("");
     const [userId, setUserId] = createSignal<string>("");

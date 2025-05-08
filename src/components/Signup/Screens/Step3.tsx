@@ -4,15 +4,18 @@ import PhoneInput from "../../phone-input/phone-input";
 import { Loader } from "../../BigCard";
 import { getAccessToken } from "../../../lib/auth";
 import { createUser } from "../../../lib/authApi";
+import Tracker from "../../../lib/tracker";
 
 export default function Step3({
     email,
     userId,
     setFlow,
+    tracker
 }: {
     email: Accessor<string>;
     userId: Accessor<string>;
     setFlow: Setter<SignUpModalFlow>;
+    tracker: Tracker
 }) {
     const [isLoading, setIsLoading] = createSignal<boolean>(false);
     const [name, setName] = createSignal<string>("");
@@ -51,6 +54,7 @@ export default function Step3({
                 const res = await createUser(email(), phone(), name(), userId(), token);
                 console.log(res);
                 setFlow("joined");
+                tracker.trackEvent("phone-entered", ['phone'], [phone()])
             } catch (err) {
                 setPhoneError("Failed to register phone. Please try again.");
                 console.log(err);

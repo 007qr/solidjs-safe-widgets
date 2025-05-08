@@ -1,4 +1,4 @@
-import { Setter, useContext } from "solid-js";
+import { Setter } from "solid-js";
 import ArrowForward from "../../icons/ArrowForward";
 import { SignUpModalFlow } from "../../../utils/types";
 
