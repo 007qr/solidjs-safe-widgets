@@ -13,9 +13,11 @@ interface Props {
     flow: Accessor<string>;
     methodId: Accessor<string>;
     setMethodId: Setter<string>;
+    setUserId: Setter<string>;
+    userId: Accessor<string>
 }
 
-function Loader() {
+export function Loader() {
     return (
         <div class="lds-ripple">
             <div></div>
@@ -30,6 +32,8 @@ export default function BigCard({
     title,
     methodId,
     setMethodId,
+    setUserId,
+    userId,
 }: Props) {
     const [email, setEmail] = createSignal<string>("");
 
@@ -45,17 +49,18 @@ export default function BigCard({
                         setFlow={setFlow}
                         setEmail={setEmail}
                         setMethodId={setMethodId}
+                        setUserId={setUserId}
                     />
                 </Suspense>
             </Show>
             <Show when={flow() == "otp"}>
                 <Suspense fallback={<Loader />}>
-                    <OTP methodId={methodId} setFlow={setFlow} />
+                    <OTP methodId={methodId} setFlow={setFlow} email={email} />
                 </Suspense>
             </Show>
             <Show when={flow() == "step3"}>
                 <Suspense fallback={<Loader />}>
-                    <Step3 setFlow={setFlow} />
+                    <Step3 setFlow={setFlow} email={email} userId={userId} />
                 </Suspense>
             </Show>
             <Show when={flow() == "joined"}>

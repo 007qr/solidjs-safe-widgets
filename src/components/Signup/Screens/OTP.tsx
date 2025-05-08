@@ -1,34 +1,55 @@
 import useStytch from "../../../hooks/useStytch";
+import { storeAccessToken, storeRefreshToken } from "../../../lib/auth";
+import { authenticate } from "../../../lib/authApi";
 import { SignUpModalFlow } from "../../../utils/types";
+import { Loader } from "../../BigCard";
 import OTPInputComponent from "../../OTPInputComponent";
-import { Accessor, createSignal, Setter } from "solid-js";
+import { Accessor, createSignal, Setter, Show } from "solid-js";
 
 export default function OTP({
     methodId,
     setFlow,
+    email
 }: {
+    email: Accessor<string>;
     methodId: Accessor<string>;
     setFlow: Setter<SignUpModalFlow>;
 }) {
-    const stytchClient = useStytch();
+    const [isLoading, setIsLoading] = createSignal<boolean>(false);
     const [otp, setOTP] = createSignal<string>("");
     const [error, setError] = createSignal<boolean>(false);
 
-    const handleChange = (otp: string) => {
-        setOTP(otp);
-        if (otp.length === 6) {
-            const res = stytchClient.otps.authenticate(otp, methodId(), {
-                session_duration_minutes: 60,
-            });
-            
-            res.then((val) => {
+    const handleChange = async (input_otp: string) => {
+        setOTP(input_otp);
+
+        if (input_otp.length === 6) {
+            // validated it
+            setIsLoading(true);
+            try {
+                const { accessToken, refreshToken } = await authenticate(
+                    email(),
+                    otp(),
+                    methodId()
+                );
+
+                if (!accessToken || !refreshToken) {
+                    throw new Error("Authentication failed");
+                }
+
+                storeAccessToken(accessToken);
+                storeRefreshToken(refreshToken);
                 setFlow("step3");
-            }).catch((err) => setError(true));
+            } catch (err) {
+                setError(true);
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
     return (
-        <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px] items-center">
+        <Show when={!isLoading()} fallback={<Loader />}>
+            <div class="flex flex-col h-full w-full mt-[16px] bg-white p-[70px] items-center">
             <div>
                 <h3 class="text-[31px] font-semibold tracking-tighter leading-[150%]">
                     Check you email
@@ -47,5 +68,6 @@ export default function OTP({
                 />
             </div>
         </div>
+        </Show>
     );
 }

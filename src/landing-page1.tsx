@@ -16,8 +16,10 @@ type CarouselItemProps = {
 
 const App: Component = () => {
     const [searchParams] = useSearchParams<AdData>();
-    const [flow, setFlow] = createSignal<SignUpModalFlow>("step1");
+    const [flow, setFlow] = createSignal<SignUpModalFlow>("joined");
     const [methodId, setMethodId] = createSignal<string>("");
+    const [userId, setUserId] = createSignal<string>("");
+
 
     // Define carousel card items
     const cardItems: CarouselItem[] = [
@@ -83,6 +85,8 @@ const App: Component = () => {
                 flow={flow}
                 methodId={methodId}
                 setMethodId={setMethodId}
+                setUserId={setUserId}
+                userId={userId}
             />
         ),
     ];

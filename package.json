@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/qrcode": "^1.5.5",
     "typescript": "^5.7.2",
     "vite": "^6.0.0",
     "vite-plugin-solid": "^2.11.6"
@@ -29,6 +30,7 @@
     "fathom-client": "^3.7.2",
     "jwt-decode": "^4.0.0",
     "libphonenumber-js": "^1.12.7",
+    "qrcode": "^1.5.4",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.9.5",
     "solid-motionone": "^1.0.3",

@@ -23,7 +23,7 @@ export async function authenticate(
         method: "POST",
         headers: {
             "content-type": "application/json",
-            "x-email": "neveha8001@hostlace.com",
+            "x-email": email,
         },
         body: JSON.stringify({ email, code, method_id }),
     });
@@ -50,4 +50,32 @@ export async function refreshAccessToken(refreshToken: string) {
 
     const data = await res.json();
     return data.token;
+}
+
+
+export async function createUser(
+    email: string,
+    phone: string,
+    full_name: string,
+    user_id: string,
+    accessToken: string
+) {
+    const data = {
+        email,
+        phone,
+        full_name,
+        merchant_accs: 0,
+    };
+    const res = await fetch(`${API}/api/user`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "x-user-provider": user_id,
+        },
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Can't create user something went wrong");
+
+    const jsonRes = await res.json();
+    return jsonRes;
 }

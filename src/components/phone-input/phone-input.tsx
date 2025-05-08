@@ -227,7 +227,7 @@ const PhoneInput: Component<PhoneInputProps> = (props) => {
                     </button>
                     <Show when={isDropdownOpen()}>
                         <ul
-                            class="absolute w-max left-0 right-0 max-h-60 overflow-auto bg-white rounded mt-1 shadow-lg"
+                            class="z-10 absolute w-max left-0 right-0 max-h-60 overflow-auto bg-white rounded mt-1 shadow-lg"
                             role="listbox"
                         >
                             <For each={countries}>
@@ -263,11 +263,11 @@ const PhoneInput: Component<PhoneInputProps> = (props) => {
                 />
             </div>
 
-            <Show when={isTouched() && !isValid() && errorMessage()}>
+            {/* <Show when={isTouched() && !isValid() && errorMessage()}>
                 <p class="text-red-500 text-sm mt-1" role="alert">
                     {errorMessage()}
                 </p>
-            </Show>
+            </Show> */}
         </div>
     );
 };
