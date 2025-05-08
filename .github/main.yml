@@ -1,0 +1,56 @@
+name: Deploy to Vercel (main)
+
+env:
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_MAIN }}
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    Deploy-Production:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v2
+              with:
+                  node-version: '22.11.0'
+
+            - name: Setup pnpm
+              run: npm install -g pnpm@latest
+
+            - name: Configure pnpm global binary directory
+              env:
+                  SHELL: bash
+              run: |
+                  echo "PNPM_HOME=$HOME/.local/share/pnpm" >> $GITHUB_ENV
+                  echo "PATH=$HOME/.local/share/pnpm:$PATH" >> $GITHUB_ENV
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Install Vercel CLI
+              run: pnpm add -g vercel@latest
+
+            - name: Remove existing .vercel directory
+              run: rm -rf .vercel
+              
+            - name: Select Vercel Config
+              run: cp vercel.main.json vercel.json
+
+            - name: Pull Vercel Environment Information
+              run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }} --debug
+
+            - name: Build Project Artifacts
+              env:
+                  VERCEL_ENV: production
+              run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }} --debug
+
+            - name: Deploy Project Artifacts to Vercel
+              run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }} --debug
