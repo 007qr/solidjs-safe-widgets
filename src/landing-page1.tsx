@@ -16,7 +16,7 @@ type CarouselItemProps = {
 
 const App: Component = () => {
     const [searchParams] = useSearchParams<AdData>();
-    const [flow, setFlow] = createSignal<SignUpModalFlow>("joined");
+    const [flow, setFlow] = createSignal<SignUpModalFlow>("step1");
     const [methodId, setMethodId] = createSignal<string>("");
     const [userId, setUserId] = createSignal<string>("");
 
