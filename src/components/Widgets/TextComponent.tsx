@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { EditorElement, useEditor } from "../providers/editor-provider";
+import { EditorElement, useEditor } from "../../providers/editor-provider";
 import { VsTrash } from "solid-icons/vs";
 import { Show } from "solid-js";
 

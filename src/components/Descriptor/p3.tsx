@@ -1,6 +1,6 @@
 import { Accessor, Setter, Show } from "solid-js";
-import LeftArrow from "../components/icons/LeftArrow";
-import ThreeDots from "../components/icons/ThreeDots";
+import LeftArrow from "../icons/LeftArrow";
+import ThreeDots from "../icons/ThreeDots";
 import { DescriptorFlow } from "./p2";
 import AddBulkDescriptor from "./AddBulkDescriptor";
 import { Motion, Presence } from "solid-motionone";

@@ -1,6 +1,6 @@
 import { Accessor, Setter } from "solid-js";
 import { DescriptorFlow } from "./p2";
-import LeftArrow from "../components/icons/LeftArrow";
+import LeftArrow from "../icons/LeftArrow";
 import P1 from "./p1";
 
 export default function AddBulkDescriptor({

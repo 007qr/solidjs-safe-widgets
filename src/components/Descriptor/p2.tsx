@@ -1,7 +1,7 @@
 import { createSignal, For, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
 import P1 from "./p1";
-import LeftArrow from "../components/icons/LeftArrow";
+import LeftArrow from "../icons/LeftArrow";
 import AddBulkDescriptor from "./AddBulkDescriptor";
 
 export type DescriptorFlow =

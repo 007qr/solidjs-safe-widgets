@@ -1,9 +1,9 @@
 // import AIWidget from "./components/AIWidget";
 // import AIWidget2 from "./components/AIWidget2";
 import { createSignal } from "solid-js";
-import P1 from "./Descriptor/p1";
-import P2, { DescriptorFlow } from "./Descriptor/p2";
-import P3 from "./Descriptor/p3";
+import P1 from "./components/Descriptor/p1";
+import P2, { DescriptorFlow } from "./components/Descriptor/p2";
+import P3 from "./components/Descriptor/p3";
 // import DescriptorWidget from "./DescriptorWidget";
 // import StopperForm from "./stopper-form";
 
