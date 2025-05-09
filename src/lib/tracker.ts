@@ -108,7 +108,7 @@ export default class Tracker {
     }
 
     private createSession() {
-        const utmParams = this.getUTMParams();
+        const utmParams = Tracker.getUTMParams();
 
         const data = {
             sign: 1,
@@ -144,7 +144,7 @@ export default class Tracker {
             .catch((error) => console.error("Error creating a session:", error));
     }
 
-    private getUTMParams() {
+    public static getUTMParams() {
         const params = new URLSearchParams(window.location.search);
         return {
             utm_source: params.get("utm_source"),
@@ -156,7 +156,7 @@ export default class Tracker {
     }
 
     public trackEvent(event_name: string, meta_key: string[], meta_value: string[]) {
-        const utmParams = this.getUTMParams();
+        const utmParams = Tracker.getUTMParams();
 
         const data = {
             timestamp: new Date().toISOString(),

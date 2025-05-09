@@ -1,15 +1,15 @@
-import { Accessor, Setter } from "solid-js";
+import { Accessor, createSignal, For, Setter } from "solid-js";
 import { DescriptorFlow } from "./p2";
 import LeftArrow from "../icons/LeftArrow";
-import P1 from "./p1";
+import DescriptorField from "./descriptor-field";
 
-export default function AddBulkDescriptor({
-    setFlow,
-    flow,
-}: {
+interface Props {
     setFlow: Setter<DescriptorFlow>;
     flow: Accessor<string>;
-}) {
+}
+
+export default function AddBulkDescriptor({ setFlow, flow }: Props) {
+    const [fields, setFields] = createSignal<number[]>([0]);
     return (
         <>
             <div class="flex flex-col justify-between h-full">
@@ -30,18 +30,16 @@ export default function AddBulkDescriptor({
                             <UploadIcon />
                         </button>
                     </div>
-                    <div class="flex flex-col gap-[12px] overflow-y-auto flex-1 min-h-0 pr-[4px] custom-scrollbar">
-                        <P1 />
-                        <P1 />
-                        <P1 />
-                        <P1 />
-                        <P1 />
-                        <P1 />
-
+                    <div class="flex flex-col gap-[30px] overflow-y-auto flex-1 min-h-0 pr-[4px] custom-scrollbar">
+                        <For each={fields()}>
+                            {(id) => <DescriptorField />}
+                        </For>
                     </div>
                 </div>
 
-                <button class="mt-[12px] self-start font-inter font-medium leading-[130%] tracking-[0%] text-[#1d1d1f] text-[13px]">
+                <button 
+                    onClick={() => setFields([...fields(), fields().length])}
+                    class="cursor-pointer mt-[12px] self-start font-inter font-medium leading-[130%] tracking-[0%] text-[#1d1d1f] text-[13px]">
                     + Add More
                 </button>
             </div>

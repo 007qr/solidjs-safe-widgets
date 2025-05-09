@@ -1,6 +1,6 @@
 import { createSignal, For, Show } from "solid-js";
 import { Motion, Presence } from "solid-motionone";
-import P1 from "./p1";
+import DescriptorField from "./descriptor-field";
 import LeftArrow from "../icons/LeftArrow";
 import AddBulkDescriptor from "./AddBulkDescriptor";
 
@@ -194,7 +194,7 @@ export default function P2() {
                                         + Add bulk
                                     </p>
                                 </div>
-                                <P1 />
+                                <DescriptorField />
                             </div>
                         </Show>
                     </div>

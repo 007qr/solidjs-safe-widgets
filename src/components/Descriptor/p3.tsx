@@ -5,13 +5,15 @@ import { DescriptorFlow } from "./p2";
 import AddBulkDescriptor from "./AddBulkDescriptor";
 import { Motion, Presence } from "solid-motionone";
 
+interface Props {
+    setFlow: Setter<DescriptorFlow>;
+    flow: Accessor<string>;
+}
+
 export default function P3({
     setFlow,
     flow,
-}: {
-    setFlow: Setter<DescriptorFlow>;
-    flow: Accessor<string>;
-}) {
+}: Props) {
     return (
         <>
             <div
@@ -19,47 +21,59 @@ export default function P3({
                 style="box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.02);"
             >
                 <Show when={flow() === "list_descriptors"}>
-                <header class="flex justify-between items-center">
-                    <button class="self-start cursor-pointer w-[24px] h-[24px] bg-[#f5f5f5] rounded-[48px] items-center justify-center flex">
-                        <LeftArrow />
-                    </button>
-                    <h2 class="font-medium text-[17px] leading-[130%] tracking-[0%] font-inter">
-                        Descriptors
-                    </h2>
-                    <div class="w-[24px]"></div>
-                </header>
+                    <header class="flex justify-between items-center">
+                        <button class="self-start cursor-pointer w-[24px] h-[24px] bg-[#f5f5f5] rounded-[48px] items-center justify-center flex">
+                            <LeftArrow />
+                        </button>
+                        <h2 class="font-medium text-[17px] leading-[130%] tracking-[0%] font-inter">
+                            Descriptors
+                        </h2>
+                        <div class="w-[24px]"></div>
+                    </header>
 
-                <div class="pt-[16px]">
-                    <div class="flex flex-col gap-[4px]">
-                        <DescriptorRow
-                            descriptor_name="NETFLIX.COM"
-                            contact="888-888-8888"
-                        />
-                        <DescriptorRow
-                            descriptor_name="UBER RIDES"
-                            contact="888-888-8888"
-                        />
-                        <DescriptorRow
-                            descriptor_name="DOORDASH SAN FRAN ASDASDASDASD"
-                            contact="888-888-8888"
-                        />
+                    <div class="pt-[16px]">
+                        <div class="flex flex-col gap-[4px]">
+                            <DescriptorRow
+                                descriptor_name="NETFLIX.COM"
+                                contact="888-888-8888"
+                            />
+                            <DescriptorRow
+                                descriptor_name="UBER RIDES"
+                                contact="888-888-8888"
+                            />
+                            <DescriptorRow
+                                descriptor_name="DOORDASH SAN FRAN ASDASDASDASD"
+                                contact="888-888-8888"
+                            />
+                        </div>
                     </div>
-                </div>
 
-                <footer class="border-t-[#1D1D1F14] border-t mt-auto">
-                    <button on:click={() => setFlow("add_bulk")} class="w-max bg-[#F5F5F5] mt-[16px] cursor-pointer p-[4px] rounded-[24px] font-inter leading-[130%] tracking-[0%] text-[13px] font-medium">
-                        + Add bulk
-                    </button>
-                </footer>
+                    <footer class="border-t-[#1D1D1F14] border-t mt-auto">
+                        <button
+                            on:click={() => setFlow("add_bulk")}
+                            class="w-max bg-[#F5F5F5] mt-[16px] cursor-pointer p-[4px] rounded-[24px] font-inter leading-[130%] tracking-[0%] text-[13px] font-medium"
+                        >
+                            + Add bulk
+                        </button>
+                    </footer>
                 </Show>
 
                 <Presence exitBeforeEnter>
                     <Show when={flow() === "add_bulk"}>
                         <Motion.div
                             class="w-full h-full"
-                            animate={{ opacity: [0, 1], transition: {duration: .3, easing: 'ease-in-out'} }}
+                            animate={{
+                                opacity: [0, 1],
+                                transition: {
+                                    duration: 0.3,
+                                    easing: "ease-in-out",
+                                },
+                            }}
                         >
-                            <AddBulkDescriptor flow={flow} setFlow={setFlow} />
+                            <AddBulkDescriptor
+                                flow={flow}
+                                setFlow={setFlow}
+                            />
                         </Motion.div>
                     </Show>
                 </Presence>
