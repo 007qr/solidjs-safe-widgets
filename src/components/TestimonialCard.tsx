@@ -55,23 +55,24 @@ export default function TestimonialCard({
         <div class="flex flex-col gap-[20px] mt-auto">
           <div class="testimonial-content">{text()}</div>
           <button
-            class="w-max border py-[16px] px-[24px] gap-[10px] text-[17px] leading-[110%] tracking-[-2%] align-middle font-medium flex border-[#1d1d1f] rounded-[64px] items-center"
+            class="w-max py-[16px] px-[24px] gap-[10px] text-[17px] leading-[110%] tracking-[-2%] align-middle font-medium flex border-[#1d1d1f] rounded-[64px] items-center"
             onClick={toggleVideo}
           >
-            <ArrowForward size={24} />
-            Play Video
+            {/* <ArrowForward size={24} />
+            Play Video */}
           </button>
         </div>
 
         <Show
           when={!videoOpen()}
           fallback={
-            <video
-              class="flex-shrink-0 w-[327px] h-[472px] rounded-[184px] object-cover"
-              autoplay
-            >
-              <source src={videoSrc} type="video/webm" />
-            </video>
+            <></>
+            // <video
+            //   class="flex-shrink-0 w-[327px] h-[472px] rounded-[184px] object-cover"
+            //   autoplay
+            // >
+            //   <source src={videoSrc} type="video/webm" />
+            // </video>
           }
         >
           <img
@@ -87,9 +88,10 @@ export default function TestimonialCard({
         <Show
           when={!videoOpen()}
           fallback={
-            <video class="w-full h-full object-cover" autoplay>
-              <source src={videoSrc} type="video/webm" />
-            </video>
+            <></>
+            // <video class="w-full h-full object-cover" autoplay>
+            //   <source src={videoSrc} type="video/webm" />
+            // </video>
           }
         >
           <img
@@ -103,13 +105,13 @@ export default function TestimonialCard({
       {/* Mobile Content Overlay */}
       <div class="absolute bottom-[46px] flex gap-[20px] flex-col z-20 lg:hidden">
         <div class="testimonial-content">{text()}</div>
-        <button
+        {/* <button
           class="w-max border py-[11px] px-[20px] gap-[10px] text-[17px] leading-[110%] tracking-[-2%] align-middle font-medium flex text-[#f5f5f5] border-[#f5f5f5] rounded-[64px] items-center"
           onClick={toggleVideo}
         >
           <ArrowForward color="#f5f5f5" size={24} />
           Play Video
-        </button>
+        </button> */}
       </div>
       
       {/* Mobile Gradient Overlays */}
