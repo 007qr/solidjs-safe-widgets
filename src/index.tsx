@@ -36,6 +36,9 @@ render(
                 path="/lp1"
                 component={lazy(() => import("./landing-page1"))}
             />
+            <Route 
+                path="/lp2" 
+                component={lazy(() => import("./components/effects/ripple"))} />
             <Route path="/lp3" component={lazy(() => import("./lp3"))} />
         </Router>
     ),

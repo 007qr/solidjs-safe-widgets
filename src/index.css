@@ -57,7 +57,7 @@ div[contenteditable="true"] {
 }
 
 .custom-scrollbar {
-    scrollbar-width: none
+    scrollbar-width: none;
 }
 
 .animate-fade-in {
@@ -100,6 +100,42 @@ div[contenteditable="true"] {
 .animate-move-up-reverse {
     color: #1d1d1f;
     animation: move-up 300ms ease-in reverse forwards;
+}
+
+.animate-ripple {
+    animation: ripple 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-radar {
+    --base-rotation: 0deg;
+    animation: radar 4s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes radar {
+    0% {
+        transform: rotate(calc(var(--base-rotation) + 0deg));
+    }
+    50% {
+        transform: rotate(calc(var(--base-rotation) + 180deg));
+    }
+    75% {
+        transform: rotate(calc(var(--base-rotation) + 200deg)); /* linger around 180deg (bottom) */
+    }
+    100% {
+        transform: rotate(calc(var(--base-rotation) + 360deg));
+    }
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(3.7);
+        opacity: 0;
+    }
 }
 
 @keyframes move-up {
